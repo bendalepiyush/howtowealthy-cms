@@ -13,22 +13,8 @@ import Logo from "../logo";
 
 const Header = () => {
   return (
-    <Box position={"sticky"} top={0} zIndex={99}>
-      <Box py={4} bg={"black"} color={"white"}>
-        <Container maxW={"7xl"}>
-          <Link as={NLink} href="#" _hover={{ textDecoration: "none" }}>
-            <Flex align={"center"}>
-              <Text>
-                What Is a Stock Market Index? : Definition, How Indexing Works,
-                Types, and Examples
-              </Text>
-              <Spacer />
-              <Text>Read More</Text>
-            </Flex>
-          </Link>
-        </Container>
-      </Box>
-      <Box py={3} bg={"white"} shadow={"sm"}>
+    <>
+      <Box position={"sticky"} top={0} py={3} bg={"white"} shadow={"sm"}>
         <Container maxW={"7xl"}>
           <Flex align={"center"}>
             <Box w={200}>
@@ -48,7 +34,7 @@ const Header = () => {
           </Flex>
         </Container>
       </Box>
-    </Box>
+    </>
   );
 };
 

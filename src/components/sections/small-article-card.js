@@ -7,7 +7,7 @@ import {
   AspectRatio,
 } from "@chakra-ui/react";
 
-const SmallArticleCard = () => {
+const SmallArticleCard = ({ item }) => {
   return (
     <GridItem>
       <Stack gap={4}>
@@ -15,7 +15,7 @@ const SmallArticleCard = () => {
           <Box bg={"red"} w={"100%"} h={"100%"} />
         </AspectRatio>
         <Heading as={"h3"} size={"lg"} fontWeight={"200"}>
-          A stock market index is a statistical metric that?
+          {item.title}
         </Heading>
 
         <Text>View More</Text>
