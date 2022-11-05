@@ -6,12 +6,16 @@ import {
   Heading,
   Stack,
   AspectRatio,
+  Flex,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
 import Layout from "../src/components/layout";
 import SmallArticleCard from "../src/components/sections/small-article-card";
 import WideArticleCard from "../src/components/sections/wide-article-card";
 import Seo from "../src/components/seo";
 import { GraphQLClient } from "graphql-request";
+import Link from "next/link";
 
 const hygraph = new GraphQLClient(
   "https://api-us-east-1.hygraph.com/v2/cl9wyki8y09ws01uj1bhufnw5/master",
@@ -53,34 +57,62 @@ export async function getStaticProps() {
     }
   `);
 
+  const resLatestPost = await hygraph.request(`
+    {
+      blogPosts(orderBy: publishedAt_DESC, first: 10) {
+        slug
+        title
+        excerpt
+      }
+    }
+  `);
+
   return {
     props: {
       stockMarket: resStockMarket.blogPosts,
       investment: resInvestment.blogPosts,
       personalFinance: resPersonalFinance.blogPosts,
+      latest: resLatestPost.blogPosts,
     },
     revalidate: 1,
   };
 }
 
-const Home = ({ stockMarket, investment, personalFinance }) => {
+const Home = ({ stockMarket, investment, personalFinance, latest }) => {
   console.log(investment);
   return (
     <Layout>
       <Seo />
       <main>
         <Box py={20}>
-          <Container maxW={"7xl"}>
+          <Container maxW={"8xl"}>
             <Stack spacing={20}>
               <Box>
-                <Heading as={"h2"} size={"md"} fontWeight={"600"} mb={12}>
-                  Investment
-                </Heading>
+                <Flex>
+                  <Heading
+                    as={"h2"}
+                    size={"sm"}
+                    textTransform={"uppercase"}
+                    fontWeight={"400"}
+                  >
+                    Investment
+                  </Heading>
+                  <Spacer />
+
+                  <Link href={"/category/investment"}>
+                    <Text color={"primary.900"}>Explore More</Text>
+                  </Link>
+                </Flex>
+
+                <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+                  <Box w={`10ch`} bg={"black.900"} h={"1px"}></Box>
+                </Box>
+
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
                     md: "repeat(2, 1fr)",
-                    lg: "repeat(3, 1fr)",
+                    lg: "repeat(4, 1fr)",
                   }}
                   gap={8}
                 >
@@ -90,9 +122,24 @@ const Home = ({ stockMarket, investment, personalFinance }) => {
                 </Grid>
               </Box>
               <Box>
-                <Heading as={"h2"} size={"md"} fontWeight={"600"} mb={12}>
-                  Stock market
-                </Heading>
+                <Flex>
+                  <Heading
+                    as={"h2"}
+                    size={"sm"}
+                    textTransform={"uppercase"}
+                    fontWeight={"400"}
+                  >
+                    Stock Market
+                  </Heading>
+                  <Spacer />
+
+                  <Link href={"/category/stock-market"}>
+                    <Text color={"primary.900"}>Explore More</Text>
+                  </Link>
+                </Flex>
+                <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+                  <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
+                </Box>
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
@@ -106,9 +153,24 @@ const Home = ({ stockMarket, investment, personalFinance }) => {
                 </Grid>
               </Box>
               <Box>
-                <Heading as={"h2"} size={"md"} fontWeight={"600"} mb={12}>
-                  Personal Finance
-                </Heading>
+                <Flex>
+                  <Heading
+                    as={"h2"}
+                    size={"sm"}
+                    textTransform={"uppercase"}
+                    fontWeight={"400"}
+                  >
+                    Personal Finance
+                  </Heading>
+                  <Spacer />
+
+                  <Link href={"/category/personal-finance"}>
+                    <Text color={"primary.900"}>Explore More</Text>
+                  </Link>
+                </Flex>
+                <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+                  <Box w={`16ch`} bg={"black.900"} h={"1px"}></Box>
+                </Box>
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
@@ -125,24 +187,45 @@ const Home = ({ stockMarket, investment, personalFinance }) => {
               <Grid
                 templateColumns={{
                   base: "repeat(1, 1fr)",
-                  md: "2fr 1fr",
+                  md: "3fr 1fr",
                 }}
-                gap={8}
+                gap={10}
               >
                 <GridItem>
+                  <Heading
+                    as={"h2"}
+                    size={"sm"}
+                    textTransform={"uppercase"}
+                    fontWeight={"400"}
+                  >
+                    Latest Posts
+                  </Heading>
+
+                  <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+                    <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
+                  </Box>
                   <Stack gap={8}>
-                    <WideArticleCard />
-                    <WideArticleCard />
-                    <WideArticleCard />
-                    <WideArticleCard />
-                    <WideArticleCard />
-                    <WideArticleCard />
+                    {latest.map((item, idx) => (
+                      <WideArticleCard key={idx} item={item} />
+                    ))}
                   </Stack>
                 </GridItem>
                 <GridItem>
                   <Box>
+                    <Heading
+                      as={"h2"}
+                      size={"sm"}
+                      textTransform={"uppercase"}
+                      fontWeight={"400"}
+                    >
+                      About Us
+                    </Heading>
+
+                    <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+                      <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
+                    </Box>
                     <AspectRatio w={"100%"} ratio={1}>
-                      <Box bg={"red"} w={"100%"} h={"100%"} />
+                      <Box bg={"gray.100"} w={"100%"} h={"100%"} />
                     </AspectRatio>
                   </Box>
                 </GridItem>

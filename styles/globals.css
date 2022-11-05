@@ -11,3 +11,60 @@ body {
 .post-content p {
   margin-bottom: var(--chakra-space-6);
 }
+
+.post-content b {
+  font-weight: 700;
+}
+
+.post-content h2 {
+  font-family: var(--chakra-fonts-heading);
+  font-size: var(--chakra-fontSizes-2xl);
+  font-weight: 700;
+  margin-top: var(--chakra-space-4);
+  margin-bottom: var(--chakra-space-2);
+}
+
+.post-content h3 {
+  font-family: var(--chakra-fonts-heading);
+  font-size: var(--chakra-fontSizes-xl);
+  font-weight: 700;
+  margin-top: var(--chakra-space-4);
+  margin-bottom: var(--chakra-space-2);
+}
+
+.post-content h4 {
+  font-family: var(--chakra-fonts-heading);
+  font-size: var(--chakra-fontSizes-lg);
+  font-weight: 700;
+  margin-top: var(--chakra-space-4);
+  margin-bottom: var(--chakra-space-2);
+}
+
+.post-content table thead {
+  font-weight: 600;
+  font-size: var(--chakra-fontSizes-md);
+  text-transform: uppercase;
+}
+
+.post-content table td {
+  border: 1px solid var(--chakra-colors-gray-100);
+  padding: var(--chakra-space-4);
+}
+
+.post-content ul,
+.post-content ol {
+  margin: var(--chakra-space-6);
+}
+
+.post-content li {
+  padding: var(--chakra-space-2);
+}
+
+.post-content img {
+  width: 100%;
+  height: auto;
+}
+
+mark {
+  background-color: var(--chakra-colors-primary-50);
+}

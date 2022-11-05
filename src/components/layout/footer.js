@@ -57,7 +57,7 @@ const Footer = () => {
   return (
     <footer>
       <Box bg="gray.50" pt={20} pb={10}>
-        <Container maxW="7xl">
+        <Container maxW="8xl">
           <Flex direction={{ base: "column", md: "row" }}>
             <Box maxW={"xs"} mb={{ base: 6, md: 0 }}>
               <Box mb={3}>

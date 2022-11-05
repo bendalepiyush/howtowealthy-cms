@@ -70,9 +70,7 @@ export const getStaticProps = async ({ params }) => {
           slug
           title
         }
-        content {
-          html
-        }
+        content
       }
     }
   `);
@@ -121,8 +119,8 @@ const SinglePost = ({ post, relatedPosts }) => {
       <main>
         <Container maxW={"70ch"} pt={10}>
           <Badge
-            variant="subtle"
-            colorScheme="green"
+            variant="outline"
+            colorScheme="primary"
             py={2}
             px={5}
             borderRadius={100}
@@ -173,13 +171,11 @@ const SinglePost = ({ post, relatedPosts }) => {
         </Container>
 
         <Box pb={20}>
-          <Container
-            maxW={"70ch"}
-            fontSize={"18px"}
-            lineHeight={1.7}
-            className={"post-content"}
-          >
-            <div dangerouslySetInnerHTML={{ __html: content.html }} />
+          <Container maxW={"70ch"} fontSize={"18px"} lineHeight={1.7}>
+            <div
+              className={"post-content"}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
             <Divider my={6} />
             <Flex align={"center"}>
               <Breadcrumb>
@@ -215,7 +211,7 @@ const SinglePost = ({ post, relatedPosts }) => {
         </Box>
       </main>
       <Box bg={"gray.50"}>
-        <Container maxW={"7xl"} py={20}>
+        <Container maxW={"8xl"} py={20}>
           <Heading as={"h2"} size={"md"} fontWeight={"600"} mb={12}>
             Related Articles
           </Heading>

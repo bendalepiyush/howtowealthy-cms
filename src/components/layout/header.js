@@ -8,29 +8,49 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
-import { Link as NLink } from "next";
+import { default as NLink } from "next/link";
 import Logo from "../logo";
 
 const Header = () => {
   return (
     <>
-      <Box position={"sticky"} top={0} py={3} bg={"white"} shadow={"sm"}>
-        <Container maxW={"7xl"}>
+      <Box
+        position={"sticky"}
+        top={0}
+        py={3}
+        zIndex={99}
+        bg={"white"}
+        shadow={"sm"}
+      >
+        <Container maxW={"8xl"}>
           <Flex align={"center"}>
-            <Box w={200}>
-              <Logo />
-            </Box>
+            <NLink href="/">
+              <Box w={200} py={5}>
+                <Logo />
+              </Box>
+            </NLink>
             <Box display={{ base: "none", md: "block" }}>
-              <Stack direction={"row"} spacing={6} ml={8}>
+              <Stack direction={"row"} spacing={6} ml={10}>
                 {NavItems.map((item) => (
-                  <Box py={4} key={item.name}>
-                    <Text>{item.name}</Text>
-                  </Box>
+                  <NLink href={item.href} key={item.name}>
+                    <Box py={4}>
+                      <Text>{item.name}</Text>
+                    </Box>
+                  </NLink>
                 ))}
               </Stack>
             </Box>
             <Spacer />
-            <Button colorScheme={"blue"}>Sign up</Button>
+            <Stack
+              display={{ base: "none", md: "block" }}
+              direction={"row"}
+              gap={1}
+            >
+              <Button colorScheme={"black"} variant={"outline"}>
+                Sign In
+              </Button>
+              <Button colorScheme={"black"}>Subscribe</Button>
+            </Stack>
           </Flex>
         </Container>
       </Box>
@@ -41,15 +61,15 @@ const Header = () => {
 const NavItems = [
   {
     name: "Stock Market",
-    href: "#",
+    href: "/category/stock-market",
   },
   {
     name: "Investment",
-    href: "#",
+    href: "/category/investment",
   },
   {
     name: "Personal Finance",
-    href: "#",
+    href: "/category/personal-finance",
   },
 ];
 
