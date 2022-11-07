@@ -127,12 +127,42 @@ const SinglePost = ({ post, relatedPosts }) => {
     ogimg: "",
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      metaStructuredData,
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://www.howtowealthy.com/${router.asPath}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.howtowealthy.com/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: category.title,
+            item: `https://www.howtowealthy.com/${category.slug}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: title,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <Layout>
       <Seo
         title={`${title} | How to Wealthy `}
         description={metaDescription}
-        structuredData={JSON.stringify(metaStructuredData, null, 2)}
+        structuredData={JSON.stringify(structuredData, null, 2)}
         ogImage={featuredImage.ogimg}
       />
       <main>
@@ -208,22 +238,7 @@ const SinglePost = ({ post, relatedPosts }) => {
             />
             <Divider my={6} />
             <Flex align={"center"}>
-              <Breadcrumb>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/stock-market/">
-                    Stock Market
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="#">
-                    What Is a Stock Market ..
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </Breadcrumb>
+              <Box></Box>
               <Spacer />
 
               <Stack direction={"row"} spacing={6}>
