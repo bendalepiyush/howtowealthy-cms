@@ -29,30 +29,33 @@ const hygraph = new GraphQLClient(
 export async function getStaticProps() {
   const resStockMarket = await hygraph.request(`
     {
-      blogPosts(where: {category: {slug: "stock-market"}}, orderBy: publishedAt_DESC, first: 3) {
+      blogPosts(where: {category: {slug: "stock-market"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
         title
         excerpt
+        featuredImage
       }
     }
   `);
 
   const resInvestment = await hygraph.request(`
     {
-      blogPosts(where: {category: {slug: "investment"}}, orderBy: publishedAt_DESC, first: 3) {
+      blogPosts(where: {category: {slug: "investment"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
         title
         excerpt
+        featuredImage
       }
     }
   `);
 
   const resPersonalFinance = await hygraph.request(`
     {
-      blogPosts(where: {category: {slug: "personal-finance"}}, orderBy: publishedAt_DESC, first: 3) {
+      blogPosts(where: {category: {slug: "personal-finance"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
         title
         excerpt
+        featuredImage
       }
     }
   `);
@@ -63,6 +66,7 @@ export async function getStaticProps() {
         slug
         title
         excerpt
+        featuredImage
       }
     }
   `);
@@ -79,7 +83,6 @@ export async function getStaticProps() {
 }
 
 const Home = ({ stockMarket, investment, personalFinance, latest }) => {
-  console.log(investment);
   return (
     <Layout>
       <Seo />
@@ -111,7 +114,8 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
-                    md: "repeat(2, 1fr)",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(3, 1fr)",
                     lg: "repeat(4, 1fr)",
                   }}
                   gap={8}
@@ -143,7 +147,8 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
-                    md: "repeat(3, 1fr)",
+                    md: "repeat(2, 1fr)",
+                    lg: "repeat(4, 1fr)",
                   }}
                   gap={8}
                 >
@@ -174,7 +179,8 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
                 <Grid
                   templateColumns={{
                     base: "repeat(1, 1fr)",
-                    md: "repeat(3, 1fr)",
+                    md: "repeat(2, 1fr)",
+                    lg: "repeat(4, 1fr)",
                   }}
                   gap={8}
                 >

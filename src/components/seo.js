@@ -1,27 +1,26 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const DOMAIN = "https://www.howtowealthy.com";
 const DEFAULT_OG_IMAGE = "https://assets.howtowealthy.com/og_img_1200x600.png";
+const SITE_NAME = "How to Wealthy";
+const TWITTER_HANDLE = "@howtowealthy";
 
 export default function Seo({
-  title = "TradeIK",
+  title = "How to Wealthy",
   description = "description",
-  canonical = DOMAIN,
   ogImage = DEFAULT_OG_IMAGE,
   ogType = "website",
-  twitterHandle = "@d__raptis",
+  structuredData,
 }) {
-  const SITE_NAME = "TradeIK";
+  const canonical = DOMAIN + "" + useRouter().asPath;
   return (
     <Head>
-      <title key="title">{`${title} | ${SITE_NAME}`}</title>
+      <title key="title">{title}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content={description} />
       <meta key="og_type" property="og:type" content={ogType} />
-      <meta
-        key="og_title"
-        property="og:title"
-        content={`${title} | ${SITE_NAME}`}
-      />
+      <meta key="og_title" property="og:title" content={title} />
       <meta
         key="og_description"
         property="og:description"
@@ -36,11 +35,7 @@ export default function Seo({
         property="og:image"
         content={ogImage ?? DEFAULT_OG_IMAGE}
       />
-      <meta
-        key="og_image:alt"
-        property="og:image:alt"
-        content={`${title} | ${SITE_NAME}`}
-      />
+      <meta key="og_image:alt" property="og:image:alt" content={title} />
       <meta key="og_image:width" property="og:image:width" content="1200" />
       <meta key="og_image:height" property="og:image:height" content="630" />
 
@@ -51,11 +46,11 @@ export default function Seo({
         name="twitter:card"
         content="summary_large_image"
       />
-      <meta key="twitter:site" name="twitter:site" content={twitterHandle} />
+      <meta key="twitter:site" name="twitter:site" content={TWITTER_HANDLE} />
       <meta
         key="twitter:creator"
         name="twitter:creator"
-        content={twitterHandle}
+        content={TWITTER_HANDLE}
       />
       <meta key="twitter:title" property="twitter:title" content={title} />
       <meta
@@ -64,9 +59,13 @@ export default function Seo({
         content={description}
       />
 
-      <link rel="canonical" href={canonical ?? DOMAIN} />
+      <link rel="canonical" href={canonical} />
 
       <link rel="shortcut icon" href="/favicon.ico" />
+
+      {structuredData && (
+        <script type="application/ld+json">{structuredData}</script>
+      )}
     </Head>
   );
 }

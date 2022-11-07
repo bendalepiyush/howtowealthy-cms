@@ -9,7 +9,7 @@ import {
   Stack,
   Grid,
   Heading,
-  GridItem,
+  AspectRatio,
   Badge,
   Divider,
   Icon,
@@ -19,11 +19,13 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { FiBookmark, FiHeart, FiShare2 } from "react-icons/fi";
 import Layout from "../src/components/layout";
 import SmallArticleCard from "../src/components/sections/small-article-card";
 import { GraphQLClient } from "graphql-request";
 import formateDateMMMddyyyy from "../src/utils/date_format";
+import Seo from "../src/components/seo";
 
 const hygraph = new GraphQLClient(
   "https://api-us-east-1.hygraph.com/v2/cl9wyki8y09ws01uj1bhufnw5/master",
@@ -84,14 +86,13 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  console.log(blogPosts[0].category.slug);
-
   const res = await hygraph.request(`
     {
       blogPosts(where: {category: {slug: "${blogPosts[0].category.slug}"}, AND: {slug_not: "${blogPosts[0].slug}"}}, orderBy: publishedAt_DESC, last: 3) {
         slug
         title
         excerpt
+        featuredImage
       }
     }
   `);
@@ -103,19 +104,37 @@ export const getStaticProps = async ({ params }) => {
 };
 
 const SinglePost = ({ post, relatedPosts }) => {
-  const {
-    title,
-    excerpt,
-    publishedAt,
-    tableOfContent,
-    metaDescription,
-    metaStructuredData,
-    content,
-    category,
-  } = post;
+  const router = useRouter();
+
+  // If the page is not yet generated, this will be displayed
+  // initially until getStaticProps() finishes running
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
+  // Render post...
+  const title = post.title || "";
+  const excerpt = post.excerpt || "";
+  const publishedAt = post.publishedAt || "";
+  const tableOfContent = post.tableOfContent || [];
+  const metaDescription = post.metaDescription || "";
+  const metaStructuredData = post.metaStructuredData || {};
+  const content = post.content || <div></div>;
+  const category = post.category || {
+    title: "",
+  };
+  const featuredImage = post.featuredImage || {
+    ogimg: "",
+  };
 
   return (
     <Layout>
+      <Seo
+        title={`${title} | How to Wealthy `}
+        description={metaDescription}
+        structuredData={JSON.stringify(metaStructuredData, null, 2)}
+        ogImage={featuredImage.ogimg}
+      />
       <main>
         <Container maxW={"70ch"} pt={10}>
           <Badge
@@ -153,7 +172,7 @@ const SinglePost = ({ post, relatedPosts }) => {
           <Divider my={6} />
 
           <Box lineHeight={1.7}>
-            <Text as={"b"} mb={2} display="block">
+            <Text as={"b"} fontSize={"lg"} mb={2} display="block">
               Table of content:
             </Text>
             <OrderedList>
@@ -167,7 +186,18 @@ const SinglePost = ({ post, relatedPosts }) => {
         </Container>
 
         <Container maxW={"6xl"} py={10}>
-          <img src="https://wallpaperaccess.com/full/1393728.jpg" />
+          <AspectRatio w={"100%"} zIndex={0} ratio={1200 / 630}>
+            <picture style={{ objectFit: "cover" }}>
+              <source
+                srcSet={featuredImage?.ogimg + "?webp"}
+                type="image/webp"
+              />
+              <img
+                src={featuredImage?.ogimg}
+                alt={title + " - Featured Image"}
+              />
+            </picture>
+          </AspectRatio>
         </Container>
 
         <Box pb={20}>
@@ -216,7 +246,11 @@ const SinglePost = ({ post, relatedPosts }) => {
             Related Articles
           </Heading>
           <Grid
-            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+            templateColumns={{
+              base: "repeat(1, 1fr)",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(4, 1fr)",
+            }}
             gap={8}
           >
             {relatedPosts.map((item, idx) => (

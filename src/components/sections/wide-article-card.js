@@ -35,7 +35,7 @@ const WideArticleCard = ({ item }) => {
               <Text color={"primary.900"}>Read More</Text>
             </Stack>
           </GridItem>
-          <AspectRatio w={"100%"} ratio={3 / 2}>
+          <AspectRatio w={"100%"} ratio={4 / 3}>
             <Box bg={"gray.100"} w={"100%"} h={"100%"} />
           </AspectRatio>
         </Grid>
