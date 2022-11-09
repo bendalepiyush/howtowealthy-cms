@@ -2,16 +2,35 @@ import {
   Box,
   Container,
   Flex,
-  Link,
   Text,
   Spacer,
   Stack,
   Button,
+  useBoolean,
+  MenuButton,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { default as NLink } from "next/link";
 import Logo from "../logo";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../services/firebase";
+import { useEffect } from "react";
+import { FaAngleDown } from "react-icons/fa";
 
 const Header = () => {
+  const [user, loading, error] = useAuthState(auth);
+  const [isLoggedIn, setIsLoggedIn] = useBoolean(false);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn.on();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
     <>
       <Box
@@ -46,10 +65,52 @@ const Header = () => {
               direction={"row"}
               gap={1}
             >
-              <Button colorScheme={"black"} variant={"outline"}>
-                Sign In
-              </Button>
-              <Button colorScheme={"black"}>Subscribe</Button>
+              {isLoggedIn ? (
+                <Menu>
+                  <MenuButton
+                    bg={"transparent"}
+                    as={Button}
+                    rightIcon={<FaAngleDown />}
+                    _hover={{
+                      backgroundColor: "transparent",
+                    }}
+                    _focus={{
+                      backgroundColor: "transparent",
+                    }}
+                    _active={{
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <Box
+                      bg={"black"}
+                      color={"white"}
+                      borderRadius={"100px"}
+                      w={10}
+                      h={10}
+                    >
+                      <Flex h={"100%"} align={"center"} justify={"center"}>
+                        {user.email[0].toUpperCase()}
+                      </Flex>
+                    </Box>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>My Bookmarks</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>My Favourites</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <>
+                  <NLink href={"/auth/register"}>
+                    <Button variant={"outline"} colorScheme={"black"}>
+                      Sign Up
+                    </Button>
+                  </NLink>
+                  <Button colorScheme={"black"}>Subscribe</Button>
+                </>
+              )}
             </Stack>
           </Flex>
         </Container>

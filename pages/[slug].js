@@ -15,17 +15,26 @@ import {
   Icon,
   OrderedList,
   ListItem,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
+  useBoolean,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FiBookmark, FiHeart, FiShare2 } from "react-icons/fi";
+import { FaRegBookmark, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
 import Layout from "../src/components/layout";
 import SmallArticleCard from "../src/components/sections/small-article-card";
 import { GraphQLClient } from "graphql-request";
 import formateDateMMMddyyyy from "../src/utils/date_format";
 import Seo from "../src/components/seo";
+import {
+  auth,
+  bookmarkOrFavURL,
+  isBookmarkedOrFavURL,
+  removeBookmarkOrFavURL,
+} from "../src/services/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
+import Link from "next/link";
 
 const hygraph = new GraphQLClient(
   "https://api-us-east-1.hygraph.com/v2/cl9wyki8y09ws01uj1bhufnw5/master",
@@ -104,7 +113,28 @@ export const getStaticProps = async ({ params }) => {
 };
 
 const SinglePost = ({ post, relatedPosts }) => {
+  const toast = useToast();
   const router = useRouter();
+  const [user, loading, error] = useAuthState(auth);
+  const [isBookmarked, setIsBookmarked] = useBoolean(false);
+  const [isFavourite, setIsFavourite] = useBoolean(false);
+
+  useEffect(() => {
+    if (user) {
+      isBookmarkedOrFavURL(user.uid, router.asPath, "bookmark").then((res) => {
+        if (res) {
+          setIsBookmarked.on();
+        }
+      });
+
+      isBookmarkedOrFavURL(user.uid, router.asPath, "favourite").then((res) => {
+        if (res) {
+          setIsFavourite.on();
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
@@ -157,6 +187,80 @@ const SinglePost = ({ post, relatedPosts }) => {
     ],
   };
 
+  const handleBookmark = async () => {
+    if (user) {
+      if (isBookmarked) {
+        removeBookmarkOrFavURL(user.uid, router.asPath, "bookmark").then(
+          (res) => {
+            toast({
+              title: "Bookmark Removed!",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsBookmarked.off();
+          }
+        );
+      } else {
+        bookmarkOrFavURL(user.uid, router.asPath, title, excerpt, "bookmark")
+          .then((res) => {
+            toast({
+              title: "Bookmark Added!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsBookmarked.on();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    }
+  };
+
+  const handleFavourite = async () => {
+    if (user) {
+      if (isFavourite) {
+        removeBookmarkOrFavURL(user.uid, router.asPath, "favourite").then(
+          (res) => {
+            toast({
+              title: "Removed from favourites!",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsFavourite.off();
+          }
+        );
+      } else {
+        bookmarkOrFavURL(user.uid, router.asPath, title, excerpt, "favourite")
+          .then((res) => {
+            toast({
+              title: "Added to favourites!",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsFavourite.on();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    }
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast({
+      title: "Link copied to clipboard!",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
+
   return (
     <Layout>
       <Seo
@@ -167,16 +271,18 @@ const SinglePost = ({ post, relatedPosts }) => {
       />
       <main>
         <Container maxW={"70ch"} pt={10}>
-          <Badge
-            variant="outline"
-            colorScheme="primary"
-            py={2}
-            px={5}
-            borderRadius={100}
-            mb={4}
-          >
-            {category.title}
-          </Badge>
+          <Link href={`/category/${category.slug}`}>
+            <Badge
+              variant="outline"
+              colorScheme="primary"
+              py={2}
+              px={5}
+              borderRadius={100}
+              mb={4}
+            >
+              {category.title}
+            </Badge>
+          </Link>
           <Heading as={"h1"} size={"2xl"} mb={4} fontWeight={500}>
             {title}
           </Heading>
@@ -189,14 +295,34 @@ const SinglePost = ({ post, relatedPosts }) => {
 
             <Spacer />
 
-            <Stack direction={"row"} spacing={6}>
-              <Icon
-                as={FiShare2}
-                w={6}
-                h={6}
-                color={"gray.400"}
-                _hover={{ color: "blue.700", transitionDuration: "0.5s" }}
-              />
+            <Stack direction={"row"} spacing={8}>
+              <Box onClick={handleFavourite}>
+                <Icon
+                  as={isFavourite ? FaHeart : FaRegHeart}
+                  w={6}
+                  h={6}
+                  color={isFavourite ? "red" : "gray.400"}
+                  _hover={{ color: "red.500", transitionDuration: "0.3s" }}
+                />
+              </Box>
+              <Box onClick={handleBookmark}>
+                <Icon
+                  as={isBookmarked ? FaBookmark : FaRegBookmark}
+                  w={6}
+                  h={6}
+                  color={isBookmarked ? "gray.800" : "gray.400"}
+                  _hover={{ color: "gray.900", transitionDuration: "0.3s" }}
+                />
+              </Box>
+              <Box onClick={handleShare}>
+                <Icon
+                  as={FiShare2}
+                  w={6}
+                  h={6}
+                  color={"gray.400"}
+                  _hover={{ color: "blue.700", transitionDuration: "0.5s" }}
+                />
+              </Box>
             </Stack>
           </Flex>
           <Divider my={6} />
@@ -238,17 +364,39 @@ const SinglePost = ({ post, relatedPosts }) => {
             />
             <Divider my={6} />
             <Flex align={"center"}>
-              <Box></Box>
+              <Link href={`/category/${category.slug}`}>
+                <Text as={"pre"}>{category.title}</Text>
+              </Link>
               <Spacer />
 
-              <Stack direction={"row"} spacing={6}>
-                <Icon
-                  as={FiShare2}
-                  w={6}
-                  h={6}
-                  color={"gray.400"}
-                  _hover={{ color: "blue.700", transitionDuration: "0.5s" }}
-                />
+              <Stack direction={"row"} spacing={8}>
+                <Box onClick={handleFavourite}>
+                  <Icon
+                    as={isFavourite ? FaHeart : FaRegHeart}
+                    w={6}
+                    h={6}
+                    color={isFavourite ? "red" : "gray.400"}
+                    _hover={{ color: "red.500", transitionDuration: "0.3s" }}
+                  />
+                </Box>
+                <Box onClick={handleBookmark}>
+                  <Icon
+                    as={isBookmarked ? FaBookmark : FaRegBookmark}
+                    w={6}
+                    h={6}
+                    color={isBookmarked ? "gray.800" : "gray.400"}
+                    _hover={{ color: "gray.900", transitionDuration: "0.3s" }}
+                  />
+                </Box>
+                <Box onClick={handleShare}>
+                  <Icon
+                    as={FiShare2}
+                    w={6}
+                    h={6}
+                    color={"gray.400"}
+                    _hover={{ color: "blue.700", transitionDuration: "0.5s" }}
+                  />
+                </Box>
               </Stack>
             </Flex>
             <Divider my={6} />
