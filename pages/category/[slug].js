@@ -128,9 +128,10 @@ const Category = ({ posts, category }) => {
                   <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
                 </Box>
                 <Stack gap={8}>
-                  {latestPosts.map((item, idx) => (
-                    <WideArticleCard key={idx} item={item} />
-                  ))}
+                  {latestPosts &&
+                    latestPosts.map((item, idx) => (
+                      <WideArticleCard key={idx} item={item} />
+                    ))}
                 </Stack>
 
                 {isLast ? (
