@@ -88,7 +88,7 @@ const RegisterPage = () => {
       // maybe trigger a loading screen
       return;
     }
-    if (user) router.push("/");
+    if (user) router.back();
   }, [user, loading, router]);
 
   return (

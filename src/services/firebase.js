@@ -16,8 +16,15 @@ import {
   getDoc,
   doc,
   deleteDoc,
+  where,
+  query,
+  limit,
+  getDocs,
+  Timestamp,
+  orderBy,
 } from "firebase/firestore";
 import crypto from "crypto-js";
+import { subscibeByEmail } from "../api/subscriber";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6fIAoDSWD09waUxp5CULKw7SNGWPMOHU",
@@ -74,6 +81,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       name,
       email,
     });
+    subscibeByEmail(email, name.firstName, name.lastName);
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -85,14 +93,15 @@ const logout = () => {
   signOut(auth);
 };
 
-const bookmarkOrFavURL = async (uuid, url, title, excerpt, type) => {
+const bookmarkOrFavURL = async (uuid, url, title, type) => {
   const documentID = uuid + "-" + crypto.MD5(url).toString();
+  const date = Timestamp.fromDate(new Date());
 
   return await setDoc(doc(db, type, documentID), {
     uuid,
     url,
     title,
-    excerpt,
+    date,
   });
 };
 
@@ -111,6 +120,16 @@ const isBookmarkedOrFavURL = async (uuid, url, type) => {
   else return false;
 };
 
+const getAllBookmarkorFavPerPagination = async (uuid, type, last) => {
+  const res = query(
+    collection(db, type),
+    where("uuid", "==", uuid),
+    orderBy("date", "desc"),
+    limit(20)
+  );
+  return await getDocs(res);
+};
+
 export {
   auth,
   logInWithEmailAndPassword,
@@ -120,4 +139,5 @@ export {
   bookmarkOrFavURL,
   isBookmarkedOrFavURL,
   removeBookmarkOrFavURL,
+  getAllBookmarkorFavPerPagination,
 };

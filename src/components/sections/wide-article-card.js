@@ -36,7 +36,20 @@ const WideArticleCard = ({ item }) => {
             </Stack>
           </GridItem>
           <AspectRatio w={"100%"} ratio={4 / 3}>
-            <Box bg={"gray.100"} w={"100%"} h={"100%"} />
+            {item.featuredImage ? (
+              <picture style={{ objectFit: "cover" }}>
+                <source
+                  srcSet={item.featuredImage["4x3"] + "?webp"}
+                  type="image/webp"
+                />
+                <img
+                  src={item.featuredImage["4x3"]}
+                  alt={item.title + " - Featured Image"}
+                />
+              </picture>
+            ) : (
+              <Box bg={"gray.100"} w={"100%"} h={"100%"} />
+            )}
           </AspectRatio>
         </Grid>
       </Link>

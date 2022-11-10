@@ -40,15 +40,15 @@ const Footer = () => {
         name: "Home",
       },
       {
-        href: "/company/about-us",
+        href: "/about-us",
         name: "About Us",
       },
       {
-        href: "/company/privacy-policy",
+        href: "/privacy-policy",
         name: "Privacy Policy",
       },
       {
-        href: "/company/terms-and-conditions",
+        href: "/terms-and-conditions",
         name: "Terms and Conditions",
       },
     ],
@@ -59,18 +59,37 @@ const Footer = () => {
       <Box bg="gray.50" pt={20} pb={10}>
         <Container maxW="8xl">
           <Flex direction={{ base: "column", md: "row" }}>
-            <Box maxW={"xs"} mb={{ base: 6, md: 0 }}>
+            <Box maxW={"sm"} mb={{ base: 6, md: 0 }}>
               <Box mb={3}>
                 <Text as="b">About How to Wealthy</Text>
               </Box>
               <Text>
-                Simplifying your financial journey by building user friendly
-                tools and calculators.
+                How to Wealthy is a place where we write about things related to
+                personal finance, investments, the stock market, and economics
+                that interest us most and will help others make better decisions
+                about their money.
               </Text>
             </Box>
             <Spacer />
-            <Box maxW={"md"} w={"full"}>
-              <Flex direction={{ base: "column", md: "row" }}>
+            <Box w={"full"}>
+              <Flex
+                justify={"end"}
+                gap={24}
+                direction={{ base: "column", md: "row" }}
+              >
+                <Box mb={{ base: 6, md: 0 }}>
+                  <Box mb={3}>
+                    <Text as="b">User</Text>
+                  </Box>
+                  <List>
+                    <ListItem mb={2}>
+                      <Link href={"/profile/bookmark"}>Bookmarks</Link>
+                    </ListItem>
+                    <ListItem mb={2}>
+                      <Link href={"/profile/favourite"}>Favourites</Link>
+                    </ListItem>
+                  </List>
+                </Box>
                 <Box mb={{ base: 6, md: 0 }}>
                   <Box mb={3}>
                     <Text as="b">{companyNav.label}</Text>
@@ -83,7 +102,6 @@ const Footer = () => {
                     ))}
                   </List>
                 </Box>
-                <Spacer />
                 <Box mb={{ base: 6, md: 0 }}>
                   <Box mb={3}>
                     <Text mb={3} as="b">

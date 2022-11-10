@@ -202,7 +202,7 @@ const SinglePost = ({ post, relatedPosts }) => {
           }
         );
       } else {
-        bookmarkOrFavURL(user.uid, router.asPath, title, excerpt, "bookmark")
+        bookmarkOrFavURL(user.uid, router.asPath, title, "bookmark")
           .then((res) => {
             toast({
               title: "Bookmark Added!",
@@ -234,7 +234,7 @@ const SinglePost = ({ post, relatedPosts }) => {
           }
         );
       } else {
-        bookmarkOrFavURL(user.uid, router.asPath, title, excerpt, "favourite")
+        bookmarkOrFavURL(user.uid, router.asPath, title, "favourite")
           .then((res) => {
             toast({
               title: "Added to favourites!",
