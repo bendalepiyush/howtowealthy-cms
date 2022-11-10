@@ -18,15 +18,15 @@ const Footer = () => {
     label: "Categories",
     items: [
       {
-        href: "/calculators/cagr",
+        href: "/category/stock-market",
         name: "Stock Market",
       },
       {
-        href: "/calculators/emi",
+        href: "/category/investment",
         name: "Investment",
       },
       {
-        href: "/calculators/fixed-deposit",
+        href: "/category/personal-finance",
         name: "Personal Finance",
       },
     ],

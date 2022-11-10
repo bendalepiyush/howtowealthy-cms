@@ -10,6 +10,7 @@ import {
   Heading,
   Text,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import AuthHeader from "../../src/components/sections/auth/auth_header";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import {
   auth,
   logInWithEmailAndPassword,
   logInWithEmailAndPasswordRememberMe,
+  resetPassword,
 } from "../../src/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -31,32 +33,29 @@ const validationSchema = yup.object({
     .string("Enter valid email")
     .email("Enter valid email")
     .required("Email is required"),
-  password: yup
-    .string("Enter valid password")
-    .required("Enter valid password")
-    .min(6, "Password must contain min 6 characters")
-    .max(16, "Password must contain max 16 characters"),
 });
 
 const LoginPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [user, loading, error] = useAuthState(auth);
+  const toast = useToast();
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
-      remember: false,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setIsLoading(true);
-      if (values.remember) {
-        logInWithEmailAndPassword(values.email, values.password);
-      } else {
-        logInWithEmailAndPasswordRememberMe(values.email, values.password);
-      }
+      await resetPassword(values.email);
+      toast({
+        title: "Password reset link sent!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
       setIsLoading(false);
+      router.back();
     },
   });
 
@@ -78,14 +77,10 @@ const LoginPage = () => {
             <Stack spacing={20}>
               <Stack spacing={2}>
                 <Heading textAlign={"center"} fontSize={"3xl"}>
-                  Sign in to your account
+                  Forgot Password?
                 </Heading>
                 <Text textAlign={"center"} fontSize={"lg"} color={"gray.600"}>
-                  to enjoy all of our cool{" "}
-                  <Text as={"span"} color={"black.900"}>
-                    features
-                  </Text>{" "}
-                  ✌️
+                  Receive password reset link
                 </Text>
               </Stack>
               <Stack spacing={4}>
@@ -106,62 +101,24 @@ const LoginPage = () => {
                     <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                   )}
                 </FormControl>
-                <FormControl
-                  isInvalid={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                >
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    id="password"
-                    name="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    type="password"
-                  />
-                  {formik.touched.password &&
-                    Boolean(formik.errors.password) && (
-                      <FormErrorMessage>
-                        {formik.errors.password}
-                      </FormErrorMessage>
-                    )}
-                </FormControl>
+
                 <Stack spacing={10}>
-                  <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    align={"start"}
-                    justify={"space-between"}
-                  >
-                    <Checkbox
-                      id="remember"
-                      name="remember"
-                      value={formik.values.remember}
-                      onChange={formik.handleChange}
-                    >
-                      Remember me
-                    </Checkbox>
-                    <Link href={"/auth/forgot-password"}>
-                      <Text color={"primary.900"}>Forgot password?</Text>
-                    </Link>
-                  </Stack>
                   <Stack gap={2}>
                     <Button
                       isLoading={isLoading}
                       type={"submit"}
                       colorScheme={"primary"}
                     >
-                      Sign in
+                      Send Password Reset Link
                     </Button>
-                    <Text textAlign={"center"}>
-                      Don&apos;t have an account?
-                    </Text>
-                    <Link href="/auth/register">
+                    <Text textAlign={"center"}>or</Text>
+                    <Link href="/auth/login">
                       <Button
                         width={"100%"}
                         colorScheme={"primary"}
                         variant={"outline"}
                       >
-                        Sign Up
+                        Go back
                       </Button>
                     </Link>
                   </Stack>

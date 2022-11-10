@@ -23,7 +23,6 @@ import { FiBookmark, FiHeart, FiShare2 } from "react-icons/fi";
 import { FaRegBookmark, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
 import Layout from "../src/components/layout";
 import SmallArticleCard from "../src/components/sections/small-article-card";
-import { GraphQLClient } from "graphql-request";
 import formateDateMMMddyyyy from "../src/utils/date_format";
 import Seo from "../src/components/seo";
 import {
@@ -35,15 +34,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import Link from "next/link";
-
-const hygraph = new GraphQLClient(
-  "https://api-us-east-1.hygraph.com/v2/cl9wyki8y09ws01uj1bhufnw5/master",
-  {
-    headers: {
-      authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE2NjcyMzIxMTQsImF1ZCI6WyJodHRwczovL2FwaS11cy1lYXN0LTEuaHlncmFwaC5jb20vdjIvY2w5d3lraTh5MDl3czAxdWoxYmh1Zm53NS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC5ncmFwaGNtcy5jb20vIiwic3ViIjoiOGY5ZTkwNzgtMjI3Ny00NTdjLTg2ZDEtMGFmNTg1NTM4ZDYyIiwianRpIjoiY2w5d3l5Y2pnMDlzdDAxdWthZW43aDZrdyJ9.ckmQkXi9MXu1CWxSzCUBxFA_wL13fBe4HkK0mL_j8v1lr7EPUuPQp51zGqrVD8fj0QYEO91BiN9Zoqi76l8Xny1weBg1xGAhRaPPersvrYkjdVudBpLwuxeqHTrxnPmYGX5MygSVvVm60Nvc4T3TwT0Prqy4ucAczL1d2l0quA1e5wCBMQf4ffexBDKprQU9j0JzdcIYNLP4JwUwx06SQ2YDQ6tMXIAxMtvE3ydzP6cbADfcSg9eUUEV7WxSbYd5iUg6Z3E0hcbYmXVJHFnYDCNBIgmRfKxBy-Ya5n2dEN2UUNOeVDjDa9Rvzpup-yNPLzlT2pzJzLw6yU8wOkp--AxU2ujdfUHciWScjUFqJzm0RtS8OcwdzfBUcRtaE2QE_P846QOZWnr2olfaKPflt9fGhLL75b7mHcPPut6Ve3tWAT0PYQYjCZhMXVYS--u3ThI_pc0BNkHPksTmohGynie_XqcWdnULsNprFS-YIbsk9w1Drtjfde-gZJTAJsWnyhz87kevy_KdA9RZRpZpDvwKkkxv2mcsJOVfycrLg1kUe6__K7vQVzI17L9E3NBWWMT0W6H-EWWyYrkaGVH4gQ3VSOR98wwTsqbrLrgn28dURAVN_pkw3aGR1ItHWvaqpL6WPYtsQOgJ_JjZNUO-w2NAQFov9NxkR9jkAqrv9os`,
-    },
-  }
-);
+import hygraph from "../src/services/hygraph";
 
 export const getStaticPaths = async () => {
   const { blogPosts } = await hygraph.request(
@@ -216,6 +207,8 @@ const SinglePost = ({ post, relatedPosts }) => {
             console.log(e);
           });
       }
+    } else {
+      router.push("/auth/login");
     }
   };
 
@@ -248,6 +241,8 @@ const SinglePost = ({ post, relatedPosts }) => {
             console.log(e);
           });
       }
+    } else {
+      router.push("/auth/login");
     }
   };
 
@@ -331,11 +326,11 @@ const SinglePost = ({ post, relatedPosts }) => {
             <Text as={"b"} fontSize={"lg"} mb={2} display="block">
               Table of content:
             </Text>
-            <OrderedList>
+            <OrderedList className="table-content">
               {tableOfContent.map((item, idx) => (
-                <ListItem key={idx} fontSize={"xl"}>
-                  {item}
-                </ListItem>
+                <a key={idx} href={`#${idx + 1}`}>
+                  <ListItem fontSize={"xl"}>{item}</ListItem>
+                </a>
               ))}
             </OrderedList>
           </Box>
@@ -364,9 +359,7 @@ const SinglePost = ({ post, relatedPosts }) => {
             />
             <Divider my={6} />
             <Flex align={"center"}>
-              <Link href={`/category/${category.slug}`}>
-                <Text as={"pre"}>{category.title}</Text>
-              </Link>
+              <Text as={"pre"}>{formateDateMMMddyyyy(publishedAt)}</Text>
               <Spacer />
 
               <Stack direction={"row"} spacing={8}>

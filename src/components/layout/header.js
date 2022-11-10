@@ -17,7 +17,7 @@ import {
   Collapse,
   Divider,
 } from "@chakra-ui/react";
-import Link, { default as NLink } from "next/link";
+import Link from "next/link";
 import Logo from "../logo";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../services/firebase";
@@ -53,19 +53,19 @@ const Header = () => {
       >
         <Container maxW={"8xl"}>
           <Flex align={"center"}>
-            <NLink href="/">
+            <Link href="/">
               <Box w={200} py={5}>
                 <Logo />
               </Box>
-            </NLink>
+            </Link>
             <Box display={{ base: "none", md: "block" }}>
               <Stack direction={"row"} spacing={6} ml={10}>
                 {NavItems.map((item) => (
-                  <NLink href={item.href} key={item.name}>
+                  <Link href={item.href} key={item.name}>
                     <Box py={4}>
                       <Text>{item.name}</Text>
                     </Box>
-                  </NLink>
+                  </Link>
                 ))}
               </Stack>
             </Box>
@@ -130,11 +130,11 @@ const Header = () => {
                 </Menu>
               ) : (
                 <>
-                  <NLink href={"/auth/login"}>
+                  <Link href={"/auth/login"}>
                     <Button variant={"outline"} colorScheme={"black"}>
                       Sign In
                     </Button>
-                  </NLink>
+                  </Link>
                   <Button onClick={toggle} colorScheme={"black"}>
                     Subscribe
                   </Button>
@@ -185,13 +185,13 @@ const MobileNav = ({ isLoggedIn, user, toggle }) => {
         </>
       ) : (
         <>
-          <NLink href={"/auth/login"}>
+          <Link href={"/auth/login"}>
             <Box mb={3}>
               <Button variant={"outline"} colorScheme={"black"}>
                 Sign In
               </Button>
             </Box>
-          </NLink>
+          </Link>
           <Box>
             <Button onClick={toggle} colorScheme={"black"}>
               Subscribe

@@ -22,6 +22,7 @@ body {
   font-weight: 700;
   margin-top: var(--chakra-space-4);
   margin-bottom: var(--chakra-space-2);
+  scroll-margin-top: 15vh;
 }
 
 .post-content h3 {
@@ -63,6 +64,11 @@ body {
 .post-content img {
   width: 100%;
   height: auto;
+}
+
+.table-content li:hover {
+  color: var(--chakra-colors-primary-900);
+  transition: 0.5s;
 }
 
 mark {

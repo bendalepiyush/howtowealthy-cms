@@ -7,6 +7,7 @@ import {
   signOut,
   setPersistence,
   browserSessionPersistence,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -66,9 +67,16 @@ const logInWithEmailAndPasswordRememberMe = (email, password) => {
     })
     .catch((error) => {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
     });
+};
+
+// Rest password with email
+const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // Register with email
@@ -140,4 +148,5 @@ export {
   isBookmarkedOrFavURL,
   removeBookmarkOrFavURL,
   getAllBookmarkorFavPerPagination,
+  resetPassword,
 };
