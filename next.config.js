@@ -7,6 +7,12 @@ const nextConfig = {
   images: {
     domains: ["assets.howtowealthy.com", "howtowealthy.com"],
   },
+
+  env: {
+    REACT_APP_GRAPHQL_ENDPOINT: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    REACT_APP_ENDPOINT_ACCESS_TOKEN:
+      process.env.REACT_APP_ENDPOINT_ACCESS_TOKEN,
+  },
 };
 
 module.exports = withOptimizedImages(nextConfig);

@@ -5,7 +5,7 @@ const TermsAndCondPage = () => {
   return (
     <>
       <Layout>
-        <Container maxW={"6xl"} minH={"50vh"} py={10}>
+        <Container maxW={"70ch"} minH={"50vh"} py={10}>
           <Box py={{ base: 10, md: 20 }}>
             <Heading as={"h1"}>Terms and Conditions</Heading>
           </Box>

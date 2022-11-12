@@ -53,7 +53,7 @@ const Header = () => {
       >
         <Container maxW={"8xl"}>
           <Flex align={"center"}>
-            <Link href="/">
+            <Link href="/" aria-label="How to Wealthy">
               <Box w={200} py={5}>
                 <Logo />
               </Box>

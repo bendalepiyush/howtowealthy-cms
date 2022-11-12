@@ -70,7 +70,8 @@ const Category = ({ posts, category }) => {
     author: null,
   });
 
-  const dynamicRoute = useRouter().asPath;
+  const router = useRouter();
+  const dynamicRoute = router.asPath;
 
   const [latestPosts, setLatestPosts] = useState(posts);
   const [loading, setLoading] = useState(false);
@@ -102,11 +103,23 @@ const Category = ({ posts, category }) => {
     setLoading(false);
   };
 
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Layout>
       <main>
         <Box py={20}>
           <Container maxW={"8xl"}>
+            <Box pb={36} maxW={"2xl"}>
+              <Heading as={"h1"} mb={2}>
+                {category.title}
+              </Heading>
+              <Text fontSize={"2xl"} fontWeight={300}>
+                {category.metaDescription}
+              </Text>
+            </Box>
             <Grid
               templateColumns={{
                 base: "repeat(1, 1fr)",

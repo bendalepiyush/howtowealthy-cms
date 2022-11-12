@@ -328,9 +328,9 @@ const SinglePost = ({ post, relatedPosts }) => {
             </Text>
             <OrderedList className="table-content">
               {tableOfContent.map((item, idx) => (
-                <a key={idx} href={`#${idx + 1}`}>
-                  <ListItem fontSize={"xl"}>{item}</ListItem>
-                </a>
+                <ListItem key={idx}>
+                  <a href={`#${idx + 1}`}>{item}</a>
+                </ListItem>
               ))}
             </OrderedList>
           </Box>

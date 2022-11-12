@@ -13,7 +13,7 @@ import truncate from "../../utils/truncate";
 const WideArticleCard = ({ item }) => {
   return (
     <GridItem>
-      <Link href={item.slug}>
+      <Link href={"/" + item.slug}>
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",

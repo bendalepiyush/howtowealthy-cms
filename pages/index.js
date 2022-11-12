@@ -115,7 +115,7 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
 
   return (
     <Layout>
-      <Seo />
+      <Seo structuredData={JSON.stringify(structuredData)} />
       <main>
         <Box py={20}>
           <Container maxW={"8xl"}>
@@ -318,6 +318,25 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
       </main>
     </Layout>
   );
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      url: "https://www.howtowealthy.com/",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate:
+            "https://www.howtowealthy.com/search?query={search_term_string}",
+        },
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ],
 };
 
 export default Home;

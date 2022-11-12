@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
-const hygraph = new GraphQLClient(process.env.GRAPHQL_ENDPOINT, {
+const hygraph = new GraphQLClient(process.env.REACT_APP_GRAPHQL_ENDPOINT, {
   headers: {
-    authorization: `Bearer ${process.env.ENDPOINT_ACCESS_TOKEN}`,
+    authorization: `Bearer ${process.env.REACT_APP_ENDPOINT_ACCESS_TOKEN}`,
   },
 });
 
