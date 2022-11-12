@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import randomQuote from "../src/api/get_random_quote";
 import Layout from "../src/components/layout";
 import WideArticleCard from "../src/components/sections/wide-article-card";
+import Seo from "../src/components/seo";
 import hygraph from "../src/services/hygraph";
 
 const Search = ({ query }) => {
@@ -83,6 +84,10 @@ const Search = ({ query }) => {
 
   return (
     <Layout>
+      <Seo
+        title="Search - How to Wealthy"
+        description="Are you ready to start living the life of financial freedom? You're about to discover the secrets to becoming wealthy."
+      />
       <main>
         <Box py={20}>
           <Container maxW={"8xl"}>

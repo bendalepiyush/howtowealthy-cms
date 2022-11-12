@@ -115,7 +115,11 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
 
   return (
     <Layout>
-      <Seo structuredData={JSON.stringify(structuredData)} />
+      <Seo
+        title="How To Wealthy - The Ultimate Guide to Financial Freedom"
+        description="Are you ready to start living the life of financial freedom? You're about to discover the secrets to becoming wealthy."
+        structuredData={JSON.stringify(structuredData)}
+      />
       <main>
         <Box py={20}>
           <Container maxW={"8xl"}>

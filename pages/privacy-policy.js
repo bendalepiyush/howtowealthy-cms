@@ -1,9 +1,14 @@
 import { Container, Box, Heading } from "@chakra-ui/react";
 import Layout from "../src/components/layout";
+import Seo from "../src/components/seo";
 
 const PrivacyPolicy = () => {
   return (
     <>
+      <Seo
+        title="Privacy Policy - How to Wealthy"
+        description="This Privacy Policy document contains types of information that is collected and recorded by How to Wealthy and how we use it."
+      />
       <Layout>
         <Container maxW={"70ch"} minH={"50vh"} py={10}>
           <Box py={{ base: 10, md: 20 }}>

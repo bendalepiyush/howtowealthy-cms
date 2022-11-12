@@ -1,9 +1,14 @@
 import { Container, Box, Heading } from "@chakra-ui/react";
 import Layout from "../src/components/layout";
+import Seo from "../src/components/seo";
 
 const TermsAndCondPage = () => {
   return (
     <>
+      <Seo
+        title="Terms and Conditions - How to Wealthy"
+        description="These terms and conditions outline the rules and regulations for the use of TradeIK's Website, located at howtowealthy.com."
+      />
       <Layout>
         <Container maxW={"70ch"} minH={"50vh"} py={10}>
           <Box py={{ base: 10, md: 20 }}>

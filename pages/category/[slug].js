@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import randomQuote from "../../src/api/get_random_quote";
 import Layout from "../../src/components/layout";
 import WideArticleCard from "../../src/components/sections/wide-article-card";
+import Seo from "../../src/components/seo";
 import hygraph from "../../src/services/hygraph";
 
 export const getStaticPaths = async () => {
@@ -109,6 +110,10 @@ const Category = ({ posts, category }) => {
 
   return (
     <Layout>
+      <Seo
+        title={`${category.title} - How To Wealthy`}
+        description={category.metaDescription}
+      />
       <main>
         <Box py={20}>
           <Container maxW={"8xl"}>

@@ -1,9 +1,16 @@
 import { Container, Box, Heading } from "@chakra-ui/react";
 import Layout from "../src/components/layout";
+import Seo from "../src/components/seo";
 
 const AboutUs = () => {
   return (
     <>
+      <Seo
+        title="About Us - How to Wealthy"
+        description="HowToWealthy is where we write about personal finance,
+              investments, the stock market, and economics that interest us most
+              and will help others make better decisions about their money."
+      />
       <Layout>
         <Container maxW={"70ch"} minH={"50vh"} py={10}>
           <Box py={{ base: 10, md: 20 }}>

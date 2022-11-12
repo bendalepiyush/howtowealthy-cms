@@ -25,6 +25,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import * as yup from "yup";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Seo from "../../src/components/seo";
 
 const validationSchema = yup.object({
   email: yup
@@ -70,6 +71,11 @@ const LoginPage = () => {
 
   return (
     <>
+      <Seo
+        title="Login - How To Wealthy"
+        description="Login page"
+        noIndex={true}
+      />
       <AuthHeader />
 
       <Flex minH={"80vh"} align={"center"} justify={"center"}>

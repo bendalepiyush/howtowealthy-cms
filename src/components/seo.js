@@ -2,16 +2,17 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 const DOMAIN = "https://www.howtowealthy.com";
-const DEFAULT_OG_IMAGE = "https://assets.howtowealthy.com/og_img_1200x600.png";
+const DEFAULT_OG_IMAGE = "https://assets.howtowealthy.com/ogimg.png";
 const SITE_NAME = "How to Wealthy";
 const TWITTER_HANDLE = "@howtowealthy";
 
 export default function Seo({
-  title = "How to Wealthy",
+  title = "How to Wealthy - The Ultimate Guide to Financial Freedom",
   description = "description",
   ogImage = DEFAULT_OG_IMAGE,
   ogType = "website",
   structuredData,
+  noIndex = false,
 }) {
   const canonical = DOMAIN + "" + useRouter().asPath;
   return (
@@ -66,6 +67,8 @@ export default function Seo({
       {structuredData && (
         <script type="application/ld+json">{structuredData}</script>
       )}
+
+      {noIndex && <meta name="robots" content="noindex" />}
     </Head>
   );
 }

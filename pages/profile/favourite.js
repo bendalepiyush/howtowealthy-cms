@@ -17,6 +17,7 @@ import {
 } from "../../src/services/firebase";
 import { useRouter } from "next/router";
 import BookMarkFavCard from "../../src/components/sections/bookmark-fav-card";
+import Seo from "../../src/components/seo";
 
 const Bookmark = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -61,6 +62,10 @@ const Bookmark = () => {
 
   return (
     <>
+      <Seo
+        title="My Favourites - How To Wealthy"
+        description="This favourite page contains all your bookmarked content on How to Wealthy."
+      />
       <Layout>
         <Container maxW={"6xl"} minH={"50vh"} py={10}>
           <Box py={{ base: 10, md: 20 }}>
