@@ -14,13 +14,13 @@ export const subscibeByEmail = async (email, fname, lname) => {
     redirect: "follow",
   };
 
+  // return await fetch(
+  //   "http://127.0.0.1:5001/howtowealthy/us-central1/addSubscriber",
+  //   requestOptions
+  // );
+
   return await fetch(
-    "http://127.0.0.1:5001/howtowealthy/us-central1/addSubscriber",
+    "https://us-central1-howtowealthy.cloudfunctions.net/addSubscriber",
     requestOptions
   );
-
-  //   return await fetch(
-  //     "https://us-central1-howtowealthy.cloudfunctions.net/addSubscriber",
-  //     requestOptions
-  //   );
 };

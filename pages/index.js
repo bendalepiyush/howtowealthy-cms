@@ -73,7 +73,7 @@ export async function getStaticProps() {
       personalFinance: resPersonalFinance.blogPosts,
       latest: resLatestPost.blogPosts,
     },
-    revalidate: 1,
+    revalidate: 60 * 60 * 12,
   };
 }
 

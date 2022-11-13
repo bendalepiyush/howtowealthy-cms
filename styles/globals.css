@@ -9,19 +9,20 @@ body {
 }
 
 .post-content p {
-  margin-bottom: var(--chakra-space-6);
+  margin-bottom: var(--chakra-space-7);
 }
 
 .post-content b {
   font-weight: 700;
+  margin-bottom: var(--chakra-space-7);
 }
 
 .post-content h2 {
   font-family: var(--chakra-fonts-heading);
   font-size: var(--chakra-fontSizes-2xl);
   font-weight: 700;
-  margin-top: var(--chakra-space-4);
-  margin-bottom: var(--chakra-space-2);
+  margin-top: var(--chakra-space-14);
+  margin-bottom: var(--chakra-space-4);
   scroll-margin-top: 15vh;
 }
 
@@ -29,8 +30,8 @@ body {
   font-family: var(--chakra-fonts-heading);
   font-size: var(--chakra-fontSizes-xl);
   font-weight: 700;
-  margin-top: var(--chakra-space-4);
-  margin-bottom: var(--chakra-space-2);
+  margin-top: var(--chakra-space-6);
+  margin-bottom: var(--chakra-space-3);
 }
 
 .post-content h4 {
