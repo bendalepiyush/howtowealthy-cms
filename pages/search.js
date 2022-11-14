@@ -41,7 +41,6 @@ const Search = ({ query }) => {
     if (query.query) {
       fetchPosts({ query: query.query, searchType: "all" });
     }
-    console.log("Query" + query);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
   const formik = useFormik({

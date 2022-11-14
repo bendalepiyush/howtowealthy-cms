@@ -33,7 +33,6 @@ function SubscriptionModal({ toggle }) {
     onSubmit: async (values) => {
       setLoading(true);
       var res = await subscibeByEmail(values.email, "", "");
-      console.log(res);
       toggle();
     },
   });

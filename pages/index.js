@@ -106,7 +106,6 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
       }
     `);
 
-    console.log(temp);
     setLatestPosts(latestPosts.concat(temp.blogPosts));
     if (temp.blogPosts.length < 10) setIsLast(true);
 

@@ -203,9 +203,7 @@ const SinglePost = ({ post, relatedPosts }) => {
             });
             setIsBookmarked.on();
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          .catch((e) => {});
       }
     } else {
       router.push("/auth/login");
@@ -237,9 +235,7 @@ const SinglePost = ({ post, relatedPosts }) => {
             });
             setIsFavourite.on();
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          .catch((e) => {});
       }
     } else {
       router.push("/auth/login");

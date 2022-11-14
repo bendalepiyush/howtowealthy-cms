@@ -74,9 +74,7 @@ const logInWithEmailAndPasswordRememberMe = (email, password) => {
 const resetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // Register with email

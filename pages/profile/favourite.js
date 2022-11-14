@@ -48,8 +48,6 @@ const Bookmark = () => {
         (res) => {
           let temp = [];
           res.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
             temp.push(doc.data());
           });
           setFavs(temp);
