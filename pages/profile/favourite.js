@@ -29,7 +29,7 @@ const Bookmark = () => {
   const handleRemoveBookmark = (url) => {
     removeBookmarkOrFavURL(user.uid, url, "bookmark").then((res) => {
       toast({
-        title: "Bookmark Removed!",
+        title: "Favourite Removed!",
         status: "error",
         duration: 5000,
         isClosable: true,

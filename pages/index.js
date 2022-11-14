@@ -5,11 +5,9 @@ import {
   GridItem,
   Heading,
   Stack,
-  AspectRatio,
   Flex,
   Spacer,
   Text,
-  Button,
   CircularProgress,
 } from "@chakra-ui/react";
 import Layout from "../src/components/layout";
@@ -17,9 +15,9 @@ import SmallArticleCard from "../src/components/sections/small-article-card";
 import WideArticleCard from "../src/components/sections/wide-article-card";
 import Seo from "../src/components/seo";
 import Link from "next/link";
-import randomQuote from "../src/api/get_random_quote";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import hygraph from "../src/services/hygraph";
+import SideBar from "../src/components/sidebar";
 
 export async function getStaticProps() {
   const resStockMarket = await hygraph.request(`
@@ -78,18 +76,9 @@ export async function getStaticProps() {
 }
 
 const Home = ({ stockMarket, investment, personalFinance, latest }) => {
-  const [resquote, setResquote] = useState({
-    quote: null,
-    author: null,
-  });
-
   const [latestPosts, setLatestPosts] = useState(latest);
   const [loading, setLoading] = useState(false);
   const [isLast, setIsLast] = useState(false);
-
-  useEffect(() => {
-    setResquote(randomQuote());
-  }, []);
 
   const handleLoadMore = async () => {
     setLoading(true);
@@ -285,34 +274,7 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
                   )}
                 </GridItem>
                 <GridItem>
-                  <Stack spacing={14}>
-                    <Box>
-                      <Heading
-                        as={"h2"}
-                        size={"sm"}
-                        textTransform={"uppercase"}
-                        fontWeight={"400"}
-                      >
-                        Quote
-                      </Heading>
-
-                      <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
-                        <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
-                      </Box>
-
-                      <Text
-                        fontSize={"xl"}
-                        fontWeight={300}
-                        fontStyle={"italic"}
-                        mb={3}
-                      >
-                        {resquote.quote}
-                      </Text>
-                      {resquote.author && (
-                        <Text fontSize={"md"}>- by {resquote.author}</Text>
-                      )}
-                    </Box>
-                  </Stack>
+                  <SideBar />
                 </GridItem>
               </Grid>
             </Stack>

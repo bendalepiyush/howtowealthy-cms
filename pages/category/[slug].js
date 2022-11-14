@@ -8,14 +8,14 @@ import {
   Flex,
   Text,
   CircularProgress,
+  Spinner,
 } from "@chakra-ui/react";
-import { GraphQLClient } from "graphql-request";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import randomQuote from "../../src/api/get_random_quote";
 import Layout from "../../src/components/layout";
 import WideArticleCard from "../../src/components/sections/wide-article-card";
 import Seo from "../../src/components/seo";
+import SideBar from "../../src/components/sidebar";
 import hygraph from "../../src/services/hygraph";
 
 export const getStaticPaths = async () => {
@@ -66,11 +66,6 @@ export const getStaticProps = async ({ params }) => {
 };
 
 const Category = ({ posts, category }) => {
-  const [resquote, setResquote] = useState({
-    quote: null,
-    author: null,
-  });
-
   const router = useRouter();
   const dynamicRoute = router.asPath;
 
@@ -79,7 +74,6 @@ const Category = ({ posts, category }) => {
   const [isLast, setIsLast] = useState(false);
 
   useEffect(() => {
-    setResquote(randomQuote());
     setLatestPosts(posts);
   }, [dynamicRoute, posts]);
 
@@ -105,7 +99,11 @@ const Category = ({ posts, category }) => {
   };
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <Flex align={"center"} justify={"center"} h={"100vh"} w={"100vw"}>
+        <Spinner />
+      </Flex>
+    );
   }
 
   return (
@@ -188,34 +186,7 @@ const Category = ({ posts, category }) => {
                 )}
               </GridItem>
               <GridItem>
-                <Stack spacing={14}>
-                  <Box>
-                    <Heading
-                      as={"h2"}
-                      size={"sm"}
-                      textTransform={"uppercase"}
-                      fontWeight={"400"}
-                    >
-                      Quote
-                    </Heading>
-
-                    <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
-                      <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
-                    </Box>
-
-                    <Text
-                      fontSize={"xl"}
-                      fontWeight={300}
-                      fontStyle={"italic"}
-                      mb={3}
-                    >
-                      {resquote.quote}
-                    </Text>
-                    {resquote.author && (
-                      <Text fontSize={"md"}>- by {resquote.author}</Text>
-                    )}
-                  </Box>
-                </Stack>
+                <SideBar />
               </GridItem>
             </Grid>
           </Container>

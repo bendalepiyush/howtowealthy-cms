@@ -17,9 +17,10 @@ import {
   ListItem,
   useBoolean,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { FiBookmark, FiHeart, FiShare2 } from "react-icons/fi";
+import { FiShare2 } from "react-icons/fi";
 import { FaRegBookmark, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
 import Layout from "../src/components/layout";
 import SmallArticleCard from "../src/components/sections/small-article-card";
@@ -84,9 +85,8 @@ export const getStaticProps = async ({ params }) => {
         permanent: false,
       },
     };
-  }
-
-  const res = await hygraph.request(`
+  } else {
+    const res = await hygraph.request(`
     {
       blogPosts(where: {category: {slug: "${blogPosts[0].category.slug}"}, AND: {slug_not: "${blogPosts[0].slug}"}}, orderBy: publishedAt_DESC, last: 3) {
         slug
@@ -97,10 +97,11 @@ export const getStaticProps = async ({ params }) => {
     }
   `);
 
-  return {
-    props: { post: blogPosts[0], relatedPosts: res.blogPosts },
-    revalidate: 60 * 60 * 12,
-  };
+    return {
+      props: { post: blogPosts[0], relatedPosts: res.blogPosts },
+      revalidate: 60 * 60 * 24 * 7,
+    };
+  }
 };
 
 const SinglePost = ({ post, relatedPosts }) => {
@@ -130,7 +131,11 @@ const SinglePost = ({ post, relatedPosts }) => {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <Flex align={"center"} justify={"center"} h={"100vh"} w={"100vw"}>
+        <Spinner />
+      </Flex>
+    );
   }
 
   // Render post...

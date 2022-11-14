@@ -14,28 +14,19 @@ import {
   InputRightAddon,
   Select,
   FormErrorMessage,
-  InputLeftAddon,
   Button,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import randomQuote from "../src/api/get_random_quote";
 import Layout from "../src/components/layout";
 import WideArticleCard from "../src/components/sections/wide-article-card";
 import Seo from "../src/components/seo";
+import SideBar from "../src/components/sidebar";
 import hygraph from "../src/services/hygraph";
 
 const Search = ({ query }) => {
   const [posts, setPosts] = useState([]);
   const [isLast, setIsLast] = useState(null);
-  const [resquote, setResquote] = useState({
-    quote: null,
-    author: null,
-  });
-  useEffect(() => {
-    setResquote(randomQuote());
-  }, []);
 
   useEffect(() => {
     if (query.query) {
@@ -214,34 +205,7 @@ const Search = ({ query }) => {
                   ))}
               </GridItem>
               <GridItem>
-                <Stack spacing={14}>
-                  <Box>
-                    <Heading
-                      as={"h2"}
-                      size={"sm"}
-                      textTransform={"uppercase"}
-                      fontWeight={"400"}
-                    >
-                      Quote
-                    </Heading>
-
-                    <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
-                      <Box w={`12ch`} bg={"black.900"} h={"1px"}></Box>
-                    </Box>
-
-                    <Text
-                      fontSize={"xl"}
-                      fontWeight={300}
-                      fontStyle={"italic"}
-                      mb={3}
-                    >
-                      {resquote.quote}
-                    </Text>
-                    {resquote.author && (
-                      <Text fontSize={"md"}>- by {resquote.author}</Text>
-                    )}
-                  </Box>
-                </Stack>
+                <SideBar />
               </GridItem>
             </Grid>
           </Container>
