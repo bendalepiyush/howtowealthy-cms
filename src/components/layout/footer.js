@@ -74,7 +74,7 @@ const Footer = () => {
             <Box w={"full"}>
               <Flex
                 justify={"end"}
-                gap={24}
+                gap={{ base: 0, md: 24 }}
                 direction={{ base: "column", md: "row" }}
               >
                 <Box mb={{ base: 6, md: 0 }}>
