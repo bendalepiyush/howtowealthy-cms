@@ -112,6 +112,15 @@ const Home = ({ stockMarket, investment, personalFinance, latest }) => {
         <Box py={20}>
           <Container maxW={"8xl"}>
             <Stack spacing={20}>
+              <Box pb={10} maxW={"2xl"}>
+                <Heading as={"h1"} mb={2}>
+                  The Ultimate Guide to Financial Freedom
+                </Heading>
+                <Text fontSize={"2xl"} fontWeight={300}>
+                  Are you ready to start living the life of financial freedom?
+                  You&apos;re about to discover the secrets to becoming wealthy.
+                </Text>
+              </Box>
               <Box>
                 <Flex>
                   <Heading

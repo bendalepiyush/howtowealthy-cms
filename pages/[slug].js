@@ -260,7 +260,7 @@ const SinglePost = ({ post, relatedPosts }) => {
   return (
     <Layout>
       <Seo
-        title={`${title} | How to Wealthy `}
+        title={title}
         description={metaDescription}
         structuredData={JSON.stringify(structuredData, null, 2)}
         ogImage={featuredImage.ogimg}

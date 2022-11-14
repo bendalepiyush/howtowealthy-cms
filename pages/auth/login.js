@@ -71,11 +71,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <Seo
-        title="Login - How To Wealthy"
-        description="Login page"
-        noIndex={true}
-      />
+      <Seo title="Login - How To Wealthy" description="Login page" />
       <AuthHeader />
 
       <Flex minH={"80vh"} align={"center"} justify={"center"}>
