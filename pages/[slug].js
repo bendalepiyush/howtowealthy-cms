@@ -262,7 +262,7 @@ const SinglePost = ({ post, relatedPosts }) => {
       <Seo
         title={title}
         description={metaDescription}
-        structuredData={JSON.stringify(structuredData, null, 2)}
+        structuredData={JSON.stringify(structuredData)}
         ogImage={featuredImage.ogimg}
       />
       <main>
