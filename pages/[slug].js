@@ -88,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
   } else {
     const res = await hygraph.request(`
     {
-      blogPosts(where: {category: {slug: "${blogPosts[0].category.slug}"}, AND: {slug_not: "${blogPosts[0].slug}"}}, orderBy: publishedAt_DESC, last: 3) {
+      blogPosts(where: {category: {slug: "${blogPosts[0].category.slug}"}, AND: {slug_not: "${blogPosts[0].slug}"}}, orderBy: publishedAt_DESC, last: 4) {
         slug
         title
         excerpt
