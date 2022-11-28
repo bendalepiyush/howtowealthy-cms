@@ -61,7 +61,7 @@ export const getStaticProps = async ({ params }) => {
   `);
   return {
     props: { posts: res.blogPosts, category: resCategory.category },
-    revalidate: 60 * 60 * 12,
+    revalidate: 60 * 60 * 24,
   };
 };
 

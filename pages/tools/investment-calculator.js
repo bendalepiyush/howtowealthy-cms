@@ -23,6 +23,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../src/utils/number_format";
+import Seo from "../../src/components/seo";
 
 const validationSchema = yup.object({});
 
@@ -73,6 +74,12 @@ const InvestmentCalculator = () => {
 
   return (
     <>
+      <Seo
+        title="Investment Calculator - How to Wealthy"
+        description="HowToWealthy is where we write about personal finance,
+              investments, the stock market, and economics that interest us most
+              and will help others make better decisions about their money."
+      />
       <Layout>
         <Box py={20}>
           <Container maxW={"5xl"}>
