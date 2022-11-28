@@ -13,6 +13,11 @@ const nextConfig = {
     REACT_APP_ENDPOINT_ACCESS_TOKEN:
       process.env.REACT_APP_ENDPOINT_ACCESS_TOKEN,
   },
+
+  experimental: {
+    workerThreads: false,
+    cpus: 1,
+  },
 };
 
 module.exports = withOptimizedImages(nextConfig);
