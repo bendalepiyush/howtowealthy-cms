@@ -122,6 +122,9 @@ const Footer = () => {
                     <ListItem mb={2}>
                       <Link href={"/profile/favourite"}>Favourites</Link>
                     </ListItem>
+                    <ListItem mb={2}>
+                      <Link href={"/search"}>Search</Link>
+                    </ListItem>
                   </List>
                 </Box>
                 <Box mb={{ base: 6, md: 0 }}>

@@ -215,7 +215,7 @@ const InvestmentCalculator = () => {
                     <Thead>
                       <Tr>
                         <Th>Year</Th>
-                        <Th textAlign={"right"}>Deposits</Th>
+                        <Th textAlign={"right"}>Deposits per Month</Th>
                         <Th textAlign={"right"}>
                           Total Deposits (in {currency})
                         </Th>
