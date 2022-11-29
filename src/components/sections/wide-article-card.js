@@ -15,6 +15,7 @@ const WideArticleCard = ({ item }) => {
     <GridItem>
       <Link href={"/" + item.slug}>
         <Grid
+          dir={{ base: "rtl", md: "ltr" }}
           templateColumns={{
             base: "repeat(1, 1fr)",
             md: "repeat(3, 1fr)",
@@ -22,7 +23,7 @@ const WideArticleCard = ({ item }) => {
           gap={{ base: 4, md: 8 }}
           alignItems={"center"}
         >
-          <GridItem colSpan={2}>
+          <GridItem dir="ltr" colSpan={2}>
             <Stack gap={1} justifyContent={"center"}>
               <Heading as={"h3"} size={"md"} fontWeight={"700"}>
                 {item.title}
