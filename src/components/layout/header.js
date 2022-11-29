@@ -28,7 +28,7 @@ import CustomModal from "../modal";
 import SubscriptionModal from "../modals/subscriber";
 import useModal from "../../utils/use-modal";
 
-const Header = () => {
+const Header = (props) => {
   const [user, loading, error] = useAuthState(auth);
   const [isLoggedIn, setIsLoggedIn] = useBoolean(false);
   const { isOpen, onToggle } = useDisclosure();
@@ -43,15 +43,11 @@ const Header = () => {
 
   return (
     <>
-      <Box
-        position={"sticky"}
-        top={0}
-        py={3}
-        zIndex={99}
-        bg={"white"}
-        shadow={"sm"}
-      >
-        <Container maxW={"8xl"}>
+      <Box position={"sticky"} top={0} zIndex={99} bg={"white"} shadow={"sm"}>
+        <Box>
+          <Box w={props.progressPercent + "%"} h={"2px"} bg={"black"}></Box>
+        </Box>
+        <Container py={3} maxW={"8xl"}>
           <Flex align={"center"}>
             <Link href="/" aria-label="How to Wealthy">
               <Box w={200} py={5}>
