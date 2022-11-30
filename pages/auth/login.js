@@ -79,7 +79,7 @@ const LoginPage = () => {
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={20}>
               <Stack spacing={2}>
-                <Heading textAlign={"center"} fontSize={"3xl"}>
+                <Heading as={"h1"} textAlign={"center"} fontSize={"3xl"}>
                   Sign in to your account
                 </Heading>
                 <Text textAlign={"center"} fontSize={"lg"} color={"gray.600"}>

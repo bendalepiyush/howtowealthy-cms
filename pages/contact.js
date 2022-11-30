@@ -69,9 +69,7 @@ const Contact = () => {
     <>
       <Seo
         title="Contact Us - How to Wealthy"
-        description="HowToWealthy is where we write about personal finance,
-        investments, the stock market, and economics that interest us most
-        and will help others make better decisions about their money."
+        description="We're here to help you to answer your queries. Get started today by contacting us!"
       />
       <Layout>
         <Container maxW={"70ch"} pb={{ base: 10, md: 20 }}>

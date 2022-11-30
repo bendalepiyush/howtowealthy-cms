@@ -17,6 +17,9 @@ import {
   Th,
   Flex,
   Spacer,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
 } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import * as yup from "yup";
@@ -29,7 +32,7 @@ const validationSchema = yup.object({});
 
 const InvestmentCalculator = () => {
   const workerRef = useRef();
-  const [currency, setCurrency] = useState("$");
+  const [currency, setCurrency] = useState({ label: "USD ($)", value: "$" });
   const [result, setResult] = useState({
     tableLabels: [],
     chartPerMonth: [],
@@ -64,10 +67,6 @@ const InvestmentCalculator = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(result.chartPerMonth);
-  }, [result]);
-
   const handleSubmit = useCallback(async (values) => {
     workerRef.current.postMessage(values);
   }, []);
@@ -83,7 +82,7 @@ const InvestmentCalculator = () => {
       <Layout>
         <Box py={20}>
           <Container maxW={"5xl"}>
-            <Box pb={20} maxW={"2xl"}>
+            <Box pb={16} maxW={"2xl"}>
               <Heading as={"h1"} mb={2}>
                 Investment Calculator
               </Heading>
@@ -91,6 +90,18 @@ const InvestmentCalculator = () => {
                 Are you ready to start living the life of financial freedom?
                 You&apos;re about to discover the secrets to becoming wealthy.
               </Text>
+            </Box>
+
+            <Box mb={10}>
+              <TabInput
+                handleChange={setCurrency}
+                options={[
+                  { label: "USD ($)", value: "$" },
+                  { label: "GBP (£)", value: "£" },
+                  { label: "INR (₹)", value: "₹" },
+                ]}
+                currentValue={currency}
+              />
             </Box>
 
             <Box>
@@ -101,68 +112,99 @@ const InvestmentCalculator = () => {
                       <FormLabel htmlFor="currentAge">
                         What&apos;s your current age?
                       </FormLabel>
-                      <Input
-                        value={formik.values.currentAge}
-                        name="currentAge"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <Input
+                          value={formik.values.currentAge}
+                          name="currentAge"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+                        <InputRightElement pointerEvents="none">
+                          <Text pr={5}>Year</Text>
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     <FormControl>
                       <FormLabel htmlFor="retirementAge">
                         At what age you want to retire?
                       </FormLabel>
-                      <Input
-                        value={formik.values.retirementAge}
-                        name="retirementAge"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <Input
+                          value={formik.values.retirementAge}
+                          name="retirementAge"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+                        <InputRightElement pointerEvents="none">
+                          <Text pr={5}>Year</Text>
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
 
                     <FormControl>
                       <FormLabel htmlFor="monthlyInvestment">
                         How much monthly investment you can do?
                       </FormLabel>
-                      <Input
-                        value={formik.values.monthlyInvestment}
-                        name="monthlyInvestment"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <InputLeftElement pointerEvents="none">
+                          <Text>{currency.value}</Text>
+                        </InputLeftElement>
+                        <Input
+                          value={formik.values.monthlyInvestment}
+                          name="monthlyInvestment"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+                      </InputGroup>
                     </FormControl>
                     <FormControl>
                       <FormLabel htmlFor="increaseMonthlyInvestment">
                         How much yearly contribution you can increase?
                       </FormLabel>
-                      <Input
-                        value={formik.values.increaseMonthlyInvestment}
-                        name="increaseMonthlyInvestment"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <Input
+                          value={formik.values.increaseMonthlyInvestment}
+                          name="increaseMonthlyInvestment"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+
+                        <InputRightElement pointerEvents="none">
+                          <Text>%</Text>
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     <FormControl>
                       <FormLabel htmlFor="yearlyReturnsRate">
                         How much yearly return you can generate?
                       </FormLabel>
-                      <Input
-                        value={formik.values.yearlyReturnsRate}
-                        name="yearlyReturnsRate"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <Input
+                          value={formik.values.yearlyReturnsRate}
+                          name="yearlyReturnsRate"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+                        <InputRightElement pointerEvents="none">
+                          <Text>%</Text>
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     <FormControl>
                       <FormLabel htmlFor="inflationRate">
                         What is the inflation rate in your country?
                       </FormLabel>
-                      <Input
-                        value={formik.values.inflationRate}
-                        name="inflationRate"
-                        type="number"
-                        onChange={formik.handleChange}
-                      />
+                      <InputGroup>
+                        <Input
+                          value={formik.values.inflationRate}
+                          name="inflationRate"
+                          type="number"
+                          onChange={formik.handleChange}
+                        />
+                        <InputRightElement pointerEvents="none">
+                          <Text>%</Text>
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     <Button colorScheme={"primary"} type="submit">
                       Calculate
@@ -182,7 +224,7 @@ const InvestmentCalculator = () => {
                 >
                   <Box>
                     <Heading>
-                      {currency}{" "}
+                      {currency.value}{" "}
                       {numberFormater(
                         result.chartPerMonth[result.chartPerMonth.length - 1] ||
                           0
@@ -193,7 +235,8 @@ const InvestmentCalculator = () => {
                   <Spacer />
                   <Box textAlign={{ base: "left", md: "right" }}>
                     <Heading>
-                      {currency} {numberFormater(result.inflationAdjusted || 0)}
+                      {currency.value}{" "}
+                      {numberFormater(result.inflationAdjusted || 0)}
                     </Heading>
                     <Text>Inflation Adjusted</Text>
                   </Box>
@@ -204,7 +247,8 @@ const InvestmentCalculator = () => {
                     In other words, at the end of your retirement age, you will
                     have{" "}
                     <strong>
-                      {currency} {numberFormater(result.inflationAdjusted || 0)}
+                      {currency.value}{" "}
+                      {numberFormater(result.inflationAdjusted || 0)}
                     </strong>{" "}
                     (in today&apos;s money) to spend
                   </Text>
@@ -217,12 +261,14 @@ const InvestmentCalculator = () => {
                         <Th>Year</Th>
                         <Th textAlign={"right"}>Deposits per Month</Th>
                         <Th textAlign={"right"}>
-                          Total Deposits (in {currency})
+                          Total Deposits (in {currency.value})
                         </Th>
                         <Th textAlign={"right"}>
-                          Accrued Earnings (in {currency})
+                          Accrued Earnings (in {currency.value})
                         </Th>
-                        <Th textAlign={"right"}>Balance (in {currency})</Th>
+                        <Th textAlign={"right"}>
+                          Balance (in {currency.value})
+                        </Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -253,6 +299,29 @@ const InvestmentCalculator = () => {
           </Container>
         </Box>
       </Layout>
+    </>
+  );
+};
+
+const TabInput = ({ handleChange, options, currentValue }) => {
+  return (
+    <>
+      <Flex>
+        {options.map((item) => (
+          <Box
+            px={5}
+            py={2}
+            key={item.value}
+            color={item.value === currentValue.value ? "white" : "black"}
+            border={"1px solid #eaeaea"}
+            background={item.value === currentValue.value ? "black" : ""}
+            cursor={"pointer"}
+            onClick={() => handleChange(item)}
+          >
+            <Text>{item.label}</Text>
+          </Box>
+        ))}
+      </Flex>
     </>
   );
 };
