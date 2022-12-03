@@ -21,6 +21,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Badge,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import * as yup from "yup";
@@ -30,7 +31,37 @@ import numberFormater from "../../src/utils/number_format";
 import Seo from "../../src/components/seo";
 import Link from "next/link";
 
-const validationSchema = yup.object({});
+const validationSchema = yup.object({
+  currentAge: yup
+    .number("Enter valid age in years")
+    .integer("Enter valid age in years")
+    .min(10, "Current age must be more than 10 years")
+    .max(100, "Current age must be less than 100 years")
+    .required("Enter valid age in years"),
+  retirementAge: yup
+    .number("Enter valid age in years")
+    .integer("Enter valid age in years")
+    .min(10, "Retirement age must be more than 10 years")
+    .max(100, "Retirement age must be less than 100 years")
+    .moreThan(
+      yup.ref("currentAge"),
+      "Retirement age must be greater than current age"
+    )
+    .required("Enter valid age in years"),
+  inflationRate: yup.number("Enter valid rate").required("Enter valid rate"),
+  yearlyReturnsRate: yup
+    .number("Enter valid rate")
+    .required("Enter valid rate"),
+  increaseMonthlyInvestment: yup
+    .number("Enter valid rate")
+    .min(0, "Enter valid rate")
+    .required("Enter valid rate"),
+  monthlyInvestment: yup
+    .number("Enter valid monthly investment")
+    .min(1, "Enter valid monthly investment")
+    .max(1000000, "Enter monthly investment less than 1,000,000")
+    .required("Enter valid monthly investment"),
+});
 
 const InvestmentCalculator = () => {
   const workerRef = useRef();
@@ -178,7 +209,12 @@ const InvestmentCalculator = () => {
               <form onSubmit={formik.handleSubmit}>
                 <Stack gap={10}>
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.currentAge &&
+                        Boolean(formik.errors.currentAge)
+                      }
+                    >
                       <FormLabel htmlFor="currentAge">
                         What&apos;s your current age?
                       </FormLabel>
@@ -193,8 +229,20 @@ const InvestmentCalculator = () => {
                           <Text pr={5}>Year</Text>
                         </InputRightElement>
                       </InputGroup>
+
+                      {formik.touched.currentAge &&
+                        Boolean(formik.errors.currentAge) && (
+                          <FormErrorMessage>
+                            {formik.errors.currentAge}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.retirementAge &&
+                        Boolean(formik.errors.retirementAge)
+                      }
+                    >
                       <FormLabel htmlFor="retirementAge">
                         At what age you want to retire?
                       </FormLabel>
@@ -209,9 +257,20 @@ const InvestmentCalculator = () => {
                           <Text pr={5}>Year</Text>
                         </InputRightElement>
                       </InputGroup>
+                      {formik.touched.retirementAge &&
+                        Boolean(formik.errors.retirementAge) && (
+                          <FormErrorMessage>
+                            {formik.errors.retirementAge}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.monthlyInvestment &&
+                        Boolean(formik.errors.monthlyInvestment)
+                      }
+                    >
                       <FormLabel htmlFor="monthlyInvestment">
                         How much monthly investment you can do?
                       </FormLabel>
@@ -226,8 +285,19 @@ const InvestmentCalculator = () => {
                           onChange={formik.handleChange}
                         />
                       </InputGroup>
+                      {formik.touched.monthlyInvestment &&
+                        Boolean(formik.errors.monthlyInvestment) && (
+                          <FormErrorMessage>
+                            {formik.errors.monthlyInvestment}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.increaseMonthlyInvestment &&
+                        Boolean(formik.errors.increaseMonthlyInvestment)
+                      }
+                    >
                       <FormLabel htmlFor="increaseMonthlyInvestment">
                         How much yearly contribution you can increase?
                       </FormLabel>
@@ -243,8 +313,19 @@ const InvestmentCalculator = () => {
                           <Text>%</Text>
                         </InputRightElement>
                       </InputGroup>
+                      {formik.touched.increaseMonthlyInvestment &&
+                        Boolean(formik.errors.increaseMonthlyInvestment) && (
+                          <FormErrorMessage>
+                            {formik.errors.increaseMonthlyInvestment}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.yearlyReturnsRate &&
+                        Boolean(formik.errors.yearlyReturnsRate)
+                      }
+                    >
                       <FormLabel htmlFor="yearlyReturnsRate">
                         How much yearly return you can generate?
                       </FormLabel>
@@ -259,8 +340,19 @@ const InvestmentCalculator = () => {
                           <Text>%</Text>
                         </InputRightElement>
                       </InputGroup>
+                      {formik.touched.yearlyReturnsRate &&
+                        Boolean(formik.errors.yearlyReturnsRate) && (
+                          <FormErrorMessage>
+                            {formik.errors.yearlyReturnsRate}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
-                    <FormControl>
+                    <FormControl
+                      isInvalid={
+                        formik.touched.inflationRate &&
+                        Boolean(formik.errors.inflationRate)
+                      }
+                    >
                       <FormLabel htmlFor="inflationRate">
                         What is the inflation rate in your country?
                       </FormLabel>
@@ -275,6 +367,12 @@ const InvestmentCalculator = () => {
                           <Text>%</Text>
                         </InputRightElement>
                       </InputGroup>
+                      {formik.touched.inflationRate &&
+                        Boolean(formik.errors.inflationRate) && (
+                          <FormErrorMessage>
+                            {formik.errors.inflationRate}
+                          </FormErrorMessage>
+                        )}
                     </FormControl>
                     <Button colorScheme={"primary"} type="submit">
                       Calculate

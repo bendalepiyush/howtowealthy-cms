@@ -55,15 +55,7 @@ const Header = (props) => {
               </Box>
             </Link>
             <Box display={{ base: "none", md: "block" }}>
-              <Stack direction={"row"} spacing={6} ml={10}>
-                {NavItems.map((item) => (
-                  <Link href={item.href} key={item.name}>
-                    <Box py={4}>
-                      <Text>{item.name}</Text>
-                    </Box>
-                  </Link>
-                ))}
-              </Stack>
+              <DesktopNav />
             </Box>
             <Spacer />
             <Flex
@@ -150,18 +142,93 @@ const Header = (props) => {
   );
 };
 
+const DesktopNav = () => {
+  return (
+    <Stack direction={"row"} align={"center"} spacing={6} ml={10}>
+      {NAV_ITEMS.map((navItem) => {
+        if (navItem.href) {
+          return (
+            <Link href={navItem.href} key={navItem.name}>
+              <Box px={3} py={4}>
+                <Text>{navItem.label}</Text>
+              </Box>
+            </Link>
+          );
+        }
+
+        return (
+          <Menu key={navItem.label}>
+            <MenuButton
+              bg={"transparent"}
+              as={Button}
+              rightIcon={<FaAngleDown />}
+              _hover={{
+                backgroundColor: "transparent",
+              }}
+              _focus={{
+                backgroundColor: "transparent",
+              }}
+              _active={{
+                backgroundColor: "transparent",
+              }}
+              px={0}
+            >
+              <Box py={2}>
+                <Text fontWeight={"400"}>{navItem.label}</Text>
+              </Box>
+            </MenuButton>
+            <MenuList py={0}>
+              {navItem.children.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  <MenuItem p={3}>{item.label}</MenuItem>
+                </Link>
+              ))}
+            </MenuList>
+          </Menu>
+        );
+      })}
+    </Stack>
+  );
+};
+
 const MobileNav = ({ isLoggedIn, user, toggle }) => {
   return (
     <Flex direction={"column"} py={4} display={{ md: "none" }}>
-      {NavItems.map((navItem) => (
-        <Link key={navItem.href} href={navItem.href}>
-          <Box py={2}>
-            <Text fontWeight={500}>{navItem.name}</Text>
+      {NAV_ITEMS.map((navItem) => {
+        if (navItem.href) {
+          return (
+            <>
+              <Link href={navItem.href} key={navItem.label}>
+                <Box py={2}>
+                  <Text fontWeight={500}>{navItem.label}</Text>
+                </Box>
+              </Link>
+              <Divider my={5} />
+            </>
+          );
+        }
+        return (
+          <Box key={navItem.label}>
+            <Text
+              mb={1}
+              textTransform={"uppercase"}
+              fontWeight={"bold"}
+              color={"gray.500"}
+              fontSize={"13px"}
+            >
+              {navItem.label}
+            </Text>
+            {navItem.children.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <Box py={2}>
+                  <Text fontWeight={500}>{item.label}</Text>
+                </Box>
+              </Link>
+            ))}
+            <Divider my={5} />
           </Box>
-        </Link>
-      ))}
-
-      <Divider my={5} />
+        );
+      })}
 
       {isLoggedIn && user ? (
         <>
@@ -199,18 +266,36 @@ const MobileNav = ({ isLoggedIn, user, toggle }) => {
   );
 };
 
-const NavItems = [
+const NAV_ITEMS = [
   {
-    name: "Stock Market",
-    href: "/category/stock-market",
+    label: "Category",
+    children: [
+      {
+        label: "Freelance",
+        href: "/category/freelance",
+      },
+      {
+        label: "Investment",
+        href: "/category/investment",
+      },
+      {
+        label: "Personal Finance",
+        href: "/category/personal-finance",
+      },
+      {
+        label: "Stock Market",
+        href: "/category/stock-market",
+      },
+    ],
   },
   {
-    name: "Investment",
-    href: "/category/investment",
-  },
-  {
-    name: "Personal Finance",
-    href: "/category/personal-finance",
+    label: "Tools",
+    children: [
+      {
+        label: "Investment Calculator",
+        href: "/tools/investment-calculator",
+      },
+    ],
   },
 ];
 
