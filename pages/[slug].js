@@ -171,7 +171,7 @@ const SinglePost = ({ post, relatedPosts }) => {
             "@type": "ListItem",
             position: 2,
             name: category.title,
-            item: `https://www.howtowealthy.com/${category.slug}`,
+            item: `https://www.howtowealthy.com/category/${category.slug}`,
           },
           {
             "@type": "ListItem",

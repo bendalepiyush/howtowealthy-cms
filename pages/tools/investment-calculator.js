@@ -20,6 +20,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Badge,
 } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import * as yup from "yup";
@@ -27,6 +28,7 @@ import { useFormik } from "formik";
 import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../src/utils/number_format";
 import Seo from "../../src/components/seo";
+import Link from "next/link";
 
 const validationSchema = yup.object({});
 
@@ -71,24 +73,92 @@ const InvestmentCalculator = () => {
     workerRef.current.postMessage(values);
   }, []);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        image: ["https://assets.howtowealthy.com/ogimg-tools.png"],
+        author: {
+          url: "https://www.howtowealthy.com/about-us",
+          name: "Piyush Bendale",
+          "@type": "Person",
+        },
+        "@context": "https://schema.org",
+        headline: "Investment Calculator - How to Wealthy",
+        publisher: {
+          name: "How to Wealthy",
+          "@type": "Organization",
+        },
+        description:
+          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
+        dateModified: "2022-12-03",
+        datePublished: "2022-12-03",
+        mainEntityOfPage: {
+          "@id": "https://www.howtowealthy.com/tools/investment-calculator",
+          "@type": "WebPage",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://www.howtowealthy.com/tools/investment-calculator/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.howtowealthy.com/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Tools",
+            item: `https://www.howtowealthy.com/tools`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Investment Calculator",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <>
       <Seo
         title="Investment Calculator - How to Wealthy"
-        description="HowToWealthy is where we write about personal finance,
-              investments, the stock market, and economics that interest us most
-              and will help others make better decisions about their money."
+        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        structuredData={JSON.stringify(structuredData)}
+        ogImage={
+          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
+        }
       />
       <Layout>
         <Box py={20}>
           <Container maxW={"5xl"}>
             <Box pb={16} maxW={"2xl"}>
+              <Link href={`/tools`}>
+                <Badge
+                  variant="outline"
+                  colorScheme="primary"
+                  py={2}
+                  px={5}
+                  borderRadius={100}
+                  mb={4}
+                >
+                  Tools
+                </Badge>
+              </Link>
               <Heading as={"h1"} mb={2}>
                 Investment Calculator
               </Heading>
               <Text fontSize={"2xl"} fontWeight={300}>
-                Are you ready to start living the life of financial freedom?
-                You&apos;re about to discover the secrets to becoming wealthy.
+                Investing is one of the best ways to build wealth over time. But
+                before you invest, you should know what your prospect returns
+                are. Calculate your inflation adjusted investment value with
+                step SIP.
               </Text>
             </Box>
 
@@ -296,6 +366,76 @@ const InvestmentCalculator = () => {
                 </Box>
               </>
             )}
+
+            <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+              <div className={"post-content"}>
+                <p>
+                  Prospective investors may need help determining their future
+                  investment returns. Investment methods like fixed deposits and
+                  systematic investment plans (SIPs) require a great deal of the
+                  returns to be understood beforehand so that you are protected
+                  from all the volatility you may encounter in between. You can
+                  use an investing calculator to help you calculate the profits
+                  you can expect from placing your money in these investment
+                  instruments. Regularly investing a set amount of money in
+                  mutual funds is known as a systematic investment plan or SIP.
+                  SIPs often let you make weekly, monthly, or quarterly
+                  investments.
+                </p>
+                <h2>What does an Investment calculator do?</h2>
+                <p>
+                  An investing calculator is a simple tool that allows
+                  individuals to estimate the return on their mutual fund SIP
+                  investments. Millennial&apos;s most preferred investment
+                  options lately are SIP mutual fund investments. Our investment
+                  calculator for retirement is made to provide prospective
+                  investors with a rough idea of their investments. However, the
+                  actual returns a scheme of investment offers vary based on
+                  several variables. With the help of an investment calculator
+                  for retirement, you may determine your monthly
+                  investment&apos;s expected returns and wealth increase. Using
+                  a predicted annual return rate, you may get a reasonable idea
+                  of the maturity value for any of the monthly SIPs.
+                </p>
+
+                <h2>How might an Investment calculator benefit an investor?</h2>
+                <p>
+                  According to numerous mutual fund experts, SIPs are a more
+                  profitable way to invest money than a flat payment. It helps
+                  you develop financial self-discipline and a saving habit that
+                  will be useful to you in the long run. The predicted returns
+                  you will receive after the investment duration are displayed
+                  by an online investment calculator for SIPs, which is a
+                  valuable tool. The SIP calculator&apos;s advantages include,
+                  among others:
+                </p>
+                <p>
+                  Simply input the monthly investment amount (the amount for
+                  which you began the investment), your starting age and
+                  retirement age, and the estimated rate of return. When you
+                  enter the value, the calculator will provide an expected
+                  amount you can receive once your investment period is over.
+                </p>
+                <p>
+                  Plan your investment according to the amount and duration. At
+                  the conclusion of your SIP tenure, it assists you in
+                  estimating the overall value of assets. Investment calculator
+                  for retirement saves you time by providing precise results
+                  faster than manual calculation.
+                </p>
+
+                <h2>Important Links</h2>
+                <p>
+                  <a
+                    href="https://www.theglobaleconomy.com/rankings/inflation/"
+                    rel="nofollow noreferrer"
+                    target="_blank"
+                  >
+                    Inflation rate by country - The Global Economy
+                  </a>
+                </p>
+              </div>
+            </Box>
           </Container>
         </Box>
       </Layout>

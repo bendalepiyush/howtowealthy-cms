@@ -106,11 +106,36 @@ const Category = ({ posts, category }) => {
     );
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://www.howtowealthy.com/tools/investment-calculator/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.howtowealthy.com/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: category.title,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <Layout>
       <Seo
         title={`${category.title} - How To Wealthy`}
         description={category.metaDescription}
+        structuredData={JSON.stringify(structuredData)}
+        ogImage={category.featuredImage.ogimg}
       />
       <main>
         <Box py={20}>

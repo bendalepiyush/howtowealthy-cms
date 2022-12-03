@@ -72,6 +72,10 @@ body {
   transition: 0.5s;
 }
 
+.post-content a {
+  color: var(--chakra-colors-primary-500);
+}
+
 mark {
   background-color: var(--chakra-colors-primary-50);
 }
