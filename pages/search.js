@@ -76,7 +76,7 @@ const Search = ({ query }) => {
     <Layout>
       <Seo
         title="Search - How to Wealthy"
-        description="Are you ready to start living the life of financial freedom? You're about to discover the secrets to becoming wealthy."
+        description="Want to know how to be wealthy? Then search our articles about saving money, investing wisely, building wealth and many more."
       />
       <main>
         <Box py={20}>
