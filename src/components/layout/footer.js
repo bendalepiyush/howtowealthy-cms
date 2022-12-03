@@ -18,8 +18,8 @@ const Footer = () => {
     label: "Categories",
     items: [
       {
-        href: "/category/stock-market",
-        name: "Stock Market",
+        href: "/category/freelance",
+        name: "Freelance",
       },
       {
         href: "/category/investment",
@@ -28,6 +28,20 @@ const Footer = () => {
       {
         href: "/category/personal-finance",
         name: "Personal Finance",
+      },
+      {
+        href: "/category/stock-market",
+        name: "Stock Market",
+      },
+    ],
+  };
+
+  const calculatorNav = {
+    label: "Tools",
+    items: [
+      {
+        href: "/tools/investment-calculator",
+        name: "Investment Calculator",
       },
     ],
   };
@@ -108,6 +122,9 @@ const Footer = () => {
                     <ListItem mb={2}>
                       <Link href={"/profile/favourite"}>Favourites</Link>
                     </ListItem>
+                    <ListItem mb={2}>
+                      <Link href={"/search"}>Search</Link>
+                    </ListItem>
                   </List>
                 </Box>
                 <Box mb={{ base: 6, md: 0 }}>
@@ -116,6 +133,18 @@ const Footer = () => {
                   </Box>
                   <List>
                     {companyNav.items.map((el, idx) => (
+                      <ListItem mb={2} key={idx}>
+                        <Link href={el.href}>{el.name}</Link>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+                <Box mb={{ base: 6, md: 0 }}>
+                  <Box mb={3}>
+                    <Text as="b">{calculatorNav.label}</Text>
+                  </Box>
+                  <List>
+                    {calculatorNav.items.map((el, idx) => (
                       <ListItem mb={2} key={idx}>
                         <Link href={el.href}>{el.name}</Link>
                       </ListItem>

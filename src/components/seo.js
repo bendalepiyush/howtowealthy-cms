@@ -19,6 +19,7 @@ export default function Seo({
     <Head>
       <title key="title">{title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="theme-color" content="#000000" />
       <meta name="description" content={description} />
       <meta key="og_type" property="og:type" content={ogType} />
       <meta key="og_title" property="og:title" content={title} />
