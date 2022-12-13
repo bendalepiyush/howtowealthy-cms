@@ -132,7 +132,7 @@ const InvestmentCalculator = () => {
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator/#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/investment-calculator#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",

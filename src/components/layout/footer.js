@@ -89,9 +89,9 @@ const Footer = () => {
               </Text>
 
               <Flex mt={6} gap={6}>
-                <Link href={"https://www.facebook.com/howtowealthy/"}>
+                {/* <Link href={"https://www.facebook.com/howtowealthy/"}>
                   <Icon w={6} h={6} as={FaFacebook} />
-                </Link>
+                </Link> */}
                 <Link href={"https://twitter.com/howtowealthy"}>
                   <Icon w={6} h={6} as={FaTwitter} />
                 </Link>
@@ -99,7 +99,7 @@ const Footer = () => {
                   <Icon w={6} h={6} as={FaLinkedin} />
                 </Link>
 
-                <Link href={"https://www.instagram.com/howto_wealthy/"}>
+                <Link href={"https://www.instagram.com/_howto_wealthy/"}>
                   <Icon w={6} h={6} as={FaInstagram} />
                 </Link>
               </Flex>

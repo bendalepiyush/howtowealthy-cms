@@ -159,7 +159,7 @@ const SinglePost = ({ post, relatedPosts }) => {
       metaStructuredData,
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/${router.asPath}/#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/${router.asPath}#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",

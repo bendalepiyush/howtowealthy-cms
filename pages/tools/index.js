@@ -9,7 +9,7 @@ const Tools = () => {
     "@graph": [
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator/#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",

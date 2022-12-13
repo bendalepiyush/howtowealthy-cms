@@ -111,7 +111,7 @@ const Category = ({ posts, category }) => {
     "@graph": [
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator/#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/${router.asPath}#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
