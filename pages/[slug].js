@@ -261,7 +261,7 @@ const SinglePost = ({ post, relatedPosts }) => {
   return (
     <Layout>
       <Seo
-        title={title.length > 70 ? truncate(title, 66) : title}
+        title={title.length > 65 ? truncate(title, 60) : title}
         description={
           metaDescription.length > 160
             ? truncate(metaDescription, 155)
