@@ -94,11 +94,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <Seo
-        title="Register - How To Wealthy"
-        description="Register page"
-        noIndex={true}
-      />
+      <Seo title="Register - How To Wealthy" description="Register page" />
       <AuthHeader />
 
       <Flex minH={"80vh"} align={"center"} justify={"center"}>

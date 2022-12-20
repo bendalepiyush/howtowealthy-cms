@@ -17,6 +17,7 @@ import WideArticleCard from "../../src/components/sections/wide-article-card";
 import Seo from "../../src/components/seo";
 import SideBar from "../../src/components/sidebar";
 import hygraph from "../../src/services/hygraph";
+import truncate from "../../src/utils/truncate";
 
 export const getStaticPaths = async () => {
   const { categories } = await hygraph.request(
@@ -133,7 +134,11 @@ const Category = ({ posts, category }) => {
     <Layout>
       <Seo
         title={`${category.title} - How To Wealthy`}
-        description={category.metaDescription}
+        description={
+          category.metaDescription.length > 155
+            ? truncate(category.metaDescription)
+            : category.metaDescription
+        }
         structuredData={JSON.stringify(structuredData)}
         ogImage={category.featuredImage.ogimg}
       />

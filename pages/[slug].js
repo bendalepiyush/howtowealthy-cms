@@ -36,6 +36,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import Link from "next/link";
 import hygraph from "../src/services/hygraph";
+import truncate from "../src/utils/truncate";
 
 export const getStaticPaths = async () => {
   const { blogPosts } = await hygraph.request(
@@ -260,8 +261,12 @@ const SinglePost = ({ post, relatedPosts }) => {
   return (
     <Layout>
       <Seo
-        title={title}
-        description={metaDescription}
+        title={title.length > 70 ? truncate(title, 66) : title}
+        description={
+          metaDescription.length > 160
+            ? truncate(metaDescription, 155)
+            : metaDescription
+        }
         structuredData={JSON.stringify(structuredData)}
         ogImage={featuredImage.ogimg}
       />

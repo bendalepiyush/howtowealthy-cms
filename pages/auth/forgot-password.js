@@ -73,7 +73,6 @@ const LoginPage = () => {
       <Seo
         title="Forgot Password - How To Wealthy"
         description="Forgot password page"
-        noIndex={true}
       />
       <AuthHeader />
 
