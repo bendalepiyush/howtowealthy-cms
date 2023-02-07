@@ -45,7 +45,15 @@ const Header = (props) => {
     <>
       <Box position={"sticky"} top={0} zIndex={99} bg={"white"} shadow={"sm"}>
         <Box>
-          <Box w={props.progressPercent + "%"} h={"2px"} bg={"black"}></Box>
+          <Box
+            w={
+              props.progressPercent > 100 || props.progressPercent < 0
+                ? 100
+                : props.progressPercent + "%"
+            }
+            h={"2px"}
+            bg={"black"}
+          ></Box>
         </Box>
         <Container py={3} maxW={"8xl"}>
           <Flex align={"center"}>
