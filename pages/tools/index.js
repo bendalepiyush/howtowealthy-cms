@@ -1,4 +1,4 @@
-import { Container, Box, Heading, Text } from "@chakra-ui/react";
+import { Container, Box, Heading, Text, Flex } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import Seo from "../../src/components/seo";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const Tools = () => {
             </Text>
           </Box>
 
-          <Box mb={10}>
+          <Flex flexDirection="column" mb={10} gap={3}>
             <Link href={"/tools/investment-calculator"}>
               <Box p={6} border={"1px solid #eaeaea"} borderRadius={6}>
                 <Heading as="h3" size={"sm"} mb={1.5}>
@@ -64,7 +64,23 @@ const Tools = () => {
                 </Text>
               </Box>
             </Link>
-          </Box>
+            <Link href={"/tools/loan-payoff-or-invest"}>
+              <Box p={6} border={"1px solid #eaeaea"} borderRadius={6}>
+                <Heading as="h3" size={"sm"} mb={1.5}>
+                  Loan PayOff or Invest
+                </Heading>
+                <Text mb={2}>
+                  Investing is one of the best ways to build wealth over time.
+                  But before you invest, you should know what your prospect
+                  returns are. Calculate your inflation adjusted investment
+                  value with step SIP.
+                </Text>
+                <Text color={"primary.500"} fontWeight={"bold"}>
+                  View
+                </Text>
+              </Box>
+            </Link>
+          </Flex>
         </Container>
       </Layout>
     </>

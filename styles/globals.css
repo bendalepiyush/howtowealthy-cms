@@ -79,3 +79,7 @@ body {
 mark {
   background-color: var(--chakra-colors-primary-50);
 }
+
+.market-quotes-widget__field--name-width.market-quotes-widget__field--name-row-cell {
+  background-color: #fff !important;
+}

@@ -43,6 +43,10 @@ const Footer = () => {
         href: "/tools/investment-calculator",
         name: "Investment Calculator",
       },
+      {
+        href: "/tools/loan-payoff-or-invest",
+        name: "Loan Payoff or Invest",
+      },
     ],
   };
 

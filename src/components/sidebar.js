@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import randomQuote from "../api/get_random_quote";
 import * as yup from "yup";
 import { subscibeByEmail } from "../api/subscriber";
+import Script from "next/script";
 
 const validationSchema = yup.object({
   query: yup.string("Enter valid query.").required("Enter valid query."),
@@ -42,7 +43,7 @@ const SideBar = () => {
   }, []);
 
   return (
-    <Stack spacing={14}>
+    <Stack h={"100%"} spacing={14}>
       <Box>
         <Heading
           as={"h2"}
@@ -111,6 +112,41 @@ const SideBar = () => {
           </Stack>
         </form>
       </Box>
+
+      {/* <Box h={"100%"}>
+        <Heading
+          as={"h2"}
+          size={"sm"}
+          textTransform={"uppercase"}
+          fontWeight={"400"}
+        >
+          Economic Calendar
+        </Heading>
+
+        <Box bg={"gray.100"} h={"1px"} mt={3} mb={8}>
+          <Box w={`20ch`} bg={"black.900"} h={"1px"}></Box>
+        </Box>
+
+        <Box
+          h={"100%"}
+          id="show-banner"
+          dangerouslySetInnerHTML={{
+            __html: `<div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+            {
+              "width": "100%",
+              "height": "100%",
+              "colorTheme": "light",
+              "isTransparent": true,
+              "locale": "in",
+              "importanceFilter": "0,1"
+            }
+            </script>
+          </div>`,
+          }}
+        />
+      </Box> */}
     </Stack>
   );
 };

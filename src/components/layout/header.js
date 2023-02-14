@@ -303,6 +303,11 @@ const NAV_ITEMS = [
         label: "Investment Calculator",
         href: "/tools/investment-calculator",
       },
+
+      {
+        href: "/tools/loan-payoff-or-invest",
+        label: "Loan Payoff or Invest",
+      },
     ],
   },
 ];
