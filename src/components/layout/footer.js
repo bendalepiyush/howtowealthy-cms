@@ -47,6 +47,10 @@ const Footer = () => {
         href: "/tools/loan-payoff-or-invest",
         name: "Loan Payoff or Invest",
       },
+      {
+        href: "/tools/trading/position-sizing-calculator",
+        name: "Position Sizing",
+      },
     ],
   };
 

@@ -308,6 +308,10 @@ const NAV_ITEMS = [
         href: "/tools/loan-payoff-or-invest",
         label: "Loan Payoff or Invest",
       },
+      {
+        href: "/tools/trading/position-sizing-calculator",
+        label: "Position Sizing",
+      },
     ],
   },
 ];

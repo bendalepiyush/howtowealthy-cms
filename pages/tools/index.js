@@ -70,10 +70,26 @@ const Tools = () => {
                   Loan PayOff or Invest
                 </Heading>
                 <Text mb={2}>
-                  Investing is one of the best ways to build wealth over time.
-                  But before you invest, you should know what your prospect
-                  returns are. Calculate your inflation adjusted investment
-                  value with step SIP.
+                  Investing and paying down debt are both good uses for any
+                  spare cash you might have. So this will help you make a
+                  decision on whether you should invest your money or pay off
+                  your ongoing loan.
+                </Text>
+                <Text color={"primary.500"} fontWeight={"bold"}>
+                  View
+                </Text>
+              </Box>
+            </Link>
+
+            <Link href={"/tools/trading/position-sizing-calculator"}>
+              <Box p={6} border={"1px solid #eaeaea"} borderRadius={6}>
+                <Heading as="h3" size={"sm"} mb={1.5}>
+                  Position Sizing
+                </Heading>
+                <Text mb={2}>
+                  Position sizing is the number of units invested in a
+                  particular security by a trader. To help you to determine
+                  position sizing we have created this simple tool.
                 </Text>
                 <Text color={"primary.500"} fontWeight={"bold"}>
                   View

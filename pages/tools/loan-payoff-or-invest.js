@@ -123,23 +123,23 @@ const LoanPayOfOrInvest = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Investment Calculator - How to Wealthy",
+        headline: "Loan Payoff or Invest - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
         },
         description:
-          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
-        dateModified: "2022-12-03",
-        datePublished: "2022-12-03",
+          "Investing and paying down debt are both good uses for any spare cash you might have. So this will help you make a decision on whether you should invest your money or pay off your ongoing loan.",
+        dateModified: "2022-02-28",
+        datePublished: "2022-02-28",
         mainEntityOfPage: {
-          "@id": "https://www.howtowealthy.com/tools/investment-calculator",
+          "@id": "https://www.howtowealthy.com/tools/loan-payoff-or-invest",
           "@type": "WebPage",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/loan-payoff-or-invest#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -156,7 +156,7 @@ const LoanPayOfOrInvest = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Investment Calculator",
+            name: "Loan Payoff or Invest",
           },
         ],
       },
@@ -167,7 +167,7 @@ const LoanPayOfOrInvest = () => {
     <>
       <Seo
         title="Loan Payoff or Invest - How to Wealthy"
-        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        description="Investing and paying down debt are both good uses for any spare cash you might have. So this will help you make a decision on whether you should invest your money or pay off your ongoing loan."
         structuredData={JSON.stringify(structuredData)}
         ogImage={
           "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
@@ -193,10 +193,10 @@ const LoanPayOfOrInvest = () => {
                 Loan Payoff or Invest
               </Heading>
               <Text fontSize={"2xl"} fontWeight={300}>
-                Investing is one of the best ways to build wealth over time. But
-                before you invest, you should know what your prospect returns
-                are. Calculate your inflation adjusted investment value with
-                step SIP.
+                Investing and paying down debt are both good uses for any spare
+                cash you might have. So this will help you make a decision on
+                whether you should invest your money or pay off your ongoing
+                loan.
               </Text>
             </Box>
 
