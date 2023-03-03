@@ -312,6 +312,14 @@ const NAV_ITEMS = [
         href: "/tools/trading/position-sizing-calculator",
         label: "Position Sizing",
       },
+      {
+        href: "/tools/trading/nifty-range-calculator",
+        label: "Nifty Range Calculator",
+      },
+      {
+        href: "/tools/trading/pivot-point-calculator",
+        label: "Pivot Point Calculator",
+      },
     ],
   },
 ];

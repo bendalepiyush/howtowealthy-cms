@@ -34,7 +34,6 @@ import Link from "next/link";
 const validationSchema = yup.object({
   totalCapital: yup
     .number("Enter valid capital")
-    .integer("Enter valid capital")
     .min(1000, "Capital should be minimum 1000")
     .required("Enter valid capital"),
   stopLoss: yup
@@ -128,7 +127,7 @@ const LoanPayOfOrInvest = () => {
         description="Position sizing is the number of units invested in a particular security by a trader. To help you to determine position sizing we have created this simple tool."
         structuredData={JSON.stringify(structuredData)}
         ogImage={
-          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
+          "https://assets.howtowealthy.com/ogimg-position-sizing-calculator.png"
         }
       />
       <Layout>

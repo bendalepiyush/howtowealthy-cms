@@ -96,6 +96,38 @@ const Tools = () => {
                 </Text>
               </Box>
             </Link>
+
+            <Link href={"/tools/trading/nifty-range-calculator"}>
+              <Box p={6} border={"1px solid #eaeaea"} borderRadius={6}>
+                <Heading as="h3" size={"sm"} mb={1.5}>
+                  Nifty Range Calculator
+                </Heading>
+                <Text mb={2}>
+                  For Nifty, this calculator calculates the possible range of
+                  price within which the nifty is expected to move till the
+                  expiry date that is entered, based on vix.
+                </Text>
+                <Text color={"primary.500"} fontWeight={"bold"}>
+                  View
+                </Text>
+              </Box>
+            </Link>
+
+            <Link href={"/tools/trading/pivot-point-calculator"}>
+              <Box p={6} border={"1px solid #eaeaea"} borderRadius={6}>
+                <Heading as="h3" size={"sm"} mb={1.5}>
+                  Pivot Point Calculator
+                </Heading>
+                <Text mb={2}>
+                  Pivot Points Calculator uses a previous period’s high, low,
+                  and close price for a specific period to define future support
+                  and Resistance levels.
+                </Text>
+                <Text color={"primary.500"} fontWeight={"bold"}>
+                  View
+                </Text>
+              </Box>
+            </Link>
           </Flex>
         </Container>
       </Layout>

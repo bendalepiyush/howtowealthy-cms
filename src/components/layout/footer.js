@@ -51,6 +51,14 @@ const Footer = () => {
         href: "/tools/trading/position-sizing-calculator",
         name: "Position Sizing",
       },
+      {
+        href: "/tools/trading/nifty-range-calculator",
+        name: "Nifty Range Calculator",
+      },
+      {
+        href: "/tools/trading/pivot-point-calculator",
+        name: "Pivot Point Calculator",
+      },
     ],
   };
 
