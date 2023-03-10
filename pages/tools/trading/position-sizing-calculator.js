@@ -22,6 +22,7 @@ import {
   InputRightElement,
   Badge,
   FormErrorMessage,
+  GridItem,
 } from "@chakra-ui/react";
 import Layout from "../../../src/components/layout";
 import * as yup from "yup";
@@ -39,10 +40,12 @@ const validationSchema = yup.object({
   stopLoss: yup
     .number("Enter valid stop loss")
     .moreThan(0, "Enter valid stop loss")
+    .lessThan(yup.ref("buyPrice"), "Stop loss should be less than buy price")
     .required("Enter valid stop loss"),
   buyPrice: yup
     .number("Enter valid buy price")
-    .moreThan(0, "Enter valid buy price")
+    .min(0, "Enter valid buy price")
+    .moreThan(yup.ref("stopLoss"), "Stop loss should be less than buy price")
     .required("Enter valid buy price"),
   lotSize: yup
     .number("Enter valid lot size")
@@ -52,6 +55,7 @@ const validationSchema = yup.object({
 
 const LoanPayOfOrInvest = () => {
   const [currency, setCurrency] = useState({ label: "INR (₹)", value: "₹" });
+  const [type, setType] = useState({ label: "Equity", value: "Equity" });
 
   const formik = useFormik({
     initialValues: {
@@ -156,7 +160,7 @@ const LoanPayOfOrInvest = () => {
               </Text>
             </Box>
 
-            <Box mb={10}>
+            <Flex mb={10} justifyContent={"space-between"}>
               <TabInput
                 handleChange={setCurrency}
                 options={[
@@ -166,7 +170,16 @@ const LoanPayOfOrInvest = () => {
                 ]}
                 currentValue={currency}
               />
-            </Box>
+
+              <TabInput
+                handleChange={setType}
+                options={[
+                  { label: "Equity", value: "Equity" },
+                  { label: "FnO", value: "FnO" },
+                ]}
+                currentValue={type}
+              />
+            </Flex>
 
             <Box>
               <form onSubmit={formik.handleSubmit}>
@@ -227,13 +240,6 @@ const LoanPayOfOrInvest = () => {
                           </FormErrorMessage>
                         )}
                     </FormControl>
-                    <div>
-                      Total Risk you can take:{" "}
-                      {(formik.values.totalCapital *
-                        formik.values.riskOnCapital) /
-                        100}
-                    </div>
-                    <div></div>
                     <FormControl
                       isInvalid={
                         formik.touched.buyPrice &&
@@ -286,91 +292,232 @@ const LoanPayOfOrInvest = () => {
                         )}
                     </FormControl>
 
-                    <FormControl
-                      isInvalid={
-                        formik.touched.lotSize && Boolean(formik.errors.lotSize)
-                      }
-                    >
-                      <FormLabel htmlFor="lotSize">Lot Size</FormLabel>
-                      <InputGroup>
-                        <Input
-                          value={formik.values.lotSize}
-                          name="lotSize"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                      </InputGroup>
-                      {formik.touched.lotSize &&
-                        Boolean(formik.errors.lotSize) && (
-                          <FormErrorMessage>
-                            {formik.errors.lotSize}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
+                    {type.value == "FnO" && (
+                      <FormControl
+                        isInvalid={
+                          formik.touched.lotSize &&
+                          Boolean(formik.errors.lotSize)
+                        }
+                      >
+                        <FormLabel htmlFor="lotSize">Lot Size</FormLabel>
+                        <InputGroup>
+                          <Input
+                            value={formik.values.lotSize}
+                            name="lotSize"
+                            type="number"
+                            onChange={formik.handleChange}
+                          />
+                        </InputGroup>
+                        {formik.touched.lotSize &&
+                          Boolean(formik.errors.lotSize) && (
+                            <FormErrorMessage>
+                              {formik.errors.lotSize}
+                            </FormErrorMessage>
+                          )}
+                      </FormControl>
+                    )}
 
-                    <div></div>
-                    <div>
-                      {/* <p>
-                        Margin required for each lot: {currency.value}
-                        {formik.values.buyPrice * formik.values.lotSize}
-                      </p>
-                      <p>
-                        Risk per lot: {currency.value}
-                        {(formik.values.buyPrice - formik.values.stopLoss) *
-                          formik.values.lotSize}
-                      </p>
-                      <p>
-                        Total lot you can buy:{" "}
-                        {Math.floor(
-                          formik.values.totalCapital /
-                            (formik.values.buyPrice * formik.values.lotSize)
-                        )}
-                      </p> */}
+                    <GridItem colSpan={2}>
+                      <Box p={10} backgroundColor={"purple"} color={"white"}>
+                        <SimpleGrid columns={2} gap={10}>
+                          <Box>
+                            Total Risk you can take:{" "}
+                            <Text fontSize={"2xl"}>
+                              {currency.value}
+                              {(formik.values.totalCapital *
+                                formik.values.riskOnCapital) /
+                                100}
+                            </Text>
+                          </Box>
+                          <Box>
+                            Position Sizing should be:{" "}
+                            <Text fontSize={"2xl"}>
+                              {Math.floor(
+                                (formik.values.totalCapital *
+                                  formik.values.riskOnCapital) /
+                                  100 /
+                                  ((formik.values.buyPrice -
+                                    formik.values.stopLoss) *
+                                    (type.value == "FnO"
+                                      ? formik.values.lotSize
+                                      : 1))
+                              )}
+                            </Text>
+                          </Box>
 
-                      <p>
-                        Position Sizing should be:{" "}
-                        {Math.floor(
-                          (formik.values.totalCapital *
-                            formik.values.riskOnCapital) /
-                            100 /
-                            ((formik.values.buyPrice - formik.values.stopLoss) *
-                              formik.values.lotSize)
-                        )}
-                      </p>
+                          <Box>
+                            Total margin deployed:
+                            <Text fontSize={"2xl"}>
+                              {currency.value}
+                              {Math.floor(
+                                (formik.values.totalCapital *
+                                  formik.values.riskOnCapital) /
+                                  100 /
+                                  ((formik.values.buyPrice -
+                                    formik.values.stopLoss) *
+                                    (type.value == "FnO"
+                                      ? formik.values.lotSize
+                                      : 1))
+                              ) *
+                                formik.values.buyPrice *
+                                (type.value == "FnO"
+                                  ? formik.values.lotSize
+                                  : 1)}
+                            </Text>
+                          </Box>
 
-                      <p>
-                        Total margin deployed: {currency.value}
-                        {Math.floor(
-                          (formik.values.totalCapital *
-                            formik.values.riskOnCapital) /
-                            100 /
-                            ((formik.values.buyPrice - formik.values.stopLoss) *
-                              formik.values.lotSize)
-                        ) *
-                          formik.values.buyPrice *
-                          formik.values.lotSize}
-                      </p>
-
-                      <p>
-                        Total risk if proper position sizing: {currency.value}
-                        {Math.floor(
-                          (formik.values.totalCapital *
-                            formik.values.riskOnCapital) /
-                            100 /
-                            ((formik.values.buyPrice - formik.values.stopLoss) *
-                              formik.values.lotSize)
-                        ) *
-                          (formik.values.buyPrice - formik.values.stopLoss) *
-                          formik.values.lotSize}
-                      </p>
-                    </div>
+                          <Box>
+                            Total risk if proper position sizing:{" "}
+                            <Text fontSize={"2xl"}>
+                              {currency.value}
+                              {Math.floor(
+                                (formik.values.totalCapital *
+                                  formik.values.riskOnCapital) /
+                                  100 /
+                                  ((formik.values.buyPrice -
+                                    formik.values.stopLoss) *
+                                    formik.values.lotSize)
+                              ) *
+                                (formik.values.buyPrice -
+                                  formik.values.stopLoss) *
+                                formik.values.lotSize}
+                            </Text>
+                          </Box>
+                        </SimpleGrid>
+                      </Box>
+                    </GridItem>
                   </SimpleGrid>
                 </Stack>
               </form>
             </Box>
 
             <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-              <div className={"post-content"}></div>
+              <div className={"post-content"}>
+                <p>
+                  Managing your risk is one of the most crucial things you must
+                  do as a trader. Position sizing is an essential part of risk
+                  management because it tells you how much money you are willing
+                  to lose on each trade. If you exercise caution while sizing
+                  your positions, you can avoid losing more money than you can
+                  afford.
+                </p>
+                <p>
+                  We&apos;ve devised a simple tool to help you minimise your
+                  risk and maximise your profits: the Position Size Calculator.
+                  In this article, we&apos;ll define a position sizing
+                  calculator, describe how to use it, and discuss its benefits.
+                </p>
+                <h2>What is a position sizing calculator?</h2>
+                <p>
+                  You can use a position sizing calculator to help you decide
+                  how much money is the right amount to invest in a specific
+                  security. It considers elements including your account
+                  balance, the trade size, and the risk level you&apos;re
+                  willing to accept. Using a position sizing calculator, you can
+                  maximise your potential gains and ensure you&apos;re not
+                  taking on more risk than you can bear.
+                </p>
+                <h2>How to Use a Position-Sizing Calculator</h2>
+                <p>
+                  It&apos;s simple to use a position sizing calculator. The
+                  following steps:
+                </p>
+                <ol>
+                  <li>
+                    <strong>Determine your account balance or capital:</strong>{" "}
+                    The first step is to determine how much money is in your
+                    trading account and how much money you will trade as
+                    capital.
+                  </li>
+                  <li>
+                    <strong>
+                      Determine the risk you&apos;re willing to take.
+                    </strong>{" "}
+                    The next stage is choosing how much trouble you want to
+                    accept in a specific trade. This might be shown as a
+                    percentage of the total amount in your account.
+                  </li>
+                  <li>
+                    <strong>Determine the security pricey:</strong> The third
+                    step is establishing the price you wish to trade.
+                  </li>
+                  <li>
+                    <strong>Choose your stop-loss:</strong> Selecting your
+                    stop-loss level is the fourth step. If the deal swings
+                    against you, you will close it at this price.
+                  </li>
+                  <li>
+                    <strong>Calculate your position size:</strong> Calculating
+                    your position size is the last stage. The formula shown
+                    below can be used to accomplish this:
+                  </li>
+                </ol>
+                <p>
+                  <strong>
+                    <em>
+                      Position size = (account balance x risk percentage) /
+                      (entry price - stop loss)
+                    </em>
+                  </strong>
+                </p>
+                <h2>Advantages of the Position Sizing Calculator</h2>
+                <p>
+                  Using a position sizing calculator has various advantages.
+                </p>
+                <ul>
+                  <li>
+                    <strong>Accurately calculating position sizes: </strong>
+                    Using a position sizing calculator, you can ensure that your
+                    position size calculation is accurate. Doing this will make
+                    it less likely that you&apos;ll make mistakes that will cost
+                    you money and increase your overall profits.
+                  </li>
+                  <li>
+                    <strong>How to lower the risks of trading:</strong> Managing
+                    your position size well will help you reduce the risks of
+                    trading. This can lower the chance of losing a lot of money
+                    and give you more faith in your trading method.
+                  </li>
+                  <li>
+                    <strong>Maximising profits:</strong> Using a position sizing
+                    calculator, you can increase your prospective earnings. This
+                    is because you&apos;ll be able to choose the right
+                    transaction size, enabling you to seize profitable
+                    possibilities.
+                  </li>
+                  <li>
+                    <strong>Consistent trading strategy:</strong> A position
+                    sizing calculator can help you develop a consistent
+                    approach. This can help you keep calm and avoid making hasty
+                    decisions that could hurt your trading performance.
+                  </li>
+                  <li>
+                    <strong>Improved trading psychology:</strong> Position
+                    sizing can significantly impact your trading mentality.
+                    Using a position sizing calculator will help you trade with
+                    greater assurance and prevent feelings of greed, anxiety, or
+                    panic.
+                  </li>
+                  <li>
+                    <strong>More efficient use of capital:</strong> Using the
+                    correct position sizing, you can use your trading capital
+                    more effectively. By carefully investing your money, you can
+                    take advantage of good chances while lowering your risks.
+                  </li>
+                </ul>
+                <h2>Conclusion</h2>
+                <p>
+                  For traders, position sizing is a crucial component of risk
+                  management. Using a position sizing calculator, you can ensure
+                  you&apos;re managing your risk effectively and maximise your
+                  potential profits. The calculator makes it simple to decide
+                  the ideal position size for each transaction by considering
+                  variables like your account balance, the trade size, and the
+                  level of risk you&apos;re willing to accept. This tool may
+                  enhance your trading outcomes and create a more reliable and
+                  methodical trading strategy.
+                </p>
+              </div>
             </Box>
           </Container>
         </Box>

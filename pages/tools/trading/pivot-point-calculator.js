@@ -43,15 +43,12 @@ const validationSchema = yup.object({
   highPrice: yup
     .number("Enter valid price")
     .min(1, "Price should be price 1")
-    .moreThan(yup.ref("lowPrice"), "High price should be higher than low price")
+    .moreThan(yup.ref("lowPrice"), "High price should be more than low price")
     .required("Enter valid price"),
   lowPrice: yup
     .number("Enter valid price")
     .min(1, "Price should be price 1")
-    .lessThan(
-      yup.ref("highPrice"),
-      "Low price should be lesser than high price"
-    )
+    .lessThan(yup.ref("highPrice"), "Low price should be less than high price")
     .required("Enter valid price"),
 });
 

@@ -62,6 +62,15 @@ const NiftyRangeCalculator = () => {
     },
   });
 
+  useEffect(() => {
+    const factor = 19.1049732;
+    const volatility = formik.values.indiavix / factor;
+    const diff = (formik.values.niftyPrice * volatility) / 100;
+
+    setLow((formik.values.niftyPrice - diff).toLocaleString());
+    setHigh((formik.values.niftyPrice + diff).toLocaleString());
+  }, [formik.values]);
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -205,17 +214,23 @@ const NiftyRangeCalculator = () => {
                           </FormErrorMessage>
                         )}
                     </FormControl>
-
-                    <Button colorScheme={"primary"} type="submit">
-                      Calculate
-                    </Button>
                   </SimpleGrid>
                 </Stack>
               </form>
             </Box>
             {low && (
-              <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-                Nifty Range <br /> {low} - {high}
+              <Box
+                mt={10}
+                p={5}
+                backgroundColor={"black"}
+                color={"white"}
+                textAlign={"center"}
+                lineHeight={1.7}
+              >
+                Nifty Range <br />{" "}
+                <Text fontSize={"xl"}>
+                  {low} - {high}
+                </Text>
               </Box>
             )}
 
