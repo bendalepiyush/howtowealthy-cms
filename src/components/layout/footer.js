@@ -9,11 +9,38 @@ import {
   Text,
   List,
   ListItem,
+  Button,
+  FormErrorMessage,
+  Heading,
+  Stack,
+  FormControl,
+  Input,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import * as yup from "yup";
+import { subscibeByEmail } from "../../api/subscriber";
+import { useFormik } from "formik";
+import { useState } from "react";
+
+const validationSchema = yup.object({
+  query: yup.string("Enter valid query.").required("Enter valid query."),
+});
 
 const Footer = () => {
+  const [loading, setLoading] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      setLoading(true);
+      var res = await subscibeByEmail(values.email, "", "");
+      setLoading(false);
+    },
+  });
+
   const companyNav = {
     label: "Categories",
     items: [
@@ -92,6 +119,45 @@ const Footer = () => {
     <footer>
       <Box bg="gray.50" py={20}>
         <Container maxW="8xl">
+          <Box mb={20} ml={0} maxW="3xl">
+            <Text fontSize={"3xl"} fontWeight={200} mb={6}>
+              We&apos;re sharing our secrets and experiences on how to get your
+              Personal Finances sorted and helping you to make better decisions
+            </Text>
+
+            <Flex justifyContent={"space-between"}>
+              <form onSubmit={formik.handleSubmit}>
+                <Flex>
+                  <FormControl
+                    isInvalid={
+                      formik.touched.email && Boolean(formik.errors.email)
+                    }
+                  >
+                    <Input
+                      name="email"
+                      id="email"
+                      placeholder="Email Address"
+                      size="lg"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.email && Boolean(formik.errors.email) && (
+                      <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <Button
+                    isLoading={loading}
+                    loadingText="Submitting"
+                    type="submit"
+                    colorScheme={"black"}
+                    size="lg"
+                  >
+                    Subscribe
+                  </Button>
+                </Flex>
+              </form>
+            </Flex>
+          </Box>
           <Flex direction={{ base: "column", md: "row" }}>
             <Box maxW={"sm"} mb={{ base: 6, md: 0 }}>
               <Box mb={3}>
