@@ -27,7 +27,7 @@ const Bookmark = () => {
   const [isLoading, setIsLoading] = useBoolean(true);
 
   const handleRemoveBookmark = (url) => {
-    removeBookmarkOrFavURL(user.uid, url, "bookmark").then((res) => {
+    removeBookmarkOrFavURL(user.uid, url, "favourite").then((res) => {
       toast({
         title: "Favourite Removed!",
         status: "error",

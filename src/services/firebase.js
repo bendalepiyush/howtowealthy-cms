@@ -136,6 +136,11 @@ const getAllBookmarkorFavPerPagination = async (uuid, type, last) => {
   return await getDocs(res);
 };
 
+const getNseData = async () => {
+  const res = doc(db, "nse-index-data", "all");
+  return await (await getDoc(res)).data();
+};
+
 export {
   auth,
   logInWithEmailAndPassword,
@@ -147,4 +152,5 @@ export {
   removeBookmarkOrFavURL,
   getAllBookmarkorFavPerPagination,
   resetPassword,
+  getNseData,
 };

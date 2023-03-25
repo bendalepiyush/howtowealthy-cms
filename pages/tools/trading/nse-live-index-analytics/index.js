@@ -15,6 +15,7 @@ import Seo from "../../../../src/components/seo";
 import Link from "next/link";
 import TradingViewChartLinks from "../../../../src/utils/trading-view-chart-links";
 import { FaChartLine } from "react-icons/fa";
+import { getNseData } from "../../../../src/services/firebase";
 
 const NseMarketIndexAnalytics = () => {
   const [data, setData] = useState();
@@ -38,7 +39,8 @@ const NseMarketIndexAnalytics = () => {
     let tempStoredData = JSON.parse(localStorage.getItem("nse-index-data"));
 
     if (!tempStoredData) {
-      const res = await nseIndexData();
+      const res = await getNseData();
+      console.log(res);
       setData(res);
       localStorage.setItem("nse-index-data", JSON.stringify(res));
     } else {
@@ -48,7 +50,8 @@ const NseMarketIndexAnalytics = () => {
       setTime(new Date(tempStoredData.expires * 1000 - 3 * 60000));
 
       if (currentTime > expiryTime) {
-        const res = await nseIndexData();
+        const res = await getNseData();
+        console.log(res);
         setData(res);
         localStorage.setItem("nse-index-data", JSON.stringify(res));
       } else {
