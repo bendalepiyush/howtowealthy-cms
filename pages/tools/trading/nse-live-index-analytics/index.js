@@ -202,7 +202,7 @@ const NseMarketIndexAnalytics = () => {
                   Sector Analysis
                 </Heading>
 
-                <SimpleGrid columns={3} gap={5}>
+                <SimpleGrid columns={{ md: 3, sm: 1 }} gap={5}>
                   {data.data.data.map((item) => {
                     if (item.key == "SECTORAL INDICES") {
                       const advances = parseInt(item.advances);
@@ -302,7 +302,7 @@ const NseMarketIndexAnalytics = () => {
                   Borad Market Analysis
                 </Heading>
 
-                <SimpleGrid columns={3} gap={5}>
+                <SimpleGrid columns={{ md: 3, sm: 1 }} gap={5}>
                   {data.data.data.map((item) => {
                     if (item.key == "BROAD MARKET INDICES") {
                       const advances = parseInt(item.advances);
