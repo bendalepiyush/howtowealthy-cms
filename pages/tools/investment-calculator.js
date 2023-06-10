@@ -94,6 +94,7 @@ const InvestmentCalculator = () => {
     );
     workerRef.current.onmessage = (event) => {
       setResult(event.data);
+      console.log(event.data);
     };
     return () => {
       workerRef.current.terminate();
