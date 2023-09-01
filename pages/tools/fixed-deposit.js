@@ -104,7 +104,7 @@ const FixedDepositCalculator = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Investment Calculator - How to Wealthy",
+        headline: "Fixed Deposit Calculator - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
@@ -114,13 +114,13 @@ const FixedDepositCalculator = () => {
         dateModified: "2022-12-03",
         datePublished: "2022-12-03",
         mainEntityOfPage: {
-          "@id": "https://www.howtowealthy.com/tools/investment-calculator",
+          "@id": "https://www.howtowealthy.com/tools/fixed-deposit",
           "@type": "WebPage",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/fixed-deposit#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -137,7 +137,7 @@ const FixedDepositCalculator = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Investment Calculator",
+            name: "Fixed Deposit Calculator",
           },
         ],
       },
@@ -147,7 +147,7 @@ const FixedDepositCalculator = () => {
   return (
     <>
       <Seo
-        title="Investment Calculator - How to Wealthy"
+        title="Fixed Deposit Calculator - How to Wealthy"
         description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
         structuredData={JSON.stringify(structuredData)}
         ogImage={
@@ -171,14 +171,9 @@ const FixedDepositCalculator = () => {
                 </Badge>
               </Link>
               <Heading as={"h1"} mb={2}>
-                Investment Calculator
+                Fixed Deposit Calculator
               </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Investing is one of the best ways to build wealth over time. But
-                before you invest, you should know what your prospect returns
-                are. Calculate your inflation adjusted investment value with
-                step SIP.
-              </Text>
+              <Text fontSize={"2xl"} fontWeight={300}></Text>
             </Box>
 
             <Box mb={10}>
@@ -352,7 +347,7 @@ const FixedDepositCalculator = () => {
                 <Table>
                   <Thead>
                     <Tr>
-                      <Th>Year</Th>
+                      <Th>Month</Th>
                       <Th textAlign={"right"}>Interest</Th>
                       <Th textAlign={"right"}>
                         Total Interest (in {currency.value})
