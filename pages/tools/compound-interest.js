@@ -150,13 +150,13 @@ const EquatedMonthlyInsatllmentCalculator = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Investment Calculator - How to Wealthy",
+        headline: "Compound Interest Calculator - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
         },
         description:
-          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
+          "Use our compound interest calculator to see how your savings or investments might grow over time using the power of compound interest",
         dateModified: "2022-12-03",
         datePublished: "2022-12-03",
         mainEntityOfPage: {
@@ -183,7 +183,7 @@ const EquatedMonthlyInsatllmentCalculator = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Investment Calculator",
+            name: "Compound Interest Calculator",
           },
         ],
       },
@@ -193,13 +193,14 @@ const EquatedMonthlyInsatllmentCalculator = () => {
   return (
     <>
       <Seo
-        title="Investment Calculator - How to Wealthy"
-        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        title="Compound Interest Calculator - How to Wealthy"
+        description="Use our compound interest calculator to see how your savings or investments might grow over time using the power of compound interest"
         structuredData={JSON.stringify(structuredData)}
         ogImage={
-          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
+          "https://assets.howtowealthy.com/ogimg-compound-interest-calculator.png"
         }
       />
+
       <Layout>
         <Box py={20}>
           <Container maxW={"5xl"}>
@@ -217,14 +218,8 @@ const EquatedMonthlyInsatllmentCalculator = () => {
                 </Badge>
               </Link>
               <Heading as={"h1"} mb={2}>
-                Equated Monthly Insatllment(EMI) Calculator
+                Compound Interest Calculator
               </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Investing is one of the best ways to build wealth over time. But
-                before you invest, you should know what your prospect returns
-                are. Calculate your inflation adjusted investment value with
-                step SIP.
-              </Text>
             </Box>
 
             <Box mb={10}>

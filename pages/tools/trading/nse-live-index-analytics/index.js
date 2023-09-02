@@ -282,14 +282,6 @@ const NseMarketIndexAnalytics = () => {
                               />
                             </Flex>
                           </Box>
-                          <Flex justifyContent={"space-between"}>
-                            <Text fontSize={"sm"} color={"gray.700"}>
-                              Advanced
-                            </Text>
-                            <Text fontSize={"sm"} color={"gray.700"}>
-                              Declined
-                            </Text>
-                          </Flex>
                         </Box>
                       );
                     }
@@ -333,14 +325,14 @@ const NseMarketIndexAnalytics = () => {
                                 {item.index}
                               </Heading>
 
-                              <a href={TradingViewChartLinks[item.index]}>
+                              {/* <a href={TradingViewChartLinks[item.index]}>
                                 <Icon
                                   color={"purple.500"}
                                   w={4}
                                   h={4}
                                   as={FaChartLine}
                                 />
-                              </a>
+                              </a> */}
                             </Flex>
 
                             <Flex flexDirection={"column"} alignItems={"end"}>
@@ -382,14 +374,6 @@ const NseMarketIndexAnalytics = () => {
                               />
                             </Flex>
                           </Box>
-                          <Flex justifyContent={"space-between"}>
-                            <Text fontSize={"sm"} color={"gray.700"}>
-                              Advanced
-                            </Text>
-                            <Text fontSize={"sm"} color={"gray.700"}>
-                              Declined
-                            </Text>
-                          </Flex>
                         </Box>
                       );
                     }

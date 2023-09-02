@@ -110,7 +110,7 @@ const FixedDepositCalculator = () => {
           "@type": "Organization",
         },
         description:
-          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
+          "FD Calculator - Calculate fixed deposit interest rates and maturity amount online. Fixed deposit calculator helps you to calculate the maturity and interest amount you can earn on your fixed deposit investment.",
         dateModified: "2022-12-03",
         datePublished: "2022-12-03",
         mainEntityOfPage: {
@@ -148,10 +148,10 @@ const FixedDepositCalculator = () => {
     <>
       <Seo
         title="Fixed Deposit Calculator - How to Wealthy"
-        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        description="FD Calculator - Calculate fixed deposit interest rates and maturity amount online. Fixed deposit calculator helps you to calculate the maturity and interest amount you can earn on your fixed deposit investment."
         structuredData={JSON.stringify(structuredData)}
         ogImage={
-          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
+          "https://assets.howtowealthy.com/ogimg-fixed-deposit-calculator.png"
         }
       />
       <Layout>

@@ -122,23 +122,23 @@ const EquatedMonthlyInsatllmentCalculator = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Investment Calculator - How to Wealthy",
+        headline: "EMI Calculator - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
         },
         description:
-          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
+          "Work out interest and monthly repayments for your loan or mortgage. Includes options for extra payments",
         dateModified: "2022-12-03",
         datePublished: "2022-12-03",
         mainEntityOfPage: {
-          "@id": "https://www.howtowealthy.com/tools/investment-calculator",
+          "@id": "https://www.howtowealthy.com/tools/emi",
           "@type": "WebPage",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/emi#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -155,7 +155,7 @@ const EquatedMonthlyInsatllmentCalculator = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Investment Calculator",
+            name: "EMI Calculator",
           },
         ],
       },
@@ -165,12 +165,10 @@ const EquatedMonthlyInsatllmentCalculator = () => {
   return (
     <>
       <Seo
-        title="Investment Calculator - How to Wealthy"
-        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        title="EMI Calculator - How to Wealthy"
+        description="Work out interest and monthly repayments for your loan or mortgage. Includes options for extra payments"
         structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
-        }
+        ogImage={"https://assets.howtowealthy.com/ogimg-emi-calculator.png"}
       />
       <Layout>
         <Box py={20}>
@@ -189,14 +187,9 @@ const EquatedMonthlyInsatllmentCalculator = () => {
                 </Badge>
               </Link>
               <Heading as={"h1"} mb={2}>
-                Equated Monthly Insatllment(EMI) Calculator
+                EMI (Equated Monthly Installment) Calculator
               </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Investing is one of the best ways to build wealth over time. But
-                before you invest, you should know what your prospect returns
-                are. Calculate your inflation adjusted investment value with
-                step SIP.
-              </Text>
+              <Text fontSize={"2xl"} fontWeight={300}></Text>
             </Box>
 
             <Box mb={10}>

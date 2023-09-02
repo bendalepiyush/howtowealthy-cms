@@ -40,11 +40,11 @@ const validationSchema = yup.object({
     .min(500, "Enter initial investment more than 500")
     .max(1000000, "Enter initial investment less than 1,000,000")
     .required("Enter valid initial investment"),
-  finalValue: yup
-    .number("Enter valid initial investment")
-    .min(500, "Enter initial investment more than 500")
-    .max(1000000, "Enter initial investment less than 1,000,000")
-    .required("Enter valid initial investment"),
+  cagr: yup
+    .number("Enter valid rate of interest")
+    .min(4, "Enter rate of interest more than 4")
+    .max(25, "Enter rate of interest less than 25")
+    .required("Enter valid rate of interest"),
   duration: yup
     .number("Enter valid duration")
     .min(0, "Enter duration more than 0")
@@ -52,11 +52,10 @@ const validationSchema = yup.object({
     .required("Enter valid duration"),
 });
 
-const CompoundAnnualGrowthRateCalculator = () => {
+const ReverseCompoundAnnualGrowthRateCalculator = () => {
   const workerRef = useRef();
   const [currency, setCurrency] = useState({ label: "USD ($)", value: "$" });
   const [result, setResult] = useState({
-    cagr: 0,
     interest: [],
     totalInterest: [],
     totalInterestInPercentage: [],
@@ -66,8 +65,8 @@ const CompoundAnnualGrowthRateCalculator = () => {
   const formik = useFormik({
     initialValues: {
       initialValue: 10000,
-      finalValue: 15000,
-      duration: 5,
+      cagr: 6,
+      duration: 3,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -78,7 +77,7 @@ const CompoundAnnualGrowthRateCalculator = () => {
 
   useEffect(() => {
     workerRef.current = new Worker(
-      new URL("../../src/workers/cagr.js", import.meta.url)
+      new URL("../../src/workers/reverse_cagr.js", import.meta.url)
     );
     workerRef.current.onmessage = (event) => {
       setResult(event.data);
@@ -105,23 +104,23 @@ const CompoundAnnualGrowthRateCalculator = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Investment Calculator - How to Wealthy",
+        headline: "Reverse CAGR Calculator - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
         },
         description:
-          "Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP.",
+          "The Reverse CAGR Calculator is simply means if You know the annual return of any instrument, you can calculate the final value or maturity value of an investment using this calculator.",
         dateModified: "2022-12-03",
         datePublished: "2022-12-03",
         mainEntityOfPage: {
-          "@id": "https://www.howtowealthy.com/tools/investment-calculator",
+          "@id": "https://www.howtowealthy.com/tools/reverse-cagr",
           "@type": "WebPage",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/investment-calculator#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/reverse-cagr#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -138,7 +137,7 @@ const CompoundAnnualGrowthRateCalculator = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Investment Calculator",
+            name: "Reverse CAGR Calculator",
           },
         ],
       },
@@ -148,11 +147,11 @@ const CompoundAnnualGrowthRateCalculator = () => {
   return (
     <>
       <Seo
-        title="Investment Calculator - How to Wealthy"
-        description="Investing is one of the best ways to build wealth over time. But before you invest, you should know what your prospect returns are. Calculate your inflation adjusted investment value with step SIP."
+        title="Reverse CAGR Calculator - How to Wealthy"
+        description="The Reverse CAGR Calculator is simply means if You know the annual return of any instrument, you can calculate the final value or maturity value of an investment using this calculator."
         structuredData={JSON.stringify(structuredData)}
         ogImage={
-          "https://assets.howtowealthy.com/ogimg-investment-calculator.png"
+          "https://assets.howtowealthy.com/ogimg-reverse-cagr-calculator.png"
         }
       />
       <Layout>
@@ -172,14 +171,8 @@ const CompoundAnnualGrowthRateCalculator = () => {
                 </Badge>
               </Link>
               <Heading as={"h1"} mb={2}>
-                Compound Annual Growth Rate(CAGR) Calculator
+                Reverse Compound Annual Growth Rate (Reverse CAGR) Calculator
               </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Investing is one of the best ways to build wealth over time. But
-                before you invest, you should know what your prospect returns
-                are. Calculate your inflation adjusted investment value with
-                step SIP.
-              </Text>
             </Box>
 
             <Box mb={10}>
@@ -229,29 +222,27 @@ const CompoundAnnualGrowthRateCalculator = () => {
 
                     <FormControl
                       isInvalid={
-                        formik.touched.finalValue &&
-                        Boolean(formik.errors.finalValue)
+                        formik.touched.cagr && Boolean(formik.errors.cagr)
                       }
                     >
-                      <FormLabel htmlFor="finalValue">Final Value</FormLabel>
+                      <FormLabel htmlFor="cagr">CAGR</FormLabel>
                       <InputGroup>
-                        <InputLeftElement pointerEvents="none">
-                          <Text>{currency.value}</Text>
-                        </InputLeftElement>
                         <Input
-                          value={formik.values.finalValue}
-                          name="finalValue"
+                          value={formik.values.cagr}
+                          name="cagr"
                           type="number"
                           onChange={formik.handleChange}
                         />
+                        <InputRightElement pointerEvents="none">
+                          <Text pr={5}>%</Text>
+                        </InputRightElement>
                       </InputGroup>
 
-                      {formik.touched.finalValue &&
-                        Boolean(formik.errors.finalValue) && (
-                          <FormErrorMessage>
-                            {formik.errors.finalValue}
-                          </FormErrorMessage>
-                        )}
+                      {formik.touched.cagr && Boolean(formik.errors.cagr) && (
+                        <FormErrorMessage>
+                          {formik.errors.cagr}
+                        </FormErrorMessage>
+                      )}
                     </FormControl>
 
                     <FormControl
@@ -288,7 +279,6 @@ const CompoundAnnualGrowthRateCalculator = () => {
                 </Stack>
               </form>
             </Box>
-
             {result.investmentValue.length > 1 && (
               <Box>
                 <Stack mt={20} mb={10} gap={10}>
@@ -296,9 +286,14 @@ const CompoundAnnualGrowthRateCalculator = () => {
                     <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
                       <Box>
                         <Heading>
-                          {numberFormater(result.cagr + " %" || 0)}
+                          {currency.value}{" "}
+                          {numberFormater(
+                            result.investmentValue[
+                              result.investmentValue.length - 1
+                            ] || 0
+                          )}
                         </Heading>
-                        <Text>CAGR</Text>
+                        <Text>Maturity Value</Text>
                       </Box>
                       <Box>
                         <Heading>
@@ -311,9 +306,11 @@ const CompoundAnnualGrowthRateCalculator = () => {
                         <Heading>
                           {currency.value}{" "}
                           {numberFormater(
-                            result.investmentValue[
-                              result.investmentValue.length - 1
-                            ] - result.investmentValue[0] || 0
+                            (
+                              result.investmentValue[
+                                result.investmentValue.length - 1
+                              ] - result.investmentValue[0] || 0
+                            ).toFixed(2)
                           )}
                         </Heading>
                         <Text>Interest Earned</Text>
@@ -413,4 +410,4 @@ const TabInput = ({ handleChange, options, currentValue }) => {
   );
 };
 
-export default CompoundAnnualGrowthRateCalculator;
+export default ReverseCompoundAnnualGrowthRateCalculator;
