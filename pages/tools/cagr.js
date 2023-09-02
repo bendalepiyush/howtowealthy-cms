@@ -19,10 +19,9 @@ import {
   Spacer,
   InputGroup,
   InputLeftElement,
-  InputRightAddon,
+  InputRightElement,
   Badge,
   FormErrorMessage,
-  Select,
 } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import * as yup from "yup";
@@ -31,63 +30,55 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../src/utils/number_format";
 import Seo from "../../src/components/seo";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const validationSchema = yup.object({
-  initialAmount: yup.number().required(),
-  loanTenure: yup
-    .number("Enter valid age in years")
-    .integer("Enter valid age in years")
-    .min(1, "Current age must be more than 10 years")
-    .max(30, "Current age must be less than 100 years")
-    .required("Enter valid age in years"),
-  currentMonthOfLoan: yup
-    .number("Enter valid month")
-    .integer("Enter valid month")
-    .min(0, "Current month must be more than 0")
-    .when("loanTenure", (loanTenure, schema) => {
-      return schema.test({
-        test: (currentMonthOfLoan) =>
-          !!loanTenure && currentMonthOfLoan < loanTenure * 12,
-        message: "Enter valid month",
-      });
-    })
-    .required("Enter valid month"),
-  yearlyReturnsRate: yup
-    .number("Enter valid rate")
-    .min(0, "Enter valid rate")
-    .required("Enter valid rate"),
-  interestRate: yup
-    .number("Enter valid rate")
-    .min(0, "Enter valid rate")
-    .required("Enter valid rate"),
+  initialValue: yup
+    .number("Enter valid initial investment")
+    .min(500, "Enter initial investment more than 500")
+    .max(1000000, "Enter initial investment less than 1,000,000")
+    .required("Enter valid initial investment"),
+  finalValue: yup
+    .number("Enter valid initial investment")
+    .min(500, "Enter initial investment more than 500")
+    .max(1000000, "Enter initial investment less than 1,000,000")
+    .required("Enter valid initial investment"),
+  duration: yup
+    .number("Enter valid duration")
+    .min(0, "Enter duration more than 0")
+    .max(30, "Enter duration less than 30")
+    .required("Enter valid duration"),
 });
 
-const CAGRCalculator = () => {
+const CompoundAnnualGrowthRateCalculator = () => {
   const workerRef = useRef();
   const [currency, setCurrency] = useState({ label: "USD ($)", value: "$" });
   const [result, setResult] = useState({
-    emi: 0,
+    cagr: 0,
+    interest: [],
+    totalInterest: [],
+    totalInterestInPercentage: [],
+    investmentValue: [],
   });
 
   const formik = useFormik({
     initialValues: {
-      initialAmount: 1000000,
-      currentMonthOfLoan: 30,
-      loanTenure: 5,
-      lumpsumAmount: 100000,
-      yearlyReturnsRate: 14,
-      interestRate: 9,
+      initialValue: 10000,
+      finalValue: 15000,
+      duration: 5,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("Submit");
+      console.log(values);
       handleSubmit(values);
     },
   });
 
   useEffect(() => {
     workerRef.current = new Worker(
-      new URL("../../src/workers/loan-payoff-or-invest.js", import.meta.url)
+      new URL("../../src/workers/cagr.js", import.meta.url)
     );
     workerRef.current.onmessage = (event) => {
       setResult(event.data);
@@ -99,14 +90,7 @@ const CAGRCalculator = () => {
   }, []);
 
   const handleSubmit = useCallback(async (values) => {
-    workerRef.current.postMessage({
-      rateOfInterest: values.interestRate,
-      loanAmount: values.loanAmount,
-      duration: values.loanTenure,
-      extraPaymentMonth: values.currentMonthOfLoan,
-      lumpsumAmount: Number(values.lumpsumAmount),
-      yearlyReturnsRate: values.yearlyReturnsRate,
-    });
+    workerRef.current.postMessage(values);
   }, []);
 
   const structuredData = {
@@ -121,23 +105,23 @@ const CAGRCalculator = () => {
           "@type": "Person",
         },
         "@context": "https://schema.org",
-        headline: "Loan Payoff or Invest - How to Wealthy",
+        headline: "CAGR Calculator - How to Wealthy",
         publisher: {
           name: "How to Wealthy",
           "@type": "Organization",
         },
         description:
-          "Investing and paying down debt are both good uses for any spare cash you might have. So this will help you make a decision on whether you should invest your money or pay off your ongoing loan.",
-        dateModified: "2022-02-28",
-        datePublished: "2022-02-28",
+          "In simpler terms, it's a way to figure out how much an investment has grown on average each year with the help of the Initial value and Final value.",
+        dateModified: "2023-08-02",
+        datePublished: "2023-08-02",
         mainEntityOfPage: {
-          "@id": "https://www.howtowealthy.com/tools/loan-payoff-or-invest",
+          "@id": "https://www.howtowealthy.com/tools/cagr",
           "@type": "WebPage",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/loan-payoff-or-invest#breadcrumb`,
+        "@id": `https://www.howtowealthy.com/tools/cagr#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -154,7 +138,7 @@ const CAGRCalculator = () => {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Loan Payoff or Invest - How to Wealthy",
+            name: "CAGR Calculator",
           },
         ],
       },
@@ -164,12 +148,10 @@ const CAGRCalculator = () => {
   return (
     <>
       <Seo
-        title="Online CAGR Calculator - How to Wealthy"
-        description="Investing and paying down debt are both good uses for any spare cash you might have. So this will help you make a decision on whether you should invest your money or pay off your ongoing loan."
+        title="CAGR Calculator - How to Wealthy"
+        description="In simpler terms, it's a way to figure out how much an investment has grown on average each year with the help of the Initial value and Final value."
         structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-loan-payoff-or-invest.png.png"
-        }
+        ogImage={"https://assets.howtowealthy.com/ogimg-cagr-calculator.png"}
       />
       <Layout>
         <Box py={20}>
@@ -188,14 +170,8 @@ const CAGRCalculator = () => {
                 </Badge>
               </Link>
               <Heading as={"h1"} mb={2}>
-                CAGR Calculator
+                Compound Annual Growth Rate (CAGR) Calculator
               </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Investing and paying down debt are both good uses for any spare
-                cash you might have. So this will help you make a decision on
-                whether you should invest your money or pay off your ongoing
-                loan.
-              </Text>
             </Box>
 
             <Box mb={10}>
@@ -216,11 +192,11 @@ const CAGRCalculator = () => {
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                     <FormControl
                       isInvalid={
-                        formik.touched.initialAmount &&
-                        Boolean(formik.errors.initialAmount)
+                        formik.touched.initialValue &&
+                        Boolean(formik.errors.initialValue)
                       }
                     >
-                      <FormLabel htmlFor="initialAmount">
+                      <FormLabel htmlFor="initialValue">
                         Initial Value
                       </FormLabel>
                       <InputGroup>
@@ -228,37 +204,40 @@ const CAGRCalculator = () => {
                           <Text>{currency.value}</Text>
                         </InputLeftElement>
                         <Input
-                          value={formik.values.initialAmount}
-                          name="initialAmount"
+                          value={formik.values.initialValue}
+                          name="initialValue"
                           type="number"
                           onChange={formik.handleChange}
                         />
                       </InputGroup>
-                      {formik.touched.initialAmount &&
-                        Boolean(formik.errors.initialAmount) && (
+
+                      {formik.touched.initialValue &&
+                        Boolean(formik.errors.initialValue) && (
                           <FormErrorMessage>
-                            {formik.errors.initialAmount}
+                            {formik.errors.initialValue}
                           </FormErrorMessage>
                         )}
                     </FormControl>
+
                     <FormControl
                       isInvalid={
                         formik.touched.finalValue &&
                         Boolean(formik.errors.finalValue)
                       }
                     >
-                      <FormLabel htmlFor="loanAmount">Final Value</FormLabel>
+                      <FormLabel htmlFor="finalValue">Final Value</FormLabel>
                       <InputGroup>
                         <InputLeftElement pointerEvents="none">
                           <Text>{currency.value}</Text>
                         </InputLeftElement>
                         <Input
                           value={formik.values.finalValue}
-                          name="loanAmount"
+                          name="finalValue"
                           type="number"
                           onChange={formik.handleChange}
                         />
                       </InputGroup>
+
                       {formik.touched.finalValue &&
                         Boolean(formik.errors.finalValue) && (
                           <FormErrorMessage>
@@ -266,39 +245,33 @@ const CAGRCalculator = () => {
                           </FormErrorMessage>
                         )}
                     </FormControl>
+
                     <FormControl
                       isInvalid={
-                        formik.touched.loanTenure &&
-                        Boolean(formik.errors.loanTenure)
+                        formik.touched.duration &&
+                        Boolean(formik.errors.duration)
                       }
                     >
-                      <FormLabel htmlFor="loanTenure">Duration</FormLabel>
+                      <FormLabel htmlFor="duration">Duration</FormLabel>
                       <InputGroup>
                         <Input
-                          value={formik.values.loanTenure}
-                          name="loanTenure"
+                          value={formik.values.duration}
+                          name="duration"
                           type="number"
                           onChange={formik.handleChange}
                         />
-                        <InputRightAddon
-                          // eslint-disable-next-line react/no-children-prop
-                          children={
-                            <Select border={"none"} focusBorderColor={"none"}>
-                              <option>Year</option>
-                              <option>Month</option>
-                            </Select>
-                          }
-                          p={0}
-                        />
+                        <InputRightElement pointerEvents="none">
+                          <Text pr={5}>Yearly</Text>
+                        </InputRightElement>
                       </InputGroup>
-                      {formik.touched.loanTenure &&
-                        Boolean(formik.errors.loanTenure) && (
+
+                      {formik.touched.duration &&
+                        Boolean(formik.errors.duration) && (
                           <FormErrorMessage>
-                            {formik.errors.loanTenure}
+                            {formik.errors.duration}
                           </FormErrorMessage>
                         )}
                     </FormControl>
-
                     <div></div>
                     <Button colorScheme={"primary"} type="submit">
                       Calculate
@@ -308,7 +281,96 @@ const CAGRCalculator = () => {
               </form>
             </Box>
 
-            {result.emi > 0 && <></>}
+            {result.investmentValue.length > 1 && (
+              <Box>
+                <Stack mt={20} mb={10} gap={10}>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                    <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
+                      <Box>
+                        <Heading>
+                          {numberFormater(result.cagr + " %" || 0)}
+                        </Heading>
+                        <Text>CAGR</Text>
+                      </Box>
+                      <Box>
+                        <Heading>
+                          {currency.value}{" "}
+                          {numberFormater(result.investmentValue[0] || 0)}
+                        </Heading>
+                        <Text>Invested Amount</Text>
+                      </Box>
+                      <Box>
+                        <Heading>
+                          {currency.value}{" "}
+                          {numberFormater(
+                            result.investmentValue[
+                              result.investmentValue.length - 1
+                            ] - result.investmentValue[0] || 0
+                          )}
+                        </Heading>
+                        <Text>Interest Earned</Text>
+                      </Box>
+                    </SimpleGrid>
+
+                    <Chart
+                      type="donut"
+                      series={[
+                        result.totalInterest[result.investmentValue.length - 1],
+                        result.investmentValue[0],
+                      ]}
+                      options={{
+                        labels: ["Interest Earned", "Invested Amount"],
+
+                        fill: {
+                          colors: ["#000", "#555"],
+                        },
+                      }}
+                    />
+                  </SimpleGrid>
+                </Stack>
+              </Box>
+            )}
+
+            {result.investmentValue.length > 1 && (
+              <Box overflowX={"auto"} mt={20}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>Year</Th>
+                      <Th textAlign={"right"}>Interest</Th>
+                      <Th textAlign={"right"}>
+                        Total Interest (in {currency.value})
+                      </Th>
+                      <Th textAlign={"right"}>Total Interest(in %)</Th>
+                      <Th textAlign={"right"}>Interest Value</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {result.investmentValue.map((item, idx) => {
+                      return (
+                        <Tr key={idx}>
+                          <Td>{idx}</Td>
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.interest[idx])}
+                          </Td>
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.totalInterest[idx])}
+                          </Td>
+                          <Td textAlign={"right"}>
+                            {numberFormater(
+                              result.totalInterestInPercentage[idx] + " %"
+                            )}
+                          </Td>
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.investmentValue[idx])}
+                          </Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              </Box>
+            )}
 
             <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
               <div className={"post-content"}></div>
@@ -343,4 +405,4 @@ const TabInput = ({ handleChange, options, currentValue }) => {
   );
 };
 
-export default CAGRCalculator;
+export default CompoundAnnualGrowthRateCalculator;
