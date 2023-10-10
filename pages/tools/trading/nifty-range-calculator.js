@@ -43,13 +43,14 @@ const validationSchema = yup.object({
 });
 
 const NiftyRangeCalculator = () => {
-  const [low, setLow] = useState(null);
-  const [high, setHigh] = useState(null);
+  const [day, setDay] = useState(null);
+  const [week, setWeek] = useState(null);
+  const [month, setMonth] = useState(null);
 
   const formik = useFormik({
     initialValues: {
-      niftyPrice: 17500,
-      indiavix: 15.4,
+      niftyPrice: 19653.5,
+      indiavix: 11,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -64,11 +65,29 @@ const NiftyRangeCalculator = () => {
 
   useEffect(() => {
     const factor = 19.1049732;
+    const factorWeek = 7.21110255093;
+    const factorMonth = 3.46410161514;
     const volatility = formik.values.indiavix / factor;
+    const volatilityWeek = formik.values.indiavix / factorWeek;
+    const volatilityMonth = formik.values.indiavix / factorMonth;
     const diff = (formik.values.niftyPrice * volatility) / 100;
+    const diffWeek = (formik.values.niftyPrice * volatilityWeek) / 100;
+    const diffMonth = (formik.values.niftyPrice * volatilityMonth) / 100;
 
-    setLow((formik.values.niftyPrice - diff).toLocaleString());
-    setHigh((formik.values.niftyPrice + diff).toLocaleString());
+    setDay({
+      low: (formik.values.niftyPrice - diff).toLocaleString(),
+      high: (formik.values.niftyPrice + diff).toLocaleString(),
+    });
+
+    setWeek({
+      low: (formik.values.niftyPrice - diffWeek).toLocaleString(),
+      high: (formik.values.niftyPrice + diffWeek).toLocaleString(),
+    });
+
+    setMonth({
+      low: (formik.values.niftyPrice - diffMonth).toLocaleString(),
+      high: (formik.values.niftyPrice + diffMonth).toLocaleString(),
+    });
   }, [formik.values]);
 
   const structuredData = {
@@ -218,19 +237,18 @@ const NiftyRangeCalculator = () => {
                 </Stack>
               </form>
             </Box>
-            {low && (
+            {day && (
               <Box
                 mt={10}
                 p={5}
                 backgroundColor={"black"}
                 color={"white"}
-                textAlign={"center"}
                 lineHeight={1.7}
               >
-                Nifty Range <br />{" "}
-                <Text fontSize={"xl"}>
-                  {low} - {high}
-                </Text>
+                Nifty Daily Range: {day.low} - {day.high} <br />
+                Nifty Weekly Range: {week.low} - {week.high}
+                <br />
+                Nifty Monthly Range: {month.low} - {month.high}
               </Box>
             )}
 
