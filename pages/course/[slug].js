@@ -28,6 +28,7 @@ import {
   FormLabel,
   Input,
   Checkbox,
+  FormErrorMessage,
   Button,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";

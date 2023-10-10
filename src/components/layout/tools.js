@@ -46,6 +46,7 @@ const ToolsLayout = ({
                     w={"full"}
                     href={item.path}
                     _hover={{ textDecoration: "none" }}
+                    key={item.path}
                   >
                     <Flex
                       w={"full"}
