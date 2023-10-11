@@ -424,15 +424,15 @@ const EquatedMonthlyInsatllmentCalculator = () => {
               loan. When you take a loan from a financial institution, you
               control the loan principal and tenure, while the provider
               determines the interest rate. Ensuring you can repay the loan
-              without struggle is crucial, and that's where the EMI (Equated
-              Monthly Installment) comes in.
+              without struggle is crucial, and that&apos;s where the EMI
+              (Equated Monthly Installment) comes in.
             </p>
             <p>
               This EMI calculator helps you determine your personal loan EMI,
-              car loan EMI, or home loan EMI effortlessly. If you're considering
-              a student loan, the 529 loan calculator can help you invest in
-              education tax-free. Otherwise, the EMI calculator is a great
-              starting point for comparing different loan options.
+              car loan EMI, or home loan EMI effortlessly. If you&apos;re
+              considering a student loan, the 529 loan calculator can help you
+              invest in education tax-free. Otherwise, the EMI calculator is a
+              great starting point for comparing different loan options.
             </p>
             <p>
               EMI, short for Equated Monthly Installment, is the fixed monthly
@@ -499,9 +499,9 @@ const EquatedMonthlyInsatllmentCalculator = () => {
                 <h3>How do missing EMI payments impact my loan schedule?</h3>
                 <p>
                   Missing EMI payments can increase the loan term, and to avoid
-                  this, you'll need to increase the EMI amount. It's essential
-                  to plan ahead and make payments on time to maintain a good
-                  credit score.
+                  this, you&apos;ll need to increase the EMI amount. It&apos;s
+                  essential to plan ahead and make payments on time to maintain
+                  a good credit score.
                 </p>
               </li>
             </ol>
