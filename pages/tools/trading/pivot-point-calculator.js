@@ -30,6 +30,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../../src/utils/number_format";
 import Seo from "../../../src/components/seo";
 import Link from "next/link";
+import ToolsLayout from "../../../src/components/layout/tools";
 
 const validationSchema = yup.object({
   openPrice: yup
@@ -227,190 +228,173 @@ const PivotPointCalculator = () => {
   };
 
   return (
-    <>
-      <Seo
-        title="Pivot Point Calculator - How to Wealthy"
-        description="Pivot Points Calculator uses a previous period’s high, low, and close price for a specific period to define future support and Resistance levels."
-        structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-pivot-point-calculator.png"
-        }
-      />
-      <Layout>
-        <Box py={20}>
-          <Container maxW={"5xl"}>
-            <Box pb={16} maxW={"2xl"}>
-              <Link href={`/tools`}>
-                <Badge
-                  variant="outline"
-                  colorScheme="primary"
-                  py={2}
-                  px={5}
-                  borderRadius={100}
-                  mb={4}
-                >
-                  Tools
-                </Badge>
-              </Link>
-              <Heading as={"h1"} mb={2}>
-                Pivot Point Calculator
-              </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                Pivot Points Calculator is a technical analysis indicator. It
-                uses a previous period’s high, low, and close price for a
-                specific period to define future support and Resistance levels.
-                We have included 5 Different Kinds of Pivot Points: Floor,
-                Woodie, Camarilla, Demark, and Fibonacci.
-              </Text>
-            </Box>
-
-            <Box>
-              <form onSubmit={formik.handleSubmit}>
-                <Stack gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
-                    <SimpleGrid spacing={10}>
-                      <FormControl
-                        isInvalid={
-                          formik.touched.openPrice &&
-                          Boolean(formik.errors.openPrice)
-                        }
-                      >
-                        <FormLabel htmlFor="openPrice">Open Price</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.openPrice}
-                            name="openPrice"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-                        {formik.touched.openPrice &&
-                          Boolean(formik.errors.openPrice) && (
-                            <FormErrorMessage>
-                              {formik.errors.openPrice}
-                            </FormErrorMessage>
-                          )}
-                      </FormControl>
-
-                      <FormControl
-                        isInvalid={
-                          formik.touched.closePrice &&
-                          Boolean(formik.errors.closePrice)
-                        }
-                      >
-                        <FormLabel htmlFor="closePrice">Close Price</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.closePrice}
-                            name="closePrice"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-                        {formik.touched.closePrice &&
-                          Boolean(formik.errors.closePrice) && (
-                            <FormErrorMessage>
-                              {formik.errors.closePrice}
-                            </FormErrorMessage>
-                          )}
-                      </FormControl>
-
-                      <FormControl
-                        isInvalid={
-                          formik.touched.highPrice &&
-                          Boolean(formik.errors.highPrice)
-                        }
-                      >
-                        <FormLabel htmlFor="highPrice">High Price</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.highPrice}
-                            name="highPrice"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-                        {formik.touched.highPrice &&
-                          Boolean(formik.errors.highPrice) && (
-                            <FormErrorMessage>
-                              {formik.errors.highPrice}
-                            </FormErrorMessage>
-                          )}
-                      </FormControl>
-
-                      <FormControl
-                        isInvalid={
-                          formik.touched.lowPrice &&
-                          Boolean(formik.errors.lowPrice)
-                        }
-                      >
-                        <FormLabel htmlFor="lowPrice">Low Price</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.lowPrice}
-                            name="lowPrice"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-                        {formik.touched.lowPrice &&
-                          Boolean(formik.errors.lowPrice) && (
-                            <FormErrorMessage>
-                              {formik.errors.lowPrice}
-                            </FormErrorMessage>
-                          )}
-                      </FormControl>
-                      <Button colorScheme={"primary"} type="submit">
-                        Calculate
-                      </Button>
-                    </SimpleGrid>
-
-                    <Box w={"500px"} maxW={"100%"} m={"auto"}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="https://assets.howtowealthy.com/basic-candle-geek.png"
-                        alt="Basic Candle Geek - Pivot Point Calculator"
-                      />
-                    </Box>
-                  </SimpleGrid>
-                </Stack>
-              </form>
-            </Box>
-            {result && (
-              <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-                <Table>
-                  <Thead>
-                    <Tr>
-                      <Th>Levels</Th>
-                      <Th>Floor</Th>
-                      <Th>Woodie</Th>
-                      <Th>Camarilla</Th>
-                      <Th>Demark</Th>
-                      <Th>Fibonacci</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {result.map((item, i) => {
-                      return (
-                        <Tr key={i}>
-                          {item.map((sub, j) => (
-                            <Td key={`${i}${j}`}>{sub}</Td>
-                          ))}
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </Box>
-            )}
-
-            <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-              <div className={"post-content"}></div>
-            </Box>
-          </Container>
+    <ToolsLayout
+      path={"/tools/trading/pivot-point-calculator"}
+      title="Pivot Point Calculator - How to Wealthy"
+      description="Pivot Points Calculator uses a previous period’s high, low, and close price for a specific period to define future support and Resistance levels."
+      structuredData={JSON.stringify(structuredData)}
+      ogImage={
+        "https://assets.howtowealthy.com/ogimg-pivot-point-calculator.png"
+      }
+    >
+      <Box>
+        <Box pb={10}>
+          <Heading as={"h1"} fontSize={"2xl"} mb={2}>
+            Pivot Point Calculator
+          </Heading>
+          <Text fontSize={"xl"} fontWeight={300}>
+            Pivot Points Calculator is a technical analysis indicator. It uses a
+            previous period’s high, low, and close price for a specific period
+            to define future support and Resistance levels. We have included 5
+            Different Kinds of Pivot Points: Floor, Woodie, Camarilla, Demark,
+            and Fibonacci.
+          </Text>
         </Box>
-      </Layout>
-    </>
+
+        <Box>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
+                <SimpleGrid spacing={5}>
+                  <FormControl
+                    isInvalid={
+                      formik.touched.openPrice &&
+                      Boolean(formik.errors.openPrice)
+                    }
+                  >
+                    <FormLabel htmlFor="openPrice">Open Price</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.openPrice}
+                        name="openPrice"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+                    {formik.touched.openPrice &&
+                      Boolean(formik.errors.openPrice) && (
+                        <FormErrorMessage>
+                          {formik.errors.openPrice}
+                        </FormErrorMessage>
+                      )}
+                  </FormControl>
+
+                  <FormControl
+                    isInvalid={
+                      formik.touched.closePrice &&
+                      Boolean(formik.errors.closePrice)
+                    }
+                  >
+                    <FormLabel htmlFor="closePrice">Close Price</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.closePrice}
+                        name="closePrice"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+                    {formik.touched.closePrice &&
+                      Boolean(formik.errors.closePrice) && (
+                        <FormErrorMessage>
+                          {formik.errors.closePrice}
+                        </FormErrorMessage>
+                      )}
+                  </FormControl>
+
+                  <FormControl
+                    isInvalid={
+                      formik.touched.highPrice &&
+                      Boolean(formik.errors.highPrice)
+                    }
+                  >
+                    <FormLabel htmlFor="highPrice">High Price</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.highPrice}
+                        name="highPrice"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+                    {formik.touched.highPrice &&
+                      Boolean(formik.errors.highPrice) && (
+                        <FormErrorMessage>
+                          {formik.errors.highPrice}
+                        </FormErrorMessage>
+                      )}
+                  </FormControl>
+
+                  <FormControl
+                    isInvalid={
+                      formik.touched.lowPrice && Boolean(formik.errors.lowPrice)
+                    }
+                  >
+                    <FormLabel htmlFor="lowPrice">Low Price</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.lowPrice}
+                        name="lowPrice"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+                    {formik.touched.lowPrice &&
+                      Boolean(formik.errors.lowPrice) && (
+                        <FormErrorMessage>
+                          {formik.errors.lowPrice}
+                        </FormErrorMessage>
+                      )}
+                  </FormControl>
+                  <Button colorScheme={"primary"} type="submit">
+                    Calculate
+                  </Button>
+                </SimpleGrid>
+
+                <Box w={"500px"} maxW={"100%"} m={"auto"}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="https://assets.howtowealthy.com/basic-candle-geek.png"
+                    alt="Basic Candle Geek - Pivot Point Calculator"
+                  />
+                </Box>
+              </SimpleGrid>
+            </Stack>
+          </form>
+        </Box>
+        {result && (
+          <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Levels</Th>
+                  <Th>Floor</Th>
+                  <Th>Woodie</Th>
+                  <Th>Camarilla</Th>
+                  <Th>Demark</Th>
+                  <Th>Fibonacci</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {result.map((item, i) => {
+                  return (
+                    <Tr key={i}>
+                      {item.map((sub, j) => (
+                        <Td key={`${i}${j}`}>{sub}</Td>
+                      ))}
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </Box>
+        )}
+
+        <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+          <div className={"post-content"}></div>
+        </Box>
+      </Box>
+    </ToolsLayout>
   );
 };
 

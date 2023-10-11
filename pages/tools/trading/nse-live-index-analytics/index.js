@@ -16,6 +16,7 @@ import Link from "next/link";
 import TradingViewChartLinks from "../../../../src/utils/trading-view-chart-links";
 import { FaChartLine } from "react-icons/fa";
 import { getNseData } from "../../../../src/services/firebase";
+import ToolsLayout from "../../../../src/components/layout/tools";
 
 const NseMarketIndexAnalytics = () => {
   const [data, setData] = useState();
@@ -114,56 +115,42 @@ const NseMarketIndexAnalytics = () => {
   };
 
   return (
-    <>
-      <Seo
-        title=" NSE Live Index Analytics - How to Wealthy"
-        description="Explore our custom made nse live index analytics to get complete market overview while trading."
-        ogImage={"https://assets.howtowealthy.com/ogimg-tools.png"}
-        structuredData={JSON.stringify(structuredData)}
-      />
-      <Layout>
-        <Container maxW={"7xl"} minH={"50vh"} py={10}>
-          <Box py={{ base: 7, md: 16 }}>
-            <Flex gap={2}>
-              <Link href={`/tools`}>
-                <Badge
-                  variant="outline"
-                  colorScheme="primary"
-                  py={2}
-                  px={5}
-                  borderRadius={100}
-                  mb={4}
-                >
-                  Tools
-                </Badge>
-              </Link>
-              <Badge
-                variant="outline"
-                colorScheme="red"
-                py={2}
-                px={5}
-                borderRadius={100}
-                mb={4}
-              >
-                Beta
-              </Badge>
-            </Flex>
-            <Heading as={"h1"} mb={2}>
-              NSE Live Index Analytics
-            </Heading>
-            <Text fontSize={"2xl"} fontWeight={300}>
-              Explore our custom made nse live index analytics to get complete
-              market overview while trading. Subscribe to get a notification of
-              next release.
-            </Text>
-          </Box>
+    <ToolsLayout
+      path={"/tools/trading/nse-live-index-analytics"}
+      title=" NSE Live Index Analytics - How to Wealthy"
+      description="Explore our custom made nse live index analytics to get complete market overview while trading."
+      ogImage={"https://assets.howtowealthy.com/ogimg-tools.png"}
+      structuredData={JSON.stringify(structuredData)}
+    >
+      <Box mb={10}>
+        <Flex gap={2}>
+          <Badge
+            variant="outline"
+            colorScheme="red"
+            py={2}
+            px={5}
+            borderRadius={100}
+            mb={4}
+          >
+            Beta
+          </Badge>
+        </Flex>
+        <Heading as={"h1"} fontSize={"2xl"} mb={2}>
+          NSE Live Index Analytics
+        </Heading>
+        <Text fontSize={"xl"} fontWeight={300}>
+          Explore our custom made nse live index analytics to get complete
+          market overview while trading. Subscribe to get a notification of next
+          release.
+        </Text>
+      </Box>
 
-          {data && (
-            <>
-              <Box mb={10}>
-                <p>Last Updated: {time.toString()}</p>
-              </Box>
-              {/* <Box mb={10}>
+      {data && (
+        <>
+          <Box mb={10}>
+            <p>Last Updated: {time.toString()}</p>
+          </Box>
+          {/* <Box mb={10}>
                 <p>Advances: {data.data.advances}</p>
                 <p>Unchanged: {data.data.unchanged}</p>
                 <p>Declines: {data.data.declines}</p>
@@ -197,43 +184,43 @@ const NseMarketIndexAnalytics = () => {
                 </Flex>
               </Box> */}
 
-              <Box mb={20}>
-                <Heading as={"h2"} mb={5} fontSize={"xl"} fontWeight={"300"}>
-                  Sector Analysis
-                </Heading>
+          <Box mb={20}>
+            <Heading as={"h2"} mb={5} fontSize={"xl"} fontWeight={"300"}>
+              Sector Analysis
+            </Heading>
 
-                <SimpleGrid columns={{ md: 3, sm: 1 }} gap={5}>
-                  {data.data.data.map((item) => {
-                    if (item.key == "SECTORAL INDICES") {
-                      const advances = parseInt(item.advances);
-                      const unchanged = parseInt(item.unchanged);
-                      const declines = parseInt(item.declines);
+            <SimpleGrid columns={{ lg: 3, md: 2, sm: 1 }} gap={5}>
+              {data.data.data.map((item) => {
+                if (item.key == "SECTORAL INDICES") {
+                  const advances = parseInt(item.advances);
+                  const unchanged = parseInt(item.unchanged);
+                  const declines = parseInt(item.declines);
 
-                      const total = advances + unchanged + declines;
+                  const total = advances + unchanged + declines;
 
-                      return (
-                        <Box
-                          key={item.indexSymbol}
-                          p={5}
-                          border={"1px solid #eaeaea"}
-                          borderRadius={6}
+                  return (
+                    <Box
+                      key={item.indexSymbol}
+                      p={5}
+                      border={"1px solid #eaeaea"}
+                      borderRadius={6}
+                    >
+                      <Flex
+                        justifyContent={"space-between"}
+                        alignItems={"start"}
+                        gap={6}
+                        mb={5}
+                      >
+                        <Flex
+                          flexDirection={"column"}
+                          gap={1}
+                          alignItems={"start"}
                         >
-                          <Flex
-                            justifyContent={"space-between"}
-                            alignItems={"start"}
-                            gap={6}
-                            mb={5}
-                          >
-                            <Flex
-                              flexDirection={"column"}
-                              gap={1}
-                              alignItems={"start"}
-                            >
-                              <Heading as={"h3"} fontSize="md" fontWeight={400}>
-                                {item.index}
-                              </Heading>
+                          <Heading as={"h3"} fontSize="md" fontWeight={400}>
+                            {item.index}
+                          </Heading>
 
-                              {/* <a href={TradingViewChartLinks[item.index]}>
+                          {/* <a href={TradingViewChartLinks[item.index]}>
                                 <Icon
                                   color={"purple.500"}
                                   w={4}
@@ -241,91 +228,87 @@ const NseMarketIndexAnalytics = () => {
                                   as={FaChartLine}
                                 />
                               </a> */}
-                            </Flex>
+                        </Flex>
 
-                            <Flex flexDirection={"column"} alignItems={"end"}>
-                              <Text
-                                color={
-                                  item.percentChange >= 0
-                                    ? "green.500"
-                                    : "red.500"
-                                }
-                                fontWeight={700}
-                              >
-                                {item.last}
-                              </Text>
-                              <Text
-                                color={
-                                  item.percentChange >= 0
-                                    ? "green.500"
-                                    : "red.500"
-                                }
-                                fontWeight={500}
-                                fontSize={"xs"}
-                              >
-                                {item.percentChange}%
-                              </Text>
-                            </Flex>
-                          </Flex>
-
-                          <Box h={2} backgroundColor={"red.500"}>
-                            <Flex w={"100%"}>
-                              <Box
-                                h={2}
-                                w={((advances * 100) / total).toString() + "%"}
-                                backgroundColor={"green.500"}
-                              />
-                              <Box
-                                h={2}
-                                w={((unchanged * 100) / total).toString() + "%"}
-                                backgroundColor={"gray.300"}
-                              />
-                            </Flex>
-                          </Box>
-                        </Box>
-                      );
-                    }
-                  })}
-                </SimpleGrid>
-              </Box>
-
-              <Box mb={20}>
-                <Heading as={"h2"} mb={5} fontSize={"xl"} fontWeight={"300"}>
-                  Borad Market Analysis
-                </Heading>
-
-                <SimpleGrid columns={{ md: 3, sm: 1 }} gap={5}>
-                  {data.data.data.map((item) => {
-                    if (item.key == "BROAD MARKET INDICES") {
-                      const advances = parseInt(item.advances);
-                      const unchanged = parseInt(item.unchanged);
-                      const declines = parseInt(item.declines);
-
-                      const total = advances + unchanged + declines;
-
-                      return (
-                        <Box
-                          key={item.indexSymbol}
-                          p={5}
-                          border={"1px solid #eaeaea"}
-                          borderRadius={6}
-                        >
-                          <Flex
-                            justifyContent={"space-between"}
-                            alignItems={"start"}
-                            gap={6}
-                            mb={5}
+                        <Flex flexDirection={"column"} alignItems={"end"}>
+                          <Text
+                            color={
+                              item.percentChange >= 0 ? "green.500" : "red.500"
+                            }
+                            fontWeight={700}
                           >
-                            <Flex
-                              flexDirection={"column"}
-                              gap={1}
-                              alignItems={"start"}
-                            >
-                              <Heading as={"h3"} fontSize="md" fontWeight={400}>
-                                {item.index}
-                              </Heading>
+                            {item.last}
+                          </Text>
+                          <Text
+                            color={
+                              item.percentChange >= 0 ? "green.500" : "red.500"
+                            }
+                            fontWeight={500}
+                            fontSize={"xs"}
+                          >
+                            {item.percentChange}%
+                          </Text>
+                        </Flex>
+                      </Flex>
 
-                              {/* <a href={TradingViewChartLinks[item.index]}>
+                      <Box h={2} backgroundColor={"red.500"}>
+                        <Flex w={"100%"}>
+                          <Box
+                            h={2}
+                            w={((advances * 100) / total).toString() + "%"}
+                            backgroundColor={"green.500"}
+                          />
+                          <Box
+                            h={2}
+                            w={((unchanged * 100) / total).toString() + "%"}
+                            backgroundColor={"gray.300"}
+                          />
+                        </Flex>
+                      </Box>
+                    </Box>
+                  );
+                }
+              })}
+            </SimpleGrid>
+          </Box>
+
+          <Box mb={20}>
+            <Heading as={"h2"} mb={5} fontSize={"xl"} fontWeight={"300"}>
+              Borad Market Analysis
+            </Heading>
+
+            <SimpleGrid columns={{ lg: 3, md: 2, sm: 1 }} gap={5}>
+              {data.data.data.map((item) => {
+                if (item.key == "BROAD MARKET INDICES") {
+                  const advances = parseInt(item.advances);
+                  const unchanged = parseInt(item.unchanged);
+                  const declines = parseInt(item.declines);
+
+                  const total = advances + unchanged + declines;
+
+                  return (
+                    <Box
+                      key={item.indexSymbol}
+                      p={5}
+                      border={"1px solid #eaeaea"}
+                      borderRadius={6}
+                    >
+                      <Flex
+                        justifyContent={"space-between"}
+                        alignItems={"start"}
+                        gap={6}
+                        mb={5}
+                      >
+                        <Flex
+                          flexDirection={"column"}
+                          gap={1}
+                          alignItems={"start"}
+                        >
+                          <Heading as={"h3"} fontSize="md" fontWeight={400}>
+                            {item.index}
+                          </Heading>
+
+                          {/* <a href={TradingViewChartLinks[item.index]}>
                                 <Icon
                                   color={"purple.500"}
                                   w={4}
@@ -333,58 +316,52 @@ const NseMarketIndexAnalytics = () => {
                                   as={FaChartLine}
                                 />
                               </a> */}
-                            </Flex>
+                        </Flex>
 
-                            <Flex flexDirection={"column"} alignItems={"end"}>
-                              <Text
-                                color={
-                                  item.percentChange >= 0
-                                    ? "green.500"
-                                    : "red.500"
-                                }
-                                fontWeight={700}
-                              >
-                                {item.last}
-                              </Text>
-                              <Text
-                                color={
-                                  item.percentChange >= 0
-                                    ? "green.500"
-                                    : "red.500"
-                                }
-                                fontWeight={500}
-                                fontSize={"xs"}
-                              >
-                                {item.percentChange}%
-                              </Text>
-                            </Flex>
-                          </Flex>
+                        <Flex flexDirection={"column"} alignItems={"end"}>
+                          <Text
+                            color={
+                              item.percentChange >= 0 ? "green.500" : "red.500"
+                            }
+                            fontWeight={700}
+                          >
+                            {item.last}
+                          </Text>
+                          <Text
+                            color={
+                              item.percentChange >= 0 ? "green.500" : "red.500"
+                            }
+                            fontWeight={500}
+                            fontSize={"xs"}
+                          >
+                            {item.percentChange}%
+                          </Text>
+                        </Flex>
+                      </Flex>
 
-                          <Box h={2} backgroundColor={"red.500"}>
-                            <Flex w={"100%"}>
-                              <Box
-                                h={2}
-                                w={((advances * 100) / total).toString() + "%"}
-                                backgroundColor={"green.500"}
-                              />
-                              <Box
-                                h={2}
-                                w={((unchanged * 100) / total).toString() + "%"}
-                                backgroundColor={"gray.300"}
-                              />
-                            </Flex>
-                          </Box>
-                        </Box>
-                      );
-                    }
-                  })}
-                </SimpleGrid>
-              </Box>
-            </>
-          )}
-        </Container>
-      </Layout>
-    </>
+                      <Box h={2} backgroundColor={"red.500"}>
+                        <Flex w={"100%"}>
+                          <Box
+                            h={2}
+                            w={((advances * 100) / total).toString() + "%"}
+                            backgroundColor={"green.500"}
+                          />
+                          <Box
+                            h={2}
+                            w={((unchanged * 100) / total).toString() + "%"}
+                            backgroundColor={"gray.300"}
+                          />
+                        </Flex>
+                      </Box>
+                    </Box>
+                  );
+                }
+              })}
+            </SimpleGrid>
+          </Box>
+        </>
+      )}
+    </ToolsLayout>
   );
 };
 

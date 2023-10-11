@@ -30,6 +30,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../../src/utils/number_format";
 import Seo from "../../../src/components/seo";
 import Link from "next/link";
+import ToolsLayout from "../../../src/components/layout/tools";
 
 const validationSchema = yup.object({
   niftyPrice: yup
@@ -43,13 +44,14 @@ const validationSchema = yup.object({
 });
 
 const NiftyRangeCalculator = () => {
-  const [low, setLow] = useState(null);
-  const [high, setHigh] = useState(null);
+  const [day, setDay] = useState(null);
+  const [week, setWeek] = useState(null);
+  const [month, setMonth] = useState(null);
 
   const formik = useFormik({
     initialValues: {
-      niftyPrice: 17500,
-      indiavix: 15.4,
+      niftyPrice: 19653.5,
+      indiavix: 11,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -64,11 +66,29 @@ const NiftyRangeCalculator = () => {
 
   useEffect(() => {
     const factor = 19.1049732;
+    const factorWeek = 7.21110255093;
+    const factorMonth = 3.46410161514;
     const volatility = formik.values.indiavix / factor;
+    const volatilityWeek = formik.values.indiavix / factorWeek;
+    const volatilityMonth = formik.values.indiavix / factorMonth;
     const diff = (formik.values.niftyPrice * volatility) / 100;
+    const diffWeek = (formik.values.niftyPrice * volatilityWeek) / 100;
+    const diffMonth = (formik.values.niftyPrice * volatilityMonth) / 100;
 
-    setLow((formik.values.niftyPrice - diff).toLocaleString());
-    setHigh((formik.values.niftyPrice + diff).toLocaleString());
+    setDay({
+      low: (formik.values.niftyPrice - diff).toLocaleString(),
+      high: (formik.values.niftyPrice + diff).toLocaleString(),
+    });
+
+    setWeek({
+      low: (formik.values.niftyPrice - diffWeek).toLocaleString(),
+      high: (formik.values.niftyPrice + diffWeek).toLocaleString(),
+    });
+
+    setMonth({
+      low: (formik.values.niftyPrice - diffMonth).toLocaleString(),
+      high: (formik.values.niftyPrice + diffMonth).toLocaleString(),
+    });
   }, [formik.values]);
 
   const structuredData = {
@@ -125,122 +145,116 @@ const NiftyRangeCalculator = () => {
   };
 
   return (
-    <>
-      <Seo
-        title="Nifty Range Calculator - How to Wealthy"
-        description="For Nifty, this calculator calculates the possible range of price within which the nifty is expected to move till the expiry date that is entered, based on vix."
-        structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-nifty-range-calculator.png"
-        }
-      />
-      <Layout>
-        <Box py={20}>
-          <Container maxW={"5xl"}>
-            <Box pb={16} maxW={"2xl"}>
-              <Link href={`/tools`}>
-                <Badge
-                  variant="outline"
-                  colorScheme="primary"
-                  py={2}
-                  px={5}
-                  borderRadius={100}
-                  mb={4}
+    <ToolsLayout
+      path={"/tools/trading/nifty-range-calculator"}
+      title="Nifty Range Calculator - How to Wealthy"
+      description="For Nifty, this calculator calculates the possible range of price within which the nifty is expected to move till the expiry date that is entered, based on vix."
+      structuredData={JSON.stringify(structuredData)}
+      ogImage={
+        "https://assets.howtowealthy.com/ogimg-nifty-range-calculator.png"
+      }
+    >
+      <Box>
+        <Box pb={10}>
+          <Heading as={"h1"} fontSize={"2xl"} mb={2}>
+            Nifty Range Calculator
+          </Heading>
+          <Text fontSize={"xl"} fontWeight={300}>
+            For Nifty, this calculator calculates the possible range of price
+            within which the nifty is expected to move till the expiry date that
+            is entered, based on vix.
+          </Text>
+        </Box>
+
+        <Box>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+                <FormControl
+                  isInvalid={
+                    formik.touched.niftyPrice &&
+                    Boolean(formik.errors.niftyPrice)
+                  }
                 >
-                  Tools
-                </Badge>
-              </Link>
-              <Heading as={"h1"} mb={2}>
-                Nifty Range Calculator
-              </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}>
-                For Nifty, this calculator calculates the possible range of
-                price within which the nifty is expected to move till the expiry
-                date that is entered, based on vix.
-              </Text>
-            </Box>
+                  <FormLabel htmlFor="niftyPrice">
+                    Nifty Current Price
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <Text>₹</Text>
+                    </InputLeftElement>
+                    <Input
+                      value={formik.values.niftyPrice}
+                      name="niftyPrice"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                  </InputGroup>
+                  {formik.touched.niftyPrice &&
+                    Boolean(formik.errors.niftyPrice) && (
+                      <FormErrorMessage>
+                        {formik.errors.niftyPrice}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
 
-            <Box>
-              <form onSubmit={formik.handleSubmit}>
-                <Stack gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-                    <FormControl
-                      isInvalid={
-                        formik.touched.niftyPrice &&
-                        Boolean(formik.errors.niftyPrice)
-                      }
-                    >
-                      <FormLabel htmlFor="niftyPrice">
-                        Nifty Current Price
-                      </FormLabel>
-                      <InputGroup>
-                        <InputLeftElement pointerEvents="none">
-                          <Text>₹</Text>
-                        </InputLeftElement>
-                        <Input
-                          value={formik.values.niftyPrice}
-                          name="niftyPrice"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                      </InputGroup>
-                      {formik.touched.niftyPrice &&
-                        Boolean(formik.errors.niftyPrice) && (
-                          <FormErrorMessage>
-                            {formik.errors.niftyPrice}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-
-                    <FormControl
-                      isInvalid={
-                        formik.touched.indiavix &&
-                        Boolean(formik.errors.indiavix)
-                      }
-                    >
-                      <FormLabel htmlFor="indiavix">India VIX</FormLabel>
-                      <InputGroup>
-                        <Input
-                          value={formik.values.indiavix}
-                          name="indiavix"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                      </InputGroup>
-                      {formik.touched.indiavix &&
-                        Boolean(formik.errors.indiavix) && (
-                          <FormErrorMessage>
-                            {formik.errors.indiavix}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-                  </SimpleGrid>
-                </Stack>
-              </form>
-            </Box>
-            {low && (
-              <Box
-                mt={10}
-                p={5}
-                backgroundColor={"black"}
-                color={"white"}
-                textAlign={"center"}
-                lineHeight={1.7}
-              >
-                Nifty Range <br />{" "}
-                <Text fontSize={"xl"}>
-                  {low} - {high}
+                <FormControl
+                  isInvalid={
+                    formik.touched.indiavix && Boolean(formik.errors.indiavix)
+                  }
+                >
+                  <FormLabel htmlFor="indiavix">India VIX</FormLabel>
+                  <InputGroup>
+                    <Input
+                      value={formik.values.indiavix}
+                      name="indiavix"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                  </InputGroup>
+                  {formik.touched.indiavix &&
+                    Boolean(formik.errors.indiavix) && (
+                      <FormErrorMessage>
+                        {formik.errors.indiavix}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+              </SimpleGrid>
+            </Stack>
+          </form>
+        </Box>
+        {day && (
+          <Box mt={10} p={10} backgroundColor={"purple"} color={"white"}>
+            <SimpleGrid columns={2} gap={10}>
+              <Box>
+                Nifty Daily Range:{" "}
+                <Text fontSize={"2xl"}>
+                  {day.low} - {day.high}
                 </Text>
               </Box>
-            )}
 
-            <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-              <div className={"post-content"}></div>
-            </Box>
-          </Container>
+              <Box>
+                Nifty Weekly Range:
+                <Text fontSize={"2xl"}>
+                  {week.low} - {week.high}
+                </Text>
+              </Box>
+
+              <Box>
+                Nifty Monthly Range:{" "}
+                <Text fontSize={"2xl"}>
+                  {month.low} - {month.high}
+                </Text>
+              </Box>
+            </SimpleGrid>
+          </Box>
+        )}
+
+        <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+          <div className={"post-content"}></div>
         </Box>
-      </Layout>
-    </>
+      </Box>
+    </ToolsLayout>
   );
 };
 

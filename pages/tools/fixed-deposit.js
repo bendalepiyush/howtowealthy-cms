@@ -31,6 +31,8 @@ import numberFormater from "../../src/utils/number_format";
 import Seo from "../../src/components/seo";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import ToolsLayout from "../../src/components/layout/tools";
+import TabInput from "../../src/components/tab-input";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -145,273 +147,243 @@ const FixedDepositCalculator = () => {
   };
 
   return (
-    <>
-      <Seo
-        title="Fixed Deposit Calculator - How to Wealthy"
-        description="FD Calculator - Calculate fixed deposit interest rates and maturity amount online. Fixed deposit calculator helps you to calculate the maturity and interest amount you can earn on your fixed deposit investment."
-        structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-fixed-deposit-calculator.png"
-        }
-      />
-      <Layout>
-        <Box py={20}>
-          <Container maxW={"5xl"}>
-            <Box pb={16} maxW={"2xl"}>
-              <Link href={`/tools`}>
-                <Badge
-                  variant="outline"
-                  colorScheme="primary"
-                  py={2}
-                  px={5}
-                  borderRadius={100}
-                  mb={4}
-                >
-                  Tools
-                </Badge>
-              </Link>
-              <Heading as={"h1"} mb={2}>
-                Fixed Deposit Calculator
-              </Heading>
-              <Text fontSize={"2xl"} fontWeight={300}></Text>
-            </Box>
-
-            <Box mb={10}>
-              <TabInput
-                handleChange={setCurrency}
-                options={[
-                  { label: "USD ($)", value: "$" },
-                  { label: "GBP (£)", value: "£" },
-                  { label: "INR (₹)", value: "₹" },
-                ]}
-                currentValue={currency}
-              />
-            </Box>
-
-            <Box>
-              <form onSubmit={formik.handleSubmit}>
-                <Stack gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <FormControl
-                      isInvalid={
-                        formik.touched.initialInvestment &&
-                        Boolean(formik.errors.initialInvestment)
-                      }
-                    >
-                      <FormLabel htmlFor="initialInvestment">
-                        Initial Investment
-                      </FormLabel>
-                      <InputGroup>
-                        <InputLeftElement pointerEvents="none">
-                          <Text>{currency.value}</Text>
-                        </InputLeftElement>
-                        <Input
-                          value={formik.values.initialInvestment}
-                          name="initialInvestment"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                      </InputGroup>
-
-                      {formik.touched.initialInvestment &&
-                        Boolean(formik.errors.initialInvestment) && (
-                          <FormErrorMessage>
-                            {formik.errors.initialInvestment}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-
-                    <FormControl
-                      isInvalid={
-                        formik.touched.rateOfInterest &&
-                        Boolean(formik.errors.rateOfInterest)
-                      }
-                    >
-                      <FormLabel htmlFor="rateOfInterest">
-                        Rate of Interest
-                      </FormLabel>
-                      <InputGroup>
-                        <Input
-                          value={formik.values.rateOfInterest}
-                          name="rateOfInterest"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                        <InputRightElement pointerEvents="none">
-                          <Text pr={5}>Year</Text>
-                        </InputRightElement>
-                      </InputGroup>
-
-                      {formik.touched.rateOfInterest &&
-                        Boolean(formik.errors.rateOfInterest) && (
-                          <FormErrorMessage>
-                            {formik.errors.rateOfInterest}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-
-                    <FormControl
-                      isInvalid={
-                        formik.touched.duration &&
-                        Boolean(formik.errors.duration)
-                      }
-                    >
-                      <FormLabel htmlFor="duration">Duration</FormLabel>
-                      <InputGroup>
-                        <Input
-                          value={formik.values.duration}
-                          name="duration"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                        <InputRightElement pointerEvents="none">
-                          <Text pr={5}>Year</Text>
-                        </InputRightElement>
-                      </InputGroup>
-
-                      {formik.touched.duration &&
-                        Boolean(formik.errors.duration) && (
-                          <FormErrorMessage>
-                            {formik.errors.duration}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-                    <div></div>
-                    <Button colorScheme={"primary"} type="submit">
-                      Calculate
-                    </Button>
-                  </SimpleGrid>
-                </Stack>
-              </form>
-            </Box>
-            {result.investmentValue.length > 1 && (
-              <Box>
-                <Stack mt={20} mb={10} gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(
-                            result.investmentValue[
-                              result.investmentValue.length - 1
-                            ] || 0
-                          )}
-                        </Heading>
-                        <Text>Maturity Value</Text>
-                      </Box>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(result.investmentValue[0] || 0)}
-                        </Heading>
-                        <Text>Invested Amount</Text>
-                      </Box>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(
-                            (
-                              result.investmentValue[
-                                result.investmentValue.length - 1
-                              ] - result.investmentValue[0] || 0
-                            ).toFixed(2)
-                          )}
-                        </Heading>
-                        <Text>Interest Earned</Text>
-                      </Box>
-                    </SimpleGrid>
-
-                    <Chart
-                      type="donut"
-                      series={[
-                        result.totalInterest[result.investmentValue.length - 1],
-                        result.investmentValue[0],
-                      ]}
-                      options={{
-                        labels: ["Interest Earned", "Invested Amount"],
-
-                        fill: {
-                          colors: ["#000", "#555"],
-                        },
-                        colors: ["#000", "#555"],
-                      }}
-                    />
-                  </SimpleGrid>
-                </Stack>
-              </Box>
-            )}
-
-            {result.investmentValue.length > 1 && (
-              <Box overflowX={"auto"} mt={20}>
-                <Table>
-                  <Thead>
-                    <Tr>
-                      <Th>Month</Th>
-                      <Th textAlign={"right"}>Interest</Th>
-                      <Th textAlign={"right"}>
-                        Total Interest (in {currency.value})
-                      </Th>
-                      <Th textAlign={"right"}>Total Interest(in %)</Th>
-                      <Th textAlign={"right"}>Interest Value</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {result.investmentValue.map((item, idx) => {
-                      return (
-                        <Tr key={idx}>
-                          <Td>{idx}</Td>
-                          <Td textAlign={"right"}>
-                            {numberFormater(result.interest[idx])}
-                          </Td>
-                          <Td textAlign={"right"}>
-                            {numberFormater(result.totalInterest[idx])}
-                          </Td>
-                          <Td textAlign={"right"}>
-                            {numberFormater(
-                              result.totalInterestInPercentage[idx] + " %"
-                            )}
-                          </Td>
-                          <Td textAlign={"right"}>
-                            {numberFormater(result.investmentValue[idx])}
-                          </Td>
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </Box>
-            )}
-            <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-              <div className={"post-content"}></div>
-            </Box>
-          </Container>
+    <ToolsLayout
+      title="Fixed Deposit Calculator - How to Wealthy"
+      description="FD Calculator - Calculate fixed deposit interest rates and maturity amount online. Fixed deposit calculator helps you to calculate the maturity and interest amount you can earn on your fixed deposit investment."
+      structuredData={JSON.stringify(structuredData)}
+      ogImage={
+        "https://assets.howtowealthy.com/ogimg-fixed-deposit-calculator.png"
+      }
+      path={"/tools/fixed-deposit"}
+    >
+      <Box>
+        <Box pb={10}>
+          <Heading as={"h1"} fontSize={"2xl"} mb={2}>
+            Fixed Deposit Calculator
+          </Heading>
         </Box>
-      </Layout>
-    </>
-  );
-};
 
-const TabInput = ({ handleChange, options, currentValue }) => {
-  return (
-    <>
-      <Flex>
-        {options.map((item) => (
-          <Box
-            px={5}
-            py={2}
-            key={item.value}
-            color={item.value === currentValue.value ? "white" : "black"}
-            border={"1px solid #eaeaea"}
-            background={item.value === currentValue.value ? "black" : ""}
-            cursor={"pointer"}
-            onClick={() => handleChange(item)}
-          >
-            <Text>{item.label}</Text>
+        <Box mb={10}>
+          <TabInput
+            handleChange={setCurrency}
+            options={[
+              { label: "USD ($)", value: "$" },
+              { label: "GBP (£)", value: "£" },
+              { label: "INR (₹)", value: "₹" },
+            ]}
+            currentValue={currency}
+          />
+        </Box>
+
+        <Box>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={5}>
+                <FormControl
+                  isInvalid={
+                    formik.touched.initialInvestment &&
+                    Boolean(formik.errors.initialInvestment)
+                  }
+                >
+                  <FormLabel htmlFor="initialInvestment">
+                    Initial Investment
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <Text>{currency.value}</Text>
+                    </InputLeftElement>
+                    <Input
+                      value={formik.values.initialInvestment}
+                      name="initialInvestment"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                  </InputGroup>
+
+                  {formik.touched.initialInvestment &&
+                    Boolean(formik.errors.initialInvestment) && (
+                      <FormErrorMessage>
+                        {formik.errors.initialInvestment}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+
+                <FormControl
+                  isInvalid={
+                    formik.touched.rateOfInterest &&
+                    Boolean(formik.errors.rateOfInterest)
+                  }
+                >
+                  <FormLabel htmlFor="rateOfInterest">
+                    Rate of Interest
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      value={formik.values.rateOfInterest}
+                      name="rateOfInterest"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                    <InputRightElement pointerEvents="none">
+                      <Text pr={5}>Year</Text>
+                    </InputRightElement>
+                  </InputGroup>
+
+                  {formik.touched.rateOfInterest &&
+                    Boolean(formik.errors.rateOfInterest) && (
+                      <FormErrorMessage>
+                        {formik.errors.rateOfInterest}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+
+                <FormControl
+                  isInvalid={
+                    formik.touched.duration && Boolean(formik.errors.duration)
+                  }
+                >
+                  <FormLabel htmlFor="duration">Duration</FormLabel>
+                  <InputGroup>
+                    <Input
+                      value={formik.values.duration}
+                      name="duration"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                    <InputRightElement pointerEvents="none">
+                      <Text pr={5}>Year</Text>
+                    </InputRightElement>
+                  </InputGroup>
+
+                  {formik.touched.duration &&
+                    Boolean(formik.errors.duration) && (
+                      <FormErrorMessage>
+                        {formik.errors.duration}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+                <Button colorScheme={"primary"} type="submit">
+                  Calculate
+                </Button>
+              </SimpleGrid>
+            </Stack>
+          </form>
+        </Box>
+        {result.investmentValue.length > 1 && (
+          <Box>
+            <Stack mt={20} mb={10} gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
+                  <Box>
+                    <Heading as={"h3"} fontSize={"2xl"}>
+                      {currency.value}{" "}
+                      {numberFormater(
+                        result.investmentValue[
+                          result.investmentValue.length - 1
+                        ] || 0
+                      )}
+                    </Heading>
+                    <Text>Maturity Value</Text>
+                  </Box>
+                  <Box>
+                    <Heading as={"h3"} fontSize={"2xl"}>
+                      {currency.value}{" "}
+                      {numberFormater(result.investmentValue[0] || 0)}
+                    </Heading>
+                    <Text>Invested Amount</Text>
+                  </Box>
+                  <Box>
+                    <Heading as={"h3"} fontSize={"2xl"}>
+                      {currency.value}{" "}
+                      {numberFormater(
+                        (
+                          result.investmentValue[
+                            result.investmentValue.length - 1
+                          ] - result.investmentValue[0] || 0
+                        ).toFixed(2)
+                      )}
+                    </Heading>
+                    <Text>Interest Earned</Text>
+                  </Box>
+                </SimpleGrid>
+
+                <Chart
+                  type="donut"
+                  series={[
+                    result.totalInterest[result.investmentValue.length - 1],
+                    result.investmentValue[0],
+                  ]}
+                  options={{
+                    labels: ["Interest Earned", "Invested Amount"],
+
+                    fill: {
+                      colors: ["#000", "#555"],
+                    },
+                    colors: ["#000", "#555"],
+                  }}
+                />
+              </SimpleGrid>
+            </Stack>
           </Box>
-        ))}
-      </Flex>
-    </>
+        )}
+
+        {result.investmentValue.length > 1 && (
+          <Box overflowX={"auto"} mt={20}>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Month</Th>
+                  <Th textAlign={"right"}>Interest</Th>
+                  <Th textAlign={"right"}>
+                    Total Interest (in {currency.value})
+                  </Th>
+                  <Th textAlign={"right"}>Total Interest(in %)</Th>
+                  <Th textAlign={"right"}>Interest Value</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {result.investmentValue.map((item, idx) => {
+                  return (
+                    <Tr key={idx}>
+                      <Td>{idx}</Td>
+                      <Td textAlign={"right"}>
+                        {numberFormater(result.interest[idx])}
+                      </Td>
+                      <Td textAlign={"right"}>
+                        {numberFormater(result.totalInterest[idx])}
+                      </Td>
+                      <Td textAlign={"right"}>
+                        {numberFormater(
+                          result.totalInterestInPercentage[idx] + " %"
+                        )}
+                      </Td>
+                      <Td textAlign={"right"}>
+                        {numberFormater(result.investmentValue[idx])}
+                      </Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </Box>
+        )}
+        <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+          <div className={"post-content"}>
+            <p>
+              A fixed deposit calculator is an internet-based tool crafted to
+              provide individuals with an estimation of their anticipated
+              returns upon the completion of a fixed deposit period. It
+              considers factors such as the initial deposit amount, deposit
+              duration, and the prevailing interest rate to compute the final
+              maturity amount. Therefore, prior to making an investment in a
+              fixed deposit, this calculator offers insight into your
+              prospective gains, enabling you to make informed financial
+              choices.
+            </p>
+          </div>
+        </Box>
+      </Box>
+    </ToolsLayout>
   );
 };
 
