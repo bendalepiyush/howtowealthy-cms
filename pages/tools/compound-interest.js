@@ -24,6 +24,7 @@ import {
   Select,
   Badge,
   FormErrorMessage,
+  GridItem,
 } from "@chakra-ui/react";
 import Layout from "../../src/components/layout";
 import * as yup from "yup";
@@ -33,6 +34,8 @@ import numberFormater from "../../src/utils/number_format";
 import Seo from "../../src/components/seo";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import ToolsLayout from "../../src/components/layout/tools";
+import TabInput from "../../src/components/tab-input";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const validationSchema = yup.object({
@@ -191,381 +194,333 @@ const EquatedMonthlyInsatllmentCalculator = () => {
   };
 
   return (
-    <>
-      <Seo
-        title="Compound Interest Calculator - How to Wealthy"
-        description="Use our compound interest calculator to see how your savings or investments might grow over time using the power of compound interest"
-        structuredData={JSON.stringify(structuredData)}
-        ogImage={
-          "https://assets.howtowealthy.com/ogimg-compound-interest-calculator.png"
-        }
-      />
-
-      <Layout>
-        <Box py={20}>
-          <Container maxW={"5xl"}>
-            <Box pb={16} maxW={"2xl"}>
-              <Link href={`/tools`}>
-                <Badge
-                  variant="outline"
-                  colorScheme="primary"
-                  py={2}
-                  px={5}
-                  borderRadius={100}
-                  mb={4}
-                >
-                  Tools
-                </Badge>
-              </Link>
-              <Heading as={"h1"} mb={2}>
-                Compound Interest Calculator
-              </Heading>
-            </Box>
-
-            <Box mb={10}>
-              <TabInput
-                handleChange={setCurrency}
-                options={[
-                  { label: "USD ($)", value: "$" },
-                  { label: "GBP (£)", value: "£" },
-                  { label: "INR (₹)", value: "₹" },
-                ]}
-                currentValue={currency}
-              />
-            </Box>
-
-            <Box>
-              <form onSubmit={formik.handleSubmit}>
-                <Stack gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-                    <FormControl
-                      isInvalid={
-                        formik.touched.initialInvestment &&
-                        Boolean(formik.errors.initialInvestment)
-                      }
-                    >
-                      <FormLabel htmlFor="initialInvestment">
-                        Initial Investment
-                      </FormLabel>
-                      <InputGroup>
-                        <InputLeftElement pointerEvents="none">
-                          <Text>{currency.value}</Text>
-                        </InputLeftElement>
-                        <Input
-                          value={formik.values.initialInvestment}
-                          name="initialInvestment"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                      </InputGroup>
-
-                      {formik.touched.initialInvestment &&
-                        Boolean(formik.errors.initialInvestment) && (
-                          <FormErrorMessage>
-                            {formik.errors.initialInvestment}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-
-                    <FormControl
-                      isInvalid={
-                        formik.touched.rateOfInterest &&
-                        Boolean(formik.errors.rateOfInterest)
-                      }
-                    >
-                      <FormLabel htmlFor="rateOfInterest">
-                        Rate of Interest
-                      </FormLabel>
-                      <InputGroup>
-                        <Input
-                          value={formik.values.rateOfInterest}
-                          name="rateOfInterest"
-                          type="number"
-                          onChange={formik.handleChange}
-                        />
-                        <InputRightAddon pr={0}>
-                          <Select
-                            value={formik.values.rateOfInterestType}
-                            name="rateOfInterestType"
-                            type="string"
-                            onChange={formik.handleChange}
-                            variant="unstyled"
-                          >
-                            <option value="option1">Yearly</option>
-                            <option value="option2">Monthly</option>
-                          </Select>
-                        </InputRightAddon>
-                      </InputGroup>
-
-                      {formik.touched.rateOfInterest &&
-                        Boolean(formik.errors.rateOfInterest) && (
-                          <FormErrorMessage>
-                            {formik.errors.rateOfInterest}
-                          </FormErrorMessage>
-                        )}
-                    </FormControl>
-                    <SimpleGrid columns={{ base: 2, md: 2 }} spacing={5}>
-                      <FormControl
-                        isInvalid={
-                          formik.touched.year && Boolean(formik.errors.year)
-                        }
-                      >
-                        <FormLabel htmlFor="year">Year</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.year}
-                            name="year"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-
-                        {formik.touched.year && Boolean(formik.errors.year) && (
-                          <FormErrorMessage>
-                            {formik.errors.year}
-                          </FormErrorMessage>
-                        )}
-                      </FormControl>
-                      <FormControl
-                        isInvalid={
-                          formik.touched.month && Boolean(formik.errors.month)
-                        }
-                      >
-                        <FormLabel htmlFor="month">Month</FormLabel>
-                        <InputGroup>
-                          <Input
-                            value={formik.values.month}
-                            name="month"
-                            type="number"
-                            onChange={formik.handleChange}
-                          />
-                        </InputGroup>
-
-                        {formik.touched.month &&
-                          Boolean(formik.errors.month) && (
-                            <FormErrorMessage>
-                              {formik.errors.month}
-                            </FormErrorMessage>
-                          )}
-                      </FormControl>
-                    </SimpleGrid>
-                    <TabInput
-                      handleChange={setAdditional}
-                      options={[
-                        { label: "None", value: "Intial Investment" },
-                        { label: "Deposits", value: "Total Deposits" },
-                        { label: "Withdrawals", value: "Total Withdrawals" },
-                      ]}
-                      currentValue={additional}
-                    />
-                    <AditionalInput
-                      formik={formik}
-                      currentValue={additional}
-                      currentPeriod={period}
-                      handlePeriod={setPeriod}
-                    />
-                    <Button colorScheme={"primary"} type="submit">
-                      Calculate
-                    </Button>
-                  </SimpleGrid>
-                </Stack>
-              </form>
-            </Box>
-            {result.balance.length > 1 && (
-              <Box>
-                <Stack mt={20} mb={10} gap={10}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(
-                            result.balance[result.balance.length - 1] || 0
-                          )}
-                        </Heading>
-                        <Text>Future Investment Value</Text>
-                      </Box>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(
-                            result.accrusedInterest[
-                              result.balance.length - 1
-                            ] || 0
-                          )}
-                        </Heading>
-                        <Text>Total Interest Earned</Text>
-                      </Box>
-                      <Box>
-                        <Heading>
-                          {currency.value}{" "}
-                          {numberFormater(result.initialInvestment || 0)}
-                        </Heading>
-                        <Text>Initial Investment</Text>
-                      </Box>
-                      {additional.label != "None" && (
-                        <Box>
-                          <Heading>
-                            {currency.value}{" "}
-                            {numberFormater(
-                              result.totalDeposits[result.balance.length - 1] ||
-                                0
-                            )}
-                          </Heading>
-                          <Text>{additional.value}</Text>
-                        </Box>
-                      )}
-                    </SimpleGrid>
-
-                    <Chart
-                      type="donut"
-                      series={
-                        result.balance[result.balance.length - 1] > 0
-                          ? [
-                              result.accrusedInterest[
-                                result.balance.length - 1
-                              ],
-                              result.totalDeposits[result.balance.length - 1],
-                            ]
-                          : [
-                              -result.accrusedInterest[
-                                result.balance.length - 1
-                              ],
-                              -result.totalDeposits[result.balance.length - 1],
-                            ]
-                      }
-                      options={{
-                        labels: [
-                          "Total Interest Earned",
-                          `${additional.value}`,
-                        ],
-
-                        fill: {
-                          colors:
-                            result.balance[result.balance.length - 1] > 0
-                              ? ["#000", "#555"]
-                              : ["#f00", "#f55"],
-                        },
-                      }}
-                    />
-                  </SimpleGrid>
-                </Stack>
-              </Box>
-            )}
-            {result.balance.length > 1 && (
-              <Box overflowX={"auto"} mt={20}>
-                <TabInput
-                  handleChange={setBreakdown}
-                  options={[
-                    { label: "Monthly", value: "Month" },
-                    { label: "Yearly", value: "Year" },
-                  ]}
-                  currentValue={breakdown}
-                />
-                <Table>
-                  <Thead>
-                    <Tr>
-                      <Th>{breakdown.value}</Th>
-                      {additional.label != "None" && (
-                        <Th textAlign={"right"}>{additional.label}</Th>
-                      )}
-                      <Th textAlign={"right"}>Interest</Th>
-                      {additional.label != "None" && (
-                        <Th textAlign={"right"}>{additional.value}</Th>
-                      )}
-                      <Th textAlign={"right"}>Accrued Interest</Th>
-                      <Th textAlign={"right"}>Balance</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {breakdown.value == "Month" &&
-                      result.balance.map((item, idx) => {
-                        return (
-                          <Tr key={idx}>
-                            <Td>{idx}</Td>
-                            {additional.label != "None" && (
-                              <Td textAlign={"right"}>
-                                {numberFormater(result.deposits[idx])}
-                              </Td>
-                            )}
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.interest[idx])}
-                            </Td>
-                            {additional.label != "None" && (
-                              <Td textAlign={"right"}>
-                                {numberFormater(result.totalDeposits[idx])}
-                              </Td>
-                            )}
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.accrusedInterest[idx])}
-                            </Td>
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.balance[idx])}
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                    {breakdown.value == "Year" &&
-                      result.yearBalance.map((item, idx) => {
-                        return (
-                          <Tr key={idx}>
-                            <Td>{idx}</Td>
-                            {additional.label != "None" && (
-                              <Td textAlign={"right"}>
-                                {numberFormater(result.yearDeposits[idx])}
-                              </Td>
-                            )}
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.yearInterest[idx])}
-                            </Td>
-                            {additional.label != "None" && (
-                              <Td textAlign={"right"}>
-                                {numberFormater(result.yearTotalDeposits[idx])}
-                              </Td>
-                            )}
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.yearAccrusedInterest[idx])}
-                            </Td>
-                            <Td textAlign={"right"}>
-                              {numberFormater(result.yearBalance[idx])}
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                  </Tbody>
-                </Table>
-              </Box>
-            )}
-            <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
-              <div className={"post-content"}></div>
-            </Box>
-          </Container>
+    <ToolsLayout
+      title="Compound Interest Calculator - How to Wealthy"
+      description="Use our compound interest calculator to see how your savings or investments might grow over time using the power of compound interest"
+      structuredData={JSON.stringify(structuredData)}
+      ogImage={
+        "https://assets.howtowealthy.com/ogimg-compound-interest-calculator.png"
+      }
+      path={"/tools/compound-interest"}
+    >
+      <Box>
+        <Box pb={10}>
+          <Heading as={"h1"} fontSize={"2xl"} mb={2}>
+            Compound Interest Calculator
+          </Heading>
         </Box>
-      </Layout>
-    </>
-  );
-};
 
-const TabInput = ({ handleChange, options, currentValue }) => {
-  return (
-    <>
-      <Flex>
-        {options.map((item) => (
-          <Box
-            px={5}
-            py={2}
-            key={item.value}
-            color={item.value === currentValue.value ? "white" : "black"}
-            border={"1px solid #eaeaea"}
-            background={item.value === currentValue.value ? "black" : ""}
-            cursor={"pointer"}
-            onClick={() => handleChange(item)}
-          >
-            <Text>{item.label}</Text>
+        <Box mb={10}>
+          <TabInput
+            handleChange={setCurrency}
+            options={[
+              { label: "USD ($)", value: "$" },
+              { label: "GBP (£)", value: "£" },
+              { label: "INR (₹)", value: "₹" },
+            ]}
+            currentValue={currency}
+          />
+        </Box>
+
+        <Box>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={5}>
+                <FormControl
+                  isInvalid={
+                    formik.touched.initialInvestment &&
+                    Boolean(formik.errors.initialInvestment)
+                  }
+                >
+                  <FormLabel htmlFor="initialInvestment">
+                    Initial Investment
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <Text>{currency.value}</Text>
+                    </InputLeftElement>
+                    <Input
+                      value={formik.values.initialInvestment}
+                      name="initialInvestment"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                  </InputGroup>
+
+                  {formik.touched.initialInvestment &&
+                    Boolean(formik.errors.initialInvestment) && (
+                      <FormErrorMessage>
+                        {formik.errors.initialInvestment}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+
+                <FormControl
+                  isInvalid={
+                    formik.touched.rateOfInterest &&
+                    Boolean(formik.errors.rateOfInterest)
+                  }
+                >
+                  <FormLabel htmlFor="rateOfInterest">
+                    Rate of Interest
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      value={formik.values.rateOfInterest}
+                      name="rateOfInterest"
+                      type="number"
+                      onChange={formik.handleChange}
+                    />
+                    <InputRightAddon pr={0}>
+                      <Select
+                        value={formik.values.rateOfInterestType}
+                        name="rateOfInterestType"
+                        type="string"
+                        onChange={formik.handleChange}
+                        variant="unstyled"
+                      >
+                        <option value="option1">Yearly</option>
+                        <option value="option2">Monthly</option>
+                      </Select>
+                    </InputRightAddon>
+                  </InputGroup>
+
+                  {formik.touched.rateOfInterest &&
+                    Boolean(formik.errors.rateOfInterest) && (
+                      <FormErrorMessage>
+                        {formik.errors.rateOfInterest}
+                      </FormErrorMessage>
+                    )}
+                </FormControl>
+                <SimpleGrid columns={{ base: 2, md: 2 }} spacing={5}>
+                  <FormControl
+                    isInvalid={
+                      formik.touched.year && Boolean(formik.errors.year)
+                    }
+                  >
+                    <FormLabel htmlFor="year">Year</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.year}
+                        name="year"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+
+                    {formik.touched.year && Boolean(formik.errors.year) && (
+                      <FormErrorMessage>{formik.errors.year}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl
+                    isInvalid={
+                      formik.touched.month && Boolean(formik.errors.month)
+                    }
+                  >
+                    <FormLabel htmlFor="month">Month</FormLabel>
+                    <InputGroup>
+                      <Input
+                        value={formik.values.month}
+                        name="month"
+                        type="number"
+                        onChange={formik.handleChange}
+                      />
+                    </InputGroup>
+
+                    {formik.touched.month && Boolean(formik.errors.month) && (
+                      <FormErrorMessage>{formik.errors.month}</FormErrorMessage>
+                    )}
+                  </FormControl>
+                </SimpleGrid>
+                <GridItem p={10} backgroundColor={"gray.50"} colSpan={3}>
+                  <Text>Additional Contribution</Text>
+                  <br />
+                  <TabInput
+                    handleChange={setAdditional}
+                    options={[
+                      { label: "None", value: "Intial Investment" },
+                      { label: "Deposits", value: "Total Deposits" },
+                      { label: "Withdrawals", value: "Total Withdrawals" },
+                    ]}
+                    currentValue={additional}
+                  />
+                  <AditionalInput
+                    formik={formik}
+                    currentValue={additional}
+                    currentPeriod={period}
+                    handlePeriod={setPeriod}
+                  />
+                </GridItem>
+                <Button colorScheme={"primary"} type="submit">
+                  Calculate
+                </Button>
+              </SimpleGrid>
+            </Stack>
+          </form>
+        </Box>
+        {result.balance.length > 1 && (
+          <Box>
+            <Stack mt={20} mb={10} gap={10}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10}>
+                  <Box>
+                    <Heading>
+                      {currency.value}{" "}
+                      {numberFormater(
+                        result.balance[result.balance.length - 1] || 0
+                      )}
+                    </Heading>
+                    <Text>Future Investment Value</Text>
+                  </Box>
+                  <Box>
+                    <Heading>
+                      {currency.value}{" "}
+                      {numberFormater(
+                        result.accrusedInterest[result.balance.length - 1] || 0
+                      )}
+                    </Heading>
+                    <Text>Total Interest Earned</Text>
+                  </Box>
+                  <Box>
+                    <Heading>
+                      {currency.value}{" "}
+                      {numberFormater(result.initialInvestment || 0)}
+                    </Heading>
+                    <Text>Initial Investment</Text>
+                  </Box>
+                  {additional.label != "None" && (
+                    <Box>
+                      <Heading>
+                        {currency.value}{" "}
+                        {numberFormater(
+                          result.totalDeposits[result.balance.length - 1] || 0
+                        )}
+                      </Heading>
+                      <Text>{additional.value}</Text>
+                    </Box>
+                  )}
+                </SimpleGrid>
+
+                <Chart
+                  type="donut"
+                  series={
+                    result.balance[result.balance.length - 1] > 0
+                      ? [
+                          result.accrusedInterest[result.balance.length - 1],
+                          result.totalDeposits[result.balance.length - 1],
+                        ]
+                      : [
+                          -result.accrusedInterest[result.balance.length - 1],
+                          -result.totalDeposits[result.balance.length - 1],
+                        ]
+                  }
+                  options={{
+                    labels: ["Total Interest Earned", `${additional.value}`],
+                    colors:
+                      result.balance[result.balance.length - 1] > 0
+                        ? ["#000", "#555"]
+                        : ["#f00", "#f55"],
+                    fill: {
+                      colors:
+                        result.balance[result.balance.length - 1] > 0
+                          ? ["#000", "#555"]
+                          : ["#f00", "#f55"],
+                    },
+                  }}
+                />
+              </SimpleGrid>
+            </Stack>
           </Box>
-        ))}
-      </Flex>
-    </>
+        )}
+        {result.balance.length > 1 && (
+          <Box overflowX={"auto"} mt={20}>
+            <TabInput
+              handleChange={setBreakdown}
+              options={[
+                { label: "Monthly", value: "Month" },
+                { label: "Yearly", value: "Year" },
+              ]}
+              currentValue={breakdown}
+            />
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>{breakdown.value}</Th>
+                  {additional.label != "None" && (
+                    <Th textAlign={"right"}>{additional.label}</Th>
+                  )}
+                  <Th textAlign={"right"}>Interest</Th>
+                  {additional.label != "None" && (
+                    <Th textAlign={"right"}>{additional.value}</Th>
+                  )}
+                  <Th textAlign={"right"}>Accrued Interest</Th>
+                  <Th textAlign={"right"}>Balance</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {breakdown.value == "Month" &&
+                  result.balance.map((item, idx) => {
+                    return (
+                      <Tr key={idx}>
+                        <Td>{idx}</Td>
+                        {additional.label != "None" && (
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.deposits[idx])}
+                          </Td>
+                        )}
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.interest[idx])}
+                        </Td>
+                        {additional.label != "None" && (
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.totalDeposits[idx])}
+                          </Td>
+                        )}
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.accrusedInterest[idx])}
+                        </Td>
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.balance[idx])}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                {breakdown.value == "Year" &&
+                  result.yearBalance.map((item, idx) => {
+                    return (
+                      <Tr key={idx}>
+                        <Td>{idx}</Td>
+                        {additional.label != "None" && (
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.yearDeposits[idx])}
+                          </Td>
+                        )}
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.yearInterest[idx])}
+                        </Td>
+                        {additional.label != "None" && (
+                          <Td textAlign={"right"}>
+                            {numberFormater(result.yearTotalDeposits[idx])}
+                          </Td>
+                        )}
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.yearAccrusedInterest[idx])}
+                        </Td>
+                        <Td textAlign={"right"}>
+                          {numberFormater(result.yearBalance[idx])}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+              </Tbody>
+            </Table>
+          </Box>
+        )}
+        <Box mt={20} fontSize={"18px"} lineHeight={1.7}>
+          <div className={"post-content"}></div>
+        </Box>
+      </Box>
+    </ToolsLayout>
   );
 };
 
@@ -577,23 +532,20 @@ const AditionalInput = ({
 }) => {
   const str = currentValue.label.slice(0, -1);
   if (currentValue.label == "None") {
-    return (
-      <>
-        <div></div>
-        <div></div>
-      </>
-    );
+    return <></>;
   } else {
     return (
-      <>
-        <TabInput
-          handleChange={handlePeriod}
-          options={[
-            { label: "Beginning", value: "Beginning" },
-            { label: "End", value: "End" },
-          ]}
-          currentValue={currentPeriod}
-        />
+      <SimpleGrid mt={5} columns={{ base: 1, md: 2 }} gap={5}>
+        <Box>
+          <TabInput
+            handleChange={handlePeriod}
+            options={[
+              { label: "Start of the Month", value: "Beginning" },
+              { label: "End of the Month", value: "End" },
+            ]}
+            currentValue={currentPeriod}
+          />
+        </Box>
         <div></div>
         <FormControl
           isInvalid={formik.touched.deposit && Boolean(formik.errors.deposit)}
@@ -648,8 +600,7 @@ const AditionalInput = ({
             <FormErrorMessage>{formik.errors.depositRate}</FormErrorMessage>
           )}
         </FormControl>
-        <div></div>
-      </>
+      </SimpleGrid>
     );
   }
 };

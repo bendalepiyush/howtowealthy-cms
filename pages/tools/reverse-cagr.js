@@ -1,5 +1,4 @@
 import {
-  Container,
   Box,
   Heading,
   Text,
@@ -16,11 +15,9 @@ import {
   Thead,
   Th,
   Flex,
-  Spacer,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Badge,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import ToolsLayout from "../../src/components/layout/tools";
@@ -28,8 +25,8 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useRef, useCallback, useState } from "react";
 import numberFormater from "../../src/utils/number_format";
-import Link from "next/link";
 import dynamic from "next/dynamic";
+import TabInput from "../../src/components/tab-input";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -131,7 +128,7 @@ const ReverseCompoundAnnualGrowthRateCalculator = () => {
       ogImage={"https://assets.howtowealthy.com/ogimg-cagr-calculator.png"}
     >
       <Box pb={10}>
-        <Heading as={"h1"} fontSize={"3xl"} fontWeight={300} mb={2}>
+        <Heading as={"h1"} fontSize={"3xl"} mb={2}>
           Reverse Compound Annual Growth Rate (Reverse CAGR) Calculator
         </Heading>
       </Box>
@@ -232,7 +229,7 @@ const ReverseCompoundAnnualGrowthRateCalculator = () => {
       {result.investmentValue.length > 1 && (
         <Box>
           <Stack mt={20} mb={10} gap={10}>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
                 <Box>
                   <Heading as={"h3"} fontSize={"2xl"}>
@@ -380,11 +377,7 @@ const ReverseCompoundAnnualGrowthRateCalculator = () => {
             </li>
           </ol>
           <h2>Utilizing a Reverse CAGR Calculator</h2>
-          <p>
-            Using a reverse CAGR calculator involves solving for the unknown
-            variable, which is the annual growth rate (r), within the CAGR
-            formula. The CAGR formula is as follows:
-          </p>
+          <p>The Reverse CAGR formula is as follows:</p>
           <p>
             Final value = Initial value * ( 1 + R/100)<sup>t</sup>
           </p>
@@ -461,29 +454,6 @@ const ReverseCompoundAnnualGrowthRateCalculator = () => {
         </div>
       </Box>
     </ToolsLayout>
-  );
-};
-
-const TabInput = ({ handleChange, options, currentValue }) => {
-  return (
-    <>
-      <Flex>
-        {options.map((item) => (
-          <Box
-            px={5}
-            py={2}
-            key={item.value}
-            color={item.value === currentValue.value ? "white" : "black"}
-            border={"1px solid #eaeaea"}
-            background={item.value === currentValue.value ? "black" : ""}
-            cursor={"pointer"}
-            onClick={() => handleChange(item)}
-          >
-            <Text fontSize={"sm"}>{item.label}</Text>
-          </Box>
-        ))}
-      </Flex>
-    </>
   );
 };
 
