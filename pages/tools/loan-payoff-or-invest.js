@@ -139,29 +139,6 @@ const LoanPayOfOrInvest = () => {
           "@type": "WebPage",
         },
       },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/loan-payoff-or-invest#breadcrumb`,
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: "https://www.howtowealthy.com/",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Tools",
-            item: `https://www.howtowealthy.com/tools`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: "Loan Payoff or Invest - How to Wealthy",
-          },
-        ],
-      },
     ],
   };
 

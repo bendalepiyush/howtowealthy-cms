@@ -100,29 +100,6 @@ const LoanPayOfOrInvest = () => {
           "@type": "WebPage",
         },
       },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `https://www.howtowealthy.com/tools/trading/position-sizing-calculator#breadcrumb`,
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: "https://www.howtowealthy.com/",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Tools",
-            item: `https://www.howtowealthy.com/tools`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: "Position Sizing Calculator - How to Wealthy",
-          },
-        ],
-      },
     ],
   };
 
