@@ -37,6 +37,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import hygraph from "../src/services/hygraph";
 import truncate from "../src/utils/truncate";
+import { throttledFetch } from "../src/services/p-throttle";
 
 export const getStaticPaths = async () => {
   const { blogPosts } = await hygraph.request(
@@ -87,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
       },
     };
   } else {
-    const res = await hygraph.request(`
+    const res = await throttledFetch(`
     {
       blogPosts(where: {category: {slug: "${blogPosts[0].category.slug}"}, AND: {slug_not: "${blogPosts[0].slug}"}}, orderBy: publishedAt_DESC, last: 4) {
         slug
