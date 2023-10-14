@@ -21,18 +21,20 @@ import Link from "next/link";
 import Logo from "../logo";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../services/firebase";
-import { useEffect } from "react";
-import { FaAngleDown } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaAngleDown, FaChevronRight } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import CustomModal from "../modal";
 import SubscriptionModal from "../modals/subscriber";
 import useModal from "../../utils/use-modal";
+import { PopupModal } from "react-calendly";
 
 const Header = (props) => {
   const [user, loading, error] = useAuthState(auth);
   const [isLoggedIn, setIsLoggedIn] = useBoolean(false);
   const { isOpen, onToggle } = useDisclosure();
   const { isShowing, toggle } = useModal();
+  const [calendlyPopup, setCalendlyPopup] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -41,10 +43,12 @@ const Header = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  const openCalendly = () => setCalendlyPopup(true);
+
   return (
     <>
       <Box position={"sticky"} top={0} zIndex={99} bg={"white"} shadow={"sm"}>
-        <Box>
+        <Box backgroundColor={"primary.500"}>
           <Box
             w={
               props.progressPercent > 100 || props.progressPercent < 0
@@ -52,8 +56,28 @@ const Header = (props) => {
                 : props.progressPercent + "%"
             }
             h={"2px"}
-            bg={"black"}
-          ></Box>
+            bg={"white"}
+          />
+          <Box>
+            <Container py={3} maxW={"8xl"}>
+              <Flex
+                onClick={openCalendly}
+                justifyContent={"space-between"}
+                gap={3}
+              >
+                <Text color={"white"}>
+                  Limited Offer: Free 15min Free Financial Consultation by our
+                  expert CAs.
+                </Text>
+                <Flex alignItems={"center"} gap={3}>
+                  <Text display={{ base: "none", md: "block" }} color={"white"}>
+                    Book an Appointment
+                  </Text>
+                  <FaChevronRight color={"white"} size={12} />
+                </Flex>
+              </Flex>
+            </Container>
+          </Box>
         </Box>
         <Container py={3} maxW={"8xl"}>
           <Flex align={"center"}>
@@ -146,6 +170,14 @@ const Header = (props) => {
       <CustomModal isOpen={isShowing} onClose={toggle}>
         <SubscriptionModal toggle={toggle} />
       </CustomModal>
+      {calendlyPopup && (
+        <PopupModal
+          url="https://calendly.com/bendalepiyush/finance-consultation"
+          onModalClose={() => setCalendlyPopup(false)}
+          open={calendlyPopup}
+          rootElement={document.getElementById("root")}
+        />
+      )}
     </>
   );
 };
@@ -156,7 +188,7 @@ const DesktopNav = () => {
       {NAV_ITEMS.map((navItem) => {
         if (navItem.href) {
           return (
-            <Link href={navItem.href} key={navItem.name}>
+            <Link href={navItem.href} key={navItem.label}>
               <Box px={3} py={4}>
                 <Text>{navItem.label}</Text>
               </Box>
@@ -205,14 +237,14 @@ const MobileNav = ({ isLoggedIn, user, toggle }) => {
       {NAV_ITEMS.map((navItem) => {
         if (navItem.href) {
           return (
-            <>
-              <Link href={navItem.href} key={navItem.label}>
+            <Box key={navItem.label}>
+              <Link href={navItem.href}>
                 <Box py={2}>
                   <Text fontWeight={500}>{navItem.label}</Text>
                 </Box>
               </Link>
               <Divider my={5} />
-            </>
+            </Box>
           );
         }
         return (
@@ -321,6 +353,10 @@ const NAV_ITEMS = [
         label: "Pivot Point Calculator",
       },
     ],
+  },
+  {
+    label: "Free Course",
+    href: "/course/introduction-to-financial-statement-analysis",
   },
 ];
 

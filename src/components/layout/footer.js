@@ -17,7 +17,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import * as yup from "yup";
 import { subscibeByEmail } from "../../api/subscriber";
 import { useFormik } from "formik";
@@ -31,12 +31,12 @@ const Footer = () => {
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "",
+      emailSubscribe: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
-      var res = await subscibeByEmail(values.email, "", "");
+      var res = await subscibeByEmail(values.emailSubscribe, "", "");
       setLoading(false);
     },
   });
@@ -130,20 +130,24 @@ const Footer = () => {
                 <Flex>
                   <FormControl
                     isInvalid={
-                      formik.touched.email && Boolean(formik.errors.email)
+                      formik.touched.emailSubscribe &&
+                      Boolean(formik.errors.emailSubscribe)
                     }
                   >
                     <Input
-                      name="email"
-                      id="email"
+                      name="emailSubscribe"
+                      id="emailSubscribe"
                       placeholder="Email Address"
                       size="lg"
-                      value={formik.values.email}
+                      value={formik.values.emailSubscribe}
                       onChange={formik.handleChange}
                     />
-                    {formik.touched.email && Boolean(formik.errors.email) && (
-                      <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                    )}
+                    {formik.touched.emailSubscribe &&
+                      Boolean(formik.errors.emailSubscribe) && (
+                        <FormErrorMessage>
+                          {formik.errors.emailSubscribe}
+                        </FormErrorMessage>
+                      )}
                   </FormControl>
                   <Button
                     isLoading={loading}

@@ -211,7 +211,7 @@ const RegisterPage = () => {
                       value={formik.values.agree}
                       onChange={formik.handleChange}
                     >
-                      Agree to Terms and Condtions and Privacy Poliy
+                      Agree to Terms and Condtions and Privacy Policy
                     </Checkbox>
                     {formik.touched.agree && Boolean(formik.errors.agree) && (
                       <FormErrorMessage>{formik.errors.agree}</FormErrorMessage>

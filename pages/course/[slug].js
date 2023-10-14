@@ -47,6 +47,8 @@ import truncate from "../../src/utils/truncate";
 import Link from "next/link";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { throttledFetch } from "../../src/services/p-throttle";
+import { FaBook, FaHourglass, FaLightbulb, FaSmile } from "react-icons/fa";
 
 const validationSchema = yup.object({
   firstName: yup
@@ -96,22 +98,22 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const { courses } = await hygraph.request(`
-      {
-        courses(where: {slug: "${params.slug}"}) {
+  const { courses } = await throttledFetch(`
+    {
+      courses(where: {slug: "${params.slug}"}) {
+          title
+          slug
+          courseTopics {
+            seq
             title
-            slug
-            courseTopics {
-              seq
-              title
-              content
-              moduleStructure
-              questions
-              resources
-            }
+            content
+            moduleStructure
+            questions
+            resources
           }
-      }
-    `);
+        }
+    }
+  `);
 
   if (!courses.length) {
     return {
@@ -160,12 +162,11 @@ const SinglePost = ({ course }) => {
     },
   });
 
-  useEffect(() => {
-    console.log(course);
-    if (user) {
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user]);
 
   if (loading) {
     return (
@@ -284,10 +285,10 @@ const SinglePost = ({ course }) => {
 
         <Box position={"relative"}>
           <Box
-            backgroundColor={"purple"}
+            backgroundColor={"black"}
             color={"white"}
             position={"sticky"}
-            top={"85px"}
+            top={"130px"}
             left={0}
           >
             <Container maxW={"8xl"} py={5}>
@@ -394,7 +395,7 @@ const SinglePost = ({ course }) => {
       <Layout>
         <Seo title={title} description={""} ogImage={""} />
 
-        <Container maxW={"5xl"} minH={"50vh"} py={10}>
+        <Container maxW={"6xl"} minH={"50vh"} py={10}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
             <Stack spacing={4}>
               <Text
@@ -407,7 +408,7 @@ const SinglePost = ({ course }) => {
                 alignSelf={"flex-start"}
                 rounded={"md"}
               >
-                🎉 Limited Offer
+                🎉 Free for Limited Period
               </Text>
               <Heading as={"h1"}>
                 Introduction to Finanancial Statement Analysis
@@ -417,6 +418,8 @@ const SinglePost = ({ course }) => {
                 statements? 📑 Want to ace your investment game? This course is
                 your golden ticket!
               </Text>
+            </Stack>
+            <Flex>
               <form onSubmit={formik.handleSubmit}>
                 <Stack spacing={20}>
                   <Stack spacing={4}>
@@ -510,7 +513,7 @@ const SinglePost = ({ course }) => {
                           </FormErrorMessage>
                         )}
                     </FormControl>
-                    <Stack spacing={10}>
+                    <Stack spacing={7}>
                       <FormControl
                         isInvalid={
                           formik.touched.agree && Boolean(formik.errors.agree)
@@ -522,7 +525,7 @@ const SinglePost = ({ course }) => {
                           value={formik.values.agree}
                           onChange={formik.handleChange}
                         >
-                          Agree to Terms and Condtions and Privacy Poliy
+                          Agree to Terms and Condtions and Privacy Policy
                         </Checkbox>
                         {formik.touched.agree &&
                           Boolean(formik.errors.agree) && (
@@ -535,46 +538,63 @@ const SinglePost = ({ course }) => {
                         <Button
                           isLoading={isLoading}
                           type={"submit"}
-                          colorScheme={"primary"}
+                          colorScheme={"black"}
                         >
-                          Sign Up
+                          Avail your free ticket
                         </Button>
-                        <Text textAlign={"center"}>Have an account?</Text>
-                        <Link href="/auth/login">
-                          <Button
-                            width={"100%"}
-                            colorScheme={"primary"}
-                            variant={"outline"}
-                          >
-                            Sign In
-                          </Button>
-                        </Link>
                       </Stack>
                     </Stack>
                   </Stack>
                 </Stack>
               </form>
-            </Stack>
-            <Flex>
-              <AspectRatio w={"100%"} zIndex={0} ratio={621 / 900}>
-                <picture style={{ objectFit: "cover" }}>
-                  <source
-                    srcSet={"https://assets.howtowealthy.com/piyush.png?webp"}
-                    type="image/webp"
-                  />
-                  <img
-                    src={"https://assets.howtowealthy.com/piyush.png"}
-                    alt={"Piyush Bendale - How to Wealthy"}
-                  />
-                </picture>
-              </AspectRatio>
             </Flex>
+          </SimpleGrid>
+
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mt={20}>
+            {features.map((item) => {
+              return (
+                <Box key={item.title} border={"1px solid #f5f5f5"} p={5}>
+                  <Icon as={item.icon} mb={5} fontSize={32} />
+                  <Heading as={"h3"} fontSize={"lg"} mb={2}>
+                    {item.title}
+                  </Heading>
+                  <Text color={"gray.700"}>{item.subtitle}</Text>
+                </Box>
+              );
+            })}
           </SimpleGrid>
         </Container>
       </Layout>
     );
   }
 };
+
+const features = [
+  {
+    title: "100% On-Demand",
+    subtitle:
+      "No need to rush; learn at your own pace. Access the course whenever it suits you best. Whether you're a morning person or a night owl, our course is available whenever you are.",
+    icon: FaHourglass,
+  },
+  {
+    title: "Exercise Driven",
+    subtitle:
+      "We believe in learning by doing. Our exercises are practical, real-world scenarios that will help you grasp the concepts of financial statement analysis with ease. ",
+    icon: FaLightbulb,
+  },
+  {
+    title: "Weekly Bonus Analysis",
+    subtitle:
+      "Each week, we provide you with extra tips, tricks, and analysis to keep you on your toes. Stay updated and sharpen your skills to make informed decisions in the dynamic world of stocks.",
+    icon: FaBook,
+  },
+  {
+    title: "Lifetime Access",
+    subtitle:
+      "Once you're in, you're in for good! With lifetime access, you can revisit the course whenever you need a refresher or want to explore more advanced topics. ",
+    icon: FaSmile,
+  },
+];
 
 const TabItem = ({ tabIndex, title, selectedTab, setSelectedTab }) => {
   return (
