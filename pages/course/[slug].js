@@ -103,6 +103,9 @@ export const getStaticProps = async ({ params }) => {
       courses(where: {slug: "${params.slug}"}) {
           title
           slug
+          description
+          structuredData
+          images
           courseTopics {
             seq
             title
@@ -188,6 +191,7 @@ const SinglePost = ({ course }) => {
 
   // Render course...
   const title = course.title || "";
+  const description = course.description || "";
 
   const renderPageContent = (item) => {
     switch (selectedTab) {
@@ -281,7 +285,16 @@ const SinglePost = ({ course }) => {
   if (user) {
     return (
       <Layout>
-        <Seo title={title} description={""} ogImage={""} />
+        <Seo
+          title={title}
+          description={description}
+          structuredData={JSON.stringify(course.structuredData)}
+          ogImage={
+            course.images
+              ? course.images.ogimg
+              : "https://assets.howtowealthy.com/ogimg.png"
+          }
+        />
 
         <Box position={"relative"}>
           <Box
@@ -393,7 +406,16 @@ const SinglePost = ({ course }) => {
   } else {
     return (
       <Layout>
-        <Seo title={title} description={""} ogImage={""} />
+        <Seo
+          title={title}
+          description={description}
+          structuredData={JSON.stringify(course.structuredData)}
+          ogImage={
+            course.images
+              ? course.images.ogimg
+              : "https://assets.howtowealthy.com/ogimg.png"
+          }
+        />
 
         <Container maxW={"6xl"} minH={"50vh"} py={10}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
