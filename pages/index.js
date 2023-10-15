@@ -18,9 +18,10 @@ import Link from "next/link";
 import { useState } from "react";
 import hygraph from "../src/services/hygraph";
 import SideBar from "../src/components/sidebar";
+import { throttledFetch } from "../src/services/p-throttle";
 
 export async function getStaticProps() {
-  const resStockMarket = await hygraph.request(`
+  const resStockMarket = await throttledFetch(`
     {
       blogPosts(where: {category: {slug: "stock-market"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
@@ -31,7 +32,7 @@ export async function getStaticProps() {
     }
   `);
 
-  const resInvestment = await hygraph.request(`
+  const resInvestment = await throttledFetch(`
     {
       blogPosts(where: {category: {slug: "investment"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
@@ -42,7 +43,7 @@ export async function getStaticProps() {
     }
   `);
 
-  const resPersonalFinance = await hygraph.request(`
+  const resPersonalFinance = await throttledFetch(`
     {
       blogPosts(where: {category: {slug: "personal-finance"}}, orderBy: publishedAt_DESC, first: 4) {
         slug
@@ -53,7 +54,7 @@ export async function getStaticProps() {
     }
   `);
 
-  const resLatestPost = await hygraph.request(`
+  const resLatestPost = await throttledFetch(`
     {
       blogPosts(orderBy: publishedAt_DESC, first: 5) {
         slug

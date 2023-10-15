@@ -79,7 +79,7 @@ const validationSchema = yup.object({
 });
 
 export const getStaticPaths = async () => {
-  const { courses } = await hygraph.request(
+  const { courses } = await throttledFetch(
     `
         {
         courses {

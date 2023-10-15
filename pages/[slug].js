@@ -40,7 +40,7 @@ import truncate from "../src/utils/truncate";
 import { throttledFetch } from "../src/services/p-throttle";
 
 export const getStaticPaths = async () => {
-  const { blogPosts } = await hygraph.request(
+  const { blogPosts } = await throttledFetch(
     `
       {
         blogPosts {
@@ -59,7 +59,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const { blogPosts } = await hygraph.request(`
+  const { blogPosts } = await throttledFetch(`
     {
       blogPosts(where: {slug: "${params.slug}"}) {
         slug

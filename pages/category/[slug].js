@@ -39,7 +39,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const res = await hygraph.request(`
+  const res = await throttledFetch(`
     {
       blogPosts(where: {category: {slug: "${params.slug}"}}, orderBy: publishedAt_DESC, first: 10) {
         slug
@@ -50,7 +50,7 @@ export const getStaticProps = async ({ params }) => {
     }
   `);
 
-  var resCategory = await hygraph.request(`
+  var resCategory = await throttledFetch(`
     { 
       category(where: {slug: "${params.slug}"}) {
         slug
@@ -82,7 +82,7 @@ const Category = ({ posts, category }) => {
     setLoading(true);
     const skip = latestPosts.length;
 
-    const temp = await hygraph.request(`
+    const temp = await throttledFetch(`
       {
         blogPosts(where: {category: {slug: "${category.slug}"}}, orderBy: publishedAt_DESC, skip: ${skip}, first: 10) {
           slug
