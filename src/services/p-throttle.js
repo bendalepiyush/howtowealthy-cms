@@ -1,7 +1,7 @@
 import pThrottle from "p-throttle";
 import hygraph from "./hygraph";
 
-const throttle = pThrottle({ limit: 5, interval: 1000 });
+const throttle = pThrottle({ limit: 3, interval: 1000 });
 export const throttledFetch = throttle(async (...args) => {
   const [query, vars] = args;
 
