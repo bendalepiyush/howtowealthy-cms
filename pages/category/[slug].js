@@ -18,6 +18,7 @@ import Seo from "../../src/components/seo";
 import SideBar from "../../src/components/sidebar";
 import hygraph from "../../src/services/hygraph";
 import truncate from "../../src/utils/truncate";
+import { throttledFetch } from "../../src/services/p-throttle";
 
 export const getStaticPaths = async () => {
   const { categories } = await hygraph.request(
