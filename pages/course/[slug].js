@@ -433,7 +433,7 @@ const SinglePost = ({ course }) => {
                 🎉 Free for Limited Period
               </Text>
               <Heading as={"h1"}>
-                Introduction to Finanancial Statement Analysis
+                Introduction to Financial Statement Analysis
               </Heading>
               <Text color={"gray.600"} pb={8} fontSize={"lg"}>
                 Ever wondered how to make sense of balance sheets and income
